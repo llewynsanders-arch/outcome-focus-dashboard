@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Outcome Focus Dashboard</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      color: #1f2937;
+      padding-bottom: 80px;
+    }
+
+    .container {
+      width: 92%;
+      max-width: 700px;
+      margin: auto;
+      padding: 24px 0;
+    }
+
+    header {
+      margin-bottom: 25px;
+    }
+
+    .date {
+      color: #6b7280;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      color: #6b7280;
+      line-height: 1.5;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    }
+
+    .card h2 {
+      font-size: 19px;
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 15px 0 7px;
+    }
+
+    textarea,
+    input {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      font-size: 16px;
+      font-family: inherit;
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .action-input {
+      margin-bottom: 10px;
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .add-button {
+      background: #e5e7eb;
+      color: #1f2937;
+      margin-top: 5px;
+    }
+
+    .save-button {
+      background: #2563eb;
+      color: white;
+      margin-top: 15px;
+    }
+
+    .progress-background {
+      background: #e5e7eb;
+      height: 12px;
+      border-radius: 20px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: #2563eb;
+      transition: width 0.3s;
+    }
+
+    .progress-text {
+      margin-top: 8px;
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .tip {
+      background: #eff6ff;
+      border-left: 4px solid #2563eb;
+    }
+
+    .tip p {
+      line-height: 1.6;
+    }
+
+    @media (max-width: 500px) {
+      h1 {
+        font-size: 24px;
+      }
+
+      .container {
+        width: 94%;
+      }
+
+      .card {
+        padding: 17px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="container">
+
+    <header>
+      <div class="date" id="todayDate"></div>
+      <h1>Outcome Focus Dashboard</h1>
+      <p class="subtitle">
+        Decide what you want to accomplish, why it matters,
+        and what actions will move you forward.
+      </p>
+    </header>
+
+    <section class="card">
+
+      <h2>🎯 Today's Most Important Outcome</h2>
+
+      <label for="outcome">What result do I want?</label>
+      <textarea
+        id="outcome"
+        placeholder="Example: Finish the first version of my website."
+      ></textarea>
+
+      <label for="purpose">Why does this matter?</label>
+      <textarea
+        id="purpose"
+        placeholder="Write the reason this outcome is important to you."
+      ></textarea>
+
+    </section>
+
+    <section class="card">
+
+      <h2>⚡ Action Plan</h2>
+
+      <div id="actionList">
+        <input
+          class="action-input"
+          type="text"
+          placeholder="Action 1"
+        >
+
+        <input
+          class="action-input"
+          type="text"
+          placeholder="Action 2"
+        >
+
+        <input
+          class="action-input"
+          type="text"
+          placeholder="Action 3"
+        >
+      </div>
+
+      <button
+        class="add-button"
+        onclick="addAction()"
+      >
+        + Add Another Action
+      </button>
+
+    </section>
+
+    <section class="card">
+
+      <h2>📈 Today's Progress</h2>
+
+      <div class="progress-background">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <div class="progress-text" id="progressText">
+        0% complete
+      </div>
+
+    </section>
+
+    <section class="card tip">
+
+      <h2>💡 Focus Reminder</h2>
+
+      <p>
+        Don't measure your day only by how many tasks you completed.
+        Measure it by whether your actions moved you toward the result
+        that matters most.
+      </p>
+
+    </section>
+
+    <button
+      class="save-button"
+      onclick="saveDashboard()"
+    >
+      Save My Day
+    </button>
+
+  </main>
+
+  <script>
+
+    // Display today's date
+    const today = new Date();
+
+    document.getElementById("todayDate").textContent =
+      today.toLocaleDateString("en-US", {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+        year: "numeric"
+      });
+
+
+    // Add another action field
+    function addAction() {
+
+      const actionList =
+        document.getElementById("actionList");
+
+      const input =
+        document.createElement("input");
+
+      input.type = "text";
+      input.className = "action-input";
+
+      input.placeholder =
+        "Action " + (actionList.children.length + 1);
+
+      actionList.appendChild(input);
+
+      updateProgress();
+    }
+
+
+    // Calculate progress
+    function updateProgress() {
+
+      const actions =
+        document.querySelectorAll(".action-input");
+
+      let completed = 0;
+
+      actions.forEach(action => {
+
+        if (action.value.trim() !== "") {
+          completed++;
+        }
+
+      });
+
+      const percentage =
+        actions.length
+          ? Math.round((completed / actions.length) * 100)
+          : 0;
+
+      document.getElementById("progressBar").style.width =
+        percentage + "%";
+
+      document.getElementById("progressText").textContent =
+        percentage + "% complete";
+    }
+
+
+    // Save information on this device
+    function saveDashboard() {
+
+      const actions =
+        Array.from(
+          document.querySelectorAll(".action-input")
+        ).map(input => input.value);
+
+      const dashboardData = {
+
+        outcome:
+          document.getElementById("outcome").value,
+
+        purpose:
+          document.getElementById("purpose").value,
+
+        actions: actions
+
+      };
+
+      localStorage.setItem(
+        "outcomeFocusDashboard",
+        JSON.stringify(dashboardData)
+      );
+
+      alert("Your day has been saved.");
+    }
+
+
+    // Load previously saved information
+    function loadDashboard() {
+
+      const saved =
+        localStorage.getItem("outcomeFocusDashboard");
+
+      if (!saved) return;
+
+      const data = JSON.parse(saved);
+
+      document.getElementById("outcome").value =
+        data.outcome || "";
+
+      document.getElementById("purpose").value =
+        data.purpose || "";
+
+      const actionList =
+        document.getElementById("actionList");
+
+      actionList.innerHTML = "";
+
+      const savedActions =
+        data.actions && data.actions.length
+          ? data.actions
+          : ["", "", ""];
+
+      savedActions.forEach((action, index) => {
+
+        const input =
+          document.createElement("input");
+
+        input.type = "text";
+        input.className = "action-input";
+        input.placeholder = "Action " + (index + 1);
+        input.value = action;
+
+        actionList.appendChild(input);
+
+      });
+
+      updateProgress();
+    }
+
+
+    // Update progress while typing
+    document.addEventListener(
+      "input",
+      function(event) {
+
+        if (
+          event.target.classList.contains("action-input")
+        ) {
+          updateProgress();
+        }
+
+      }
+    );
+
+
+    loadDashboard();
+
+  </script>
+
+</body>
+</html>
