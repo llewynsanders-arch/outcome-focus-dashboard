@@ -1,1019 +1,1549 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Outcome Focus Dashboard</title>
+<title>Outcome Focus Dashboard</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<style>
 
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f4f7fb;
-      color: #1f2937;
-      padding-bottom: 80px;
-    }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-    .container {
-      width: 92%;
-      max-width: 700px;
-      margin: auto;
-      padding: 24px 0;
-    }
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f4f7fb;
+  color: #1f2937;
+  padding-bottom: 80px;
+}
 
-    header {
-      margin-bottom: 25px;
-    }
+.container {
+  width: 92%;
+  max-width: 760px;
+  margin: auto;
+  padding: 24px 0;
+}
 
-    .date {
-      color: #6b7280;
-      font-size: 14px;
-      margin-bottom: 5px;
-    }
+header {
+  margin-bottom: 25px;
+}
 
-    h1 {
-      font-size: 28px;
-      margin-bottom: 6px;
-    }
+.date {
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
 
-    .subtitle {
-      color: #6b7280;
-      line-height: 1.5;
-    }
+h1 {
+  font-size: 28px;
+  margin-bottom: 6px;
+}
 
-    .version {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 5px 9px;
-      background: #dbeafe;
-      color: #1d4ed8;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: bold;
-    }
+.subtitle {
+  color: #6b7280;
+  line-height: 1.5;
+}
 
-    .card {
-      background: white;
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 18px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
-    }
+.version {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 5px 9px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
 
-    .card h2 {
-      font-size: 19px;
-      margin-bottom: 15px;
-    }
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 15px rgba(0,0,0,.06);
+}
 
-    label {
-      display: block;
-      font-weight: bold;
-      margin: 15px 0 7px;
-    }
+.card h2 {
+  font-size: 19px;
+  margin-bottom: 15px;
+}
 
-    textarea,
-    input[type="text"] {
-      width: 100%;
-      padding: 13px;
-      border: 1px solid #d1d5db;
-      border-radius: 10px;
-      font-size: 16px;
-      font-family: inherit;
-    }
+label {
+  display: block;
+  font-weight: bold;
+  margin: 15px 0 7px;
+}
 
-    textarea {
-      min-height: 90px;
-      resize: vertical;
-    }
+textarea,
+input[type="text"],
+input[type="time"],
+select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 16px;
+  font-family: inherit;
+  background: white;
+}
 
-    textarea:focus,
-    input[type="text"]:focus {
-      outline: 2px solid #bfdbfe;
-      border-color: #2563eb;
-    }
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
 
-    .action-row {
-      display: grid;
-      grid-template-columns: 28px 1fr 38px;
-      align-items: center;
-      gap: 9px;
-      margin-bottom: 11px;
-    }
+textarea:focus,
+input:focus,
+select:focus {
+  outline: 2px solid #bfdbfe;
+  border-color: #2563eb;
+}
 
-    .action-checkbox {
-      width: 21px;
-      height: 21px;
-      cursor: pointer;
-      accent-color: #2563eb;
-    }
 
-    .action-text.completed {
-      text-decoration: line-through;
-      color: #9ca3af;
-      background: #f9fafb;
-    }
+/* ACTION CARDS */
 
-    .delete-button {
-      width: 38px;
-      height: 38px;
-      padding: 0;
-      border: none;
-      border-radius: 9px;
-      background: #fee2e2;
-      color: #b91c1c;
-      font-size: 19px;
-      cursor: pointer;
-    }
+.action-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 14px;
+  background: #fafafa;
+}
 
-    button {
-      font-family: inherit;
-    }
+.action-main {
+  display: grid;
+  grid-template-columns: 28px 1fr 38px;
+  gap: 9px;
+  align-items: center;
+}
 
-    .add-button {
-      width: 100%;
-      border: none;
-      border-radius: 10px;
-      padding: 14px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      background: #e5e7eb;
-      color: #1f2937;
-      margin-top: 5px;
-    }
+.action-checkbox {
+  width: 21px;
+  height: 21px;
+  cursor: pointer;
+  accent-color: #2563eb;
+}
 
-    .save-button {
-      width: 100%;
-      border: none;
-      border-radius: 10px;
-      padding: 15px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      background: #2563eb;
-      color: white;
-      margin-top: 4px;
-    }
+.action-text.completed {
+  text-decoration: line-through;
+  color: #9ca3af;
+}
 
-    .progress-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-    }
+.delete-button {
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 9px;
+  background: #fee2e2;
+  color: #b91c1c;
+  font-size: 20px;
+  cursor: pointer;
+}
 
-    .progress-percent {
-      font-size: 25px;
-      font-weight: bold;
-      color: #2563eb;
-    }
+.action-options {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 9px;
+  margin-top: 11px;
+}
 
-    .progress-background {
-      background: #e5e7eb;
-      height: 14px;
-      border-radius: 20px;
-      overflow: hidden;
-      margin-top: 12px;
-    }
+.field-label {
+  font-size: 11px;
+  color: #6b7280;
+  margin: 0 0 4px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
 
-    .progress-bar {
-      width: 0%;
-      height: 100%;
-      background: #2563eb;
-      transition: width 0.3s ease;
-    }
+.priority-must {
+  border-left: 5px solid #dc2626;
+}
 
-    .progress-text {
-      margin-top: 9px;
-      color: #6b7280;
-      font-size: 14px;
-    }
+.priority-should {
+  border-left: 5px solid #f59e0b;
+}
 
-    .completion-message {
-      display: none;
-      margin-top: 14px;
-      padding: 12px;
-      background: #ecfdf5;
-      border-radius: 10px;
-      color: #047857;
-      font-weight: bold;
-      text-align: center;
-    }
+.priority-could {
+  border-left: 5px solid #16a34a;
+}
 
-    .tip {
-      background: #eff6ff;
-      border-left: 4px solid #2563eb;
-    }
 
-    .tip p {
-      line-height: 1.6;
-    }
+/* BUTTONS */
 
-    .saved-message {
-      display: none;
-      margin-top: 12px;
-      text-align: center;
-      color: #047857;
-      font-weight: bold;
-      font-size: 14px;
-    }
+.add-button,
+.save-button {
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
 
-    .footer-note {
-      text-align: center;
-      color: #9ca3af;
-      font-size: 12px;
-      margin-top: 20px;
-    }
+.add-button {
+  background: #e5e7eb;
+  color: #1f2937;
+}
 
-    @media (max-width: 500px) {
-      h1 {
-        font-size: 24px;
-      }
+.save-button {
+  background: #2563eb;
+  color: white;
+}
 
-      .container {
-        width: 94%;
-      }
 
-      .card {
-        padding: 17px;
-      }
+/* SCHEDULE */
 
-      .action-row {
-        grid-template-columns: 26px 1fr 36px;
-        gap: 7px;
-      }
+.schedule-empty {
+  color: #6b7280;
+  text-align: center;
+  padding: 20px 5px;
+  line-height: 1.5;
+}
 
-      .delete-button {
-        width: 36px;
-        height: 36px;
-      }
-    }
-  </style>
+.schedule-item {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.schedule-item:last-child {
+  border-bottom: none;
+}
+
+.schedule-time {
+  font-weight: bold;
+  color: #1d4ed8;
+}
+
+.schedule-title {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.schedule-meta {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.priority-badge {
+  display: inline-block;
+  padding: 4px 7px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.badge-must {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.badge-should {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.badge-could {
+  background: #dcfce7;
+  color: #166534;
+}
+
+
+/* PROGRESS */
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progress-percent {
+  font-size: 25px;
+  font-weight: bold;
+  color: #2563eb;
+}
+
+.progress-background {
+  background: #e5e7eb;
+  height: 14px;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-top: 12px;
+}
+
+.progress-bar {
+  width: 0%;
+  height: 100%;
+  background: #2563eb;
+  transition: width .3s ease;
+}
+
+.progress-text {
+  margin-top: 9px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.completion-message {
+  display: none;
+  margin-top: 14px;
+  padding: 12px;
+  background: #ecfdf5;
+  border-radius: 10px;
+  color: #047857;
+  font-weight: bold;
+  text-align: center;
+}
+
+.tip {
+  background: #eff6ff;
+  border-left: 4px solid #2563eb;
+}
+
+.tip p {
+  line-height: 1.6;
+}
+
+.saved-message {
+  display: none;
+  text-align: center;
+  color: #047857;
+  font-weight: bold;
+  margin-top: 12px;
+}
+
+.footer-note {
+  text-align: center;
+  color: #9ca3af;
+  font-size: 12px;
+  margin-top: 20px;
+}
+
+
+/* MOBILE */
+
+@media(max-width:600px) {
+
+  h1 {
+    font-size: 24px;
+  }
+
+  .container {
+    width: 94%;
+  }
+
+  .card {
+    padding: 17px;
+  }
+
+  .action-options {
+    grid-template-columns: 1fr;
+  }
+
+  .schedule-item {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+
+}
+
+</style>
 </head>
+
 
 <body>
 
-  <main class="container">
+<main class="container">
 
-    <header>
-      <div class="date" id="todayDate"></div>
+<header>
 
-      <h1>Outcome Focus Dashboard</h1>
+<div class="date" id="todayDate"></div>
 
-      <p class="subtitle">
-        Decide what you want to accomplish, why it matters,
-        and what actions will move you forward.
-      </p>
+<h1>Outcome Focus Dashboard</h1>
 
-      <span class="version">Version 1.1</span>
-    </header>
+<p class="subtitle">
+Turn your desired outcome into prioritized actions
+and give those actions a place in your day.
+</p>
 
+<span class="version">
+Version 1.2
+</span>
 
-    <!-- OUTCOME -->
+</header>
 
-    <section class="card">
 
-      <h2>🎯 Today's Most Important Outcome</h2>
+<!-- OUTCOME -->
 
-      <label for="outcome">
-        What result do I want?
-      </label>
+<section class="card">
 
-      <textarea
-        id="outcome"
-        placeholder="Example: Finish the first version of my website."
-      ></textarea>
+<h2>🎯 Today's Most Important Outcome</h2>
 
-      <label for="purpose">
-        Why does this matter?
-      </label>
+<label for="outcome">
+What result do I want?
+</label>
 
-      <textarea
-        id="purpose"
-        placeholder="Write the reason this outcome is important to you."
-      ></textarea>
+<textarea
+id="outcome"
+placeholder="Example: Finish the first version of my website."
+></textarea>
 
-    </section>
 
+<label for="purpose">
+Why does this matter?
+</label>
 
-    <!-- ACTION PLAN -->
+<textarea
+id="purpose"
+placeholder="Write the reason this outcome is important to you."
+></textarea>
 
-    <section class="card">
+</section>
 
-      <h2>⚡ Action Plan</h2>
 
-      <div id="actionList"></div>
 
-      <button
-        class="add-button"
-        id="addActionButton"
-        type="button"
-      >
-        + Add Another Action
-      </button>
+<!-- ACTION PLAN -->
 
-    </section>
+<section class="card">
 
+<h2>⚡ Action Plan</h2>
 
-    <!-- PROGRESS -->
+<div id="actionList"></div>
 
-    <section class="card">
+<button
+class="add-button"
+id="addActionButton"
+type="button">
++ Add Another Action
+</button>
 
-      <div class="progress-header">
+</section>
 
-        <h2>📈 Today's Progress</h2>
 
-        <div
-          class="progress-percent"
-          id="progressPercent"
-        >
-          0%
-        </div>
 
-      </div>
+<!-- SCHEDULE -->
 
-      <div class="progress-background">
+<section class="card">
 
-        <div
-          class="progress-bar"
-          id="progressBar"
-        ></div>
+<h2>🗓️ Today's Schedule</h2>
 
-      </div>
+<div id="scheduleList"></div>
 
-      <div
-        class="progress-text"
-        id="progressText"
-      >
-        0 of 0 actions completed
-      </div>
+</section>
 
-      <div
-        class="completion-message"
-        id="completionMessage"
-      >
-        🎉 Outcome action plan completed!
-      </div>
 
-    </section>
 
+<!-- PROGRESS -->
 
-    <!-- FOCUS REMINDER -->
+<section class="card">
 
-    <section class="card tip">
+<div class="progress-header">
 
-      <h2>💡 Focus Reminder</h2>
+<h2>📈 Today's Progress</h2>
 
-      <p>
-        Don't measure your day only by how busy you were.
-        Measure it by whether your actions moved you toward
-        the result that matters most.
-      </p>
+<div
+class="progress-percent"
+id="progressPercent">
+0%
+</div>
 
-    </section>
+</div>
 
+<div class="progress-background">
 
-    <button
-      class="save-button"
-      id="saveButton"
-      type="button"
-    >
-      Save My Day
-    </button>
+<div
+class="progress-bar"
+id="progressBar">
+</div>
 
-    <div
-      class="saved-message"
-      id="savedMessage"
-    >
-      ✓ Your day has been saved.
-    </div>
+</div>
 
-    <div class="footer-note">
-      Outcome Focus Dashboard
-    </div>
+<div
+class="progress-text"
+id="progressText">
+0 of 0 actions completed
+</div>
 
-  </main>
+<div
+class="completion-message"
+id="completionMessage">
+🎉 Outcome action plan completed!
+</div>
 
+</section>
 
-  <script>
 
-    const STORAGE_KEY = "outcomeFocusDashboardV11";
 
+<!-- REMINDER -->
 
-    // -----------------------------------------
-    // DATE
-    // -----------------------------------------
+<section class="card tip">
 
-    const today = new Date();
+<h2>💡 Focus Reminder</h2>
 
-    document.getElementById("todayDate").textContent =
-      today.toLocaleDateString(
-        "en-US",
-        {
-          weekday: "long",
-          month: "long",
-          day: "numeric",
-          year: "numeric"
-        }
-      );
+<p>
+Your calendar should reflect your priorities.
+Decide what matters, choose the actions that move
+the result forward, and give those actions a specific
+place in your day.
+</p>
 
+</section>
 
-    // -----------------------------------------
-    // DEFAULT DATA
-    // -----------------------------------------
 
-    let dashboardData = {
-      date: getDateKey(),
-      outcome: "",
-      purpose: "",
-      actions: [
-        {
-          text: "",
-          completed: false
-        },
-        {
-          text: "",
-          completed: false
-        },
-        {
-          text: "",
-          completed: false
-        }
-      ]
-    };
+<button
+class="save-button"
+id="saveButton"
+type="button">
+Save My Day
+</button>
 
 
-    // -----------------------------------------
-    // GET TODAY'S DATE KEY
-    // -----------------------------------------
+<div
+class="saved-message"
+id="savedMessage">
+✓ Your day has been saved.
+</div>
 
-    function getDateKey() {
 
-      const now = new Date();
+<div class="footer-note">
+Outcome Focus Dashboard
+</div>
 
-      const year =
-        now.getFullYear();
+</main>
 
-      const month =
-        String(now.getMonth() + 1)
-          .padStart(2, "0");
 
-      const day =
-        String(now.getDate())
-          .padStart(2, "0");
 
-      return `${year}-${month}-${day}`;
-    }
+<script>
 
+const STORAGE_KEY =
+"outcomeFocusDashboardV12";
 
-    // -----------------------------------------
-    // CREATE ACTION ROW
-    // -----------------------------------------
 
-    function createActionRow(
-      action = {
-        text: "",
-        completed: false
-      }
-    ) {
+/* DATE */
 
-      const actionList =
-        document.getElementById("actionList");
+const today =
+new Date();
 
+document
+.getElementById("todayDate")
+.textContent =
+today.toLocaleDateString(
+"en-US",
+{
+weekday:"long",
+month:"long",
+day:"numeric",
+year:"numeric"
+}
+);
 
-      const row =
-        document.createElement("div");
 
-      row.className =
-        "action-row";
 
+/* DATA */
 
-      const checkbox =
-        document.createElement("input");
+let dashboardData = {
 
-      checkbox.type =
-        "checkbox";
+date:getDateKey(),
 
-      checkbox.className =
-        "action-checkbox";
+outcome:"",
 
-      checkbox.checked =
-        action.completed;
+purpose:"",
 
+actions:[
+{
+text:"",
+completed:false,
+priority:"must",
+time:"",
+duration:"30"
+},
+{
+text:"",
+completed:false,
+priority:"should",
+time:"",
+duration:"30"
+},
+{
+text:"",
+completed:false,
+priority:"could",
+time:"",
+duration:"30"
+}
+]
 
-      const input =
-        document.createElement("input");
+};
 
-      input.type =
-        "text";
 
-      input.className =
-        "action-text";
 
-      input.placeholder =
-        "Enter an action step";
+function getDateKey(){
 
-      input.value =
-        action.text;
+const now =
+new Date();
 
+const year =
+now.getFullYear();
 
-      if (action.completed) {
+const month =
+String(
+now.getMonth()+1
+).padStart(2,"0");
 
-        input.classList.add(
-          "completed"
-        );
+const day =
+String(
+now.getDate()
+).padStart(2,"0");
 
-      }
+return `${year}-${month}-${day}`;
 
+}
 
-      const deleteButton =
-        document.createElement("button");
 
-      deleteButton.type =
-        "button";
 
-      deleteButton.className =
-        "delete-button";
+/* CREATE ACTION */
 
-      deleteButton.innerHTML =
-        "&times;";
+function createActionCard(action){
 
-      deleteButton.setAttribute(
-        "aria-label",
-        "Delete action"
-      );
+const actionList =
+document.getElementById(
+"actionList"
+);
 
+const card =
+document.createElement("div");
 
-      checkbox.addEventListener(
-        "change",
-        function () {
+card.className =
+"action-card";
 
-          input.classList.toggle(
-            "completed",
-            checkbox.checked
-          );
 
-          collectData();
-          updateProgress();
-          autoSave();
+const main =
+document.createElement("div");
 
-        }
-      );
+main.className =
+"action-main";
 
 
-      input.addEventListener(
-        "input",
-        function () {
+const checkbox =
+document.createElement("input");
 
-          collectData();
-          updateProgress();
-          autoSave();
+checkbox.type =
+"checkbox";
 
-        }
-      );
+checkbox.className =
+"action-checkbox";
 
+checkbox.checked =
+action.completed || false;
 
-      deleteButton.addEventListener(
-        "click",
-        function () {
 
-          row.remove();
+const input =
+document.createElement("input");
 
-          collectData();
-          updateProgress();
-          autoSave();
+input.type =
+"text";
 
-        }
-      );
+input.className =
+"action-text";
 
+input.placeholder =
+"Enter an action step";
 
-      row.appendChild(
-        checkbox
-      );
+input.value =
+action.text || "";
 
-      row.appendChild(
-        input
-      );
 
-      row.appendChild(
-        deleteButton
-      );
+if(action.completed){
 
+input.classList.add(
+"completed"
+);
 
-      actionList.appendChild(
-        row
-      );
+}
 
-    }
 
+const deleteButton =
+document.createElement("button");
 
-    // -----------------------------------------
-    // ADD ACTION
-    // -----------------------------------------
+deleteButton.type =
+"button";
 
-    function addAction() {
+deleteButton.className =
+"delete-button";
 
-      createActionRow();
+deleteButton.innerHTML =
+"&times;";
 
-      collectData();
-      updateProgress();
-      autoSave();
+deleteButton.setAttribute(
+"aria-label",
+"Delete action"
+);
 
-      const inputs =
-        document.querySelectorAll(
-          ".action-text"
-        );
 
-      const lastInput =
-        inputs[inputs.length - 1];
+main.appendChild(
+checkbox
+);
 
-      if (lastInput) {
+main.appendChild(
+input
+);
 
-        lastInput.focus();
+main.appendChild(
+deleteButton
+);
 
-      }
 
-    }
 
+/* OPTIONS */
 
-    // -----------------------------------------
-    // COLLECT DATA FROM SCREEN
-    // -----------------------------------------
+const options =
+document.createElement("div");
 
-    function collectData() {
+options.className =
+"action-options";
 
-      dashboardData.date =
-        getDateKey();
 
-      dashboardData.outcome =
-        document
-          .getElementById("outcome")
-          .value;
+/* PRIORITY */
 
-      dashboardData.purpose =
-        document
-          .getElementById("purpose")
-          .value;
+const priorityWrap =
+document.createElement("div");
 
+priorityWrap.innerHTML =
+'<div class="field-label">Priority</div>';
 
-      const rows =
-        document.querySelectorAll(
-          ".action-row"
-        );
 
+const priority =
+document.createElement("select");
 
-      dashboardData.actions =
-        Array.from(rows).map(
-          row => {
+priority.className =
+"priority-select";
 
-            return {
+priority.innerHTML = `
+<option value="must">Must Do</option>
+<option value="should">Should Do</option>
+<option value="could">Could Do</option>
+`;
 
-              text:
-                row.querySelector(
-                  ".action-text"
-                ).value,
+priority.value =
+action.priority || "should";
 
-              completed:
-                row.querySelector(
-                  ".action-checkbox"
-                ).checked
+priorityWrap.appendChild(
+priority
+);
 
-            };
 
-          }
-        );
 
-    }
+/* TIME */
 
+const timeWrap =
+document.createElement("div");
 
-    // -----------------------------------------
-    // UPDATE PROGRESS
-    // -----------------------------------------
+timeWrap.innerHTML =
+'<div class="field-label">Start Time</div>';
 
-    function updateProgress() {
 
-      const rows =
-        document.querySelectorAll(
-          ".action-row"
-        );
+const time =
+document.createElement("input");
 
+time.type =
+"time";
 
-      const meaningfulRows =
-        Array.from(rows).filter(
-          row => {
+time.className =
+"time-input";
 
-            return (
-              row
-                .querySelector(
-                  ".action-text"
-                )
-                .value
-                .trim() !== ""
-            );
+time.value =
+action.time || "";
 
-          }
-        );
+timeWrap.appendChild(
+time
+);
 
 
-      const total =
-        meaningfulRows.length;
 
+/* DURATION */
 
-      const completed =
-        meaningfulRows.filter(
-          row => {
+const durationWrap =
+document.createElement("div");
 
-            return (
-              row
-                .querySelector(
-                  ".action-checkbox"
-                )
-                .checked
-            );
+durationWrap.innerHTML =
+'<div class="field-label">Duration</div>';
 
-          }
-        ).length;
 
+const duration =
+document.createElement("select");
 
-      const percentage =
-        total === 0
-          ? 0
-          : Math.round(
-              (completed / total) * 100
-            );
+duration.className =
+"duration-select";
 
+duration.innerHTML = `
+<option value="15">15 min</option>
+<option value="30">30 min</option>
+<option value="45">45 min</option>
+<option value="60">1 hour</option>
+<option value="90">1.5 hours</option>
+<option value="120">2 hours</option>
+`;
 
-      document
-        .getElementById(
-          "progressBar"
-        )
-        .style.width =
-          percentage + "%";
+duration.value =
+action.duration || "30";
 
+durationWrap.appendChild(
+duration
+);
 
-      document
-        .getElementById(
-          "progressPercent"
-        )
-        .textContent =
-          percentage + "%";
 
+options.appendChild(
+priorityWrap
+);
 
-      document
-        .getElementById(
-          "progressText"
-        )
-        .textContent =
-          `${completed} of ${total} actions completed`;
+options.appendChild(
+timeWrap
+);
 
+options.appendChild(
+durationWrap
+);
 
-      const completionMessage =
-        document.getElementById(
-          "completionMessage"
-        );
 
+card.appendChild(
+main
+);
 
-      if (
-        total > 0 &&
-        completed === total
-      ) {
+card.appendChild(
+options
+);
 
-        completionMessage.style.display =
-          "block";
 
-      } else {
+actionList.appendChild(
+card
+);
 
-        completionMessage.style.display =
-          "none";
 
-      }
+applyPriorityStyle(
+card,
+priority.value
+);
 
-    }
 
 
-    // -----------------------------------------
-    // AUTO SAVE
-    // -----------------------------------------
+/* EVENTS */
 
-    function autoSave() {
+checkbox.addEventListener(
+"change",
+function(){
 
-      collectData();
+input.classList.toggle(
+"completed",
+checkbox.checked
+);
 
-      localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(
-          dashboardData
-        )
-      );
+refreshDashboard();
 
-    }
+}
+);
 
 
-    // -----------------------------------------
-    // MANUAL SAVE
-    // -----------------------------------------
+input.addEventListener(
+"input",
+refreshDashboard
+);
 
-    function saveDashboard() {
 
-      autoSave();
+priority.addEventListener(
+"change",
+function(){
 
-      const message =
-        document.getElementById(
-          "savedMessage"
-        );
+applyPriorityStyle(
+card,
+priority.value
+);
 
-      message.style.display =
-        "block";
+refreshDashboard();
 
+}
+);
 
-      setTimeout(
-        function () {
 
-          message.style.display =
-            "none";
+time.addEventListener(
+"change",
+refreshDashboard
+);
 
-        },
-        2500
-      );
 
-    }
+duration.addEventListener(
+"change",
+refreshDashboard
+);
 
 
-    // -----------------------------------------
-    // LOAD SAVED DASHBOARD
-    // -----------------------------------------
+deleteButton.addEventListener(
+"click",
+function(){
 
-    function loadDashboard() {
+card.remove();
 
-      const saved =
-        localStorage.getItem(
-          STORAGE_KEY
-        );
+refreshDashboard();
 
+}
+);
 
-      if (saved) {
+}
 
-        try {
 
-          const parsed =
-            JSON.parse(saved);
 
+/* PRIORITY STYLE */
 
-          dashboardData = {
+function applyPriorityStyle(
+card,
+priority
+){
 
-            date:
-              parsed.date ||
-              getDateKey(),
+card.classList.remove(
+"priority-must",
+"priority-should",
+"priority-could"
+);
 
-            outcome:
-              parsed.outcome ||
-              "",
+card.classList.add(
+"priority-" + priority
+);
 
-            purpose:
-              parsed.purpose ||
-              "",
+}
 
-            actions:
-              Array.isArray(
-                parsed.actions
-              )
-                ? parsed.actions
-                : []
 
-          };
 
-        } catch (error) {
+/* ADD ACTION */
 
-          console.log(
-            "Saved dashboard could not be loaded."
-          );
+function addAction(){
 
-        }
+createActionCard({
+text:"",
+completed:false,
+priority:"should",
+time:"",
+duration:"30"
+});
 
-      }
+refreshDashboard();
 
+}
 
-      document
-        .getElementById(
-          "outcome"
-        )
-        .value =
-          dashboardData.outcome;
 
 
-      document
-        .getElementById(
-          "purpose"
-        )
-        .value =
-          dashboardData.purpose;
+/* COLLECT DATA */
 
+function collectData(){
 
-      const actionList =
-        document.getElementById(
-          "actionList"
-        );
+dashboardData.date =
+getDateKey();
 
-      actionList.innerHTML =
-        "";
+dashboardData.outcome =
+document
+.getElementById("outcome")
+.value;
 
+dashboardData.purpose =
+document
+.getElementById("purpose")
+.value;
 
-      if (
-        dashboardData.actions.length === 0
-      ) {
 
-        dashboardData.actions =
-          [
-            {
-              text: "",
-              completed: false
-            },
-            {
-              text: "",
-              completed: false
-            },
-            {
-              text: "",
-              completed: false
-            }
-          ];
+const cards =
+document.querySelectorAll(
+".action-card"
+);
 
-      }
 
+dashboardData.actions =
+Array.from(cards).map(
+card => ({
 
-      dashboardData.actions.forEach(
-        action => {
+text:
+card
+.querySelector(".action-text")
+.value,
 
-          createActionRow(
-            action
-          );
+completed:
+card
+.querySelector(".action-checkbox")
+.checked,
 
-        }
-      );
+priority:
+card
+.querySelector(".priority-select")
+.value,
 
+time:
+card
+.querySelector(".time-input")
+.value,
 
-      updateProgress();
+duration:
+card
+.querySelector(".duration-select")
+.value
 
-    }
+})
+);
 
+}
 
-    // -----------------------------------------
-    // EVENT LISTENERS
-    // -----------------------------------------
 
-    document
-      .getElementById(
-        "addActionButton"
-      )
-      .addEventListener(
-        "click",
-        addAction
-      );
 
+/* PROGRESS */
 
-    document
-      .getElementById(
-        "saveButton"
-      )
-      .addEventListener(
-        "click",
-        saveDashboard
-      );
+function updateProgress(){
 
+const cards =
+Array.from(
+document.querySelectorAll(
+".action-card"
+)
+);
 
-    document
-      .getElementById(
-        "outcome"
-      )
-      .addEventListener(
-        "input",
-        autoSave
-      );
 
+const active =
+cards.filter(
+card =>
+card
+.querySelector(".action-text")
+.value
+.trim() !== ""
+);
 
-    document
-      .getElementById(
-        "purpose"
-      )
-      .addEventListener(
-        "input",
-        autoSave
-      );
 
+const total =
+active.length;
 
-    // -----------------------------------------
-    // START DASHBOARD
-    // -----------------------------------------
 
-    loadDashboard();
+const completed =
+active.filter(
+card =>
+card
+.querySelector(".action-checkbox")
+.checked
+).length;
 
-  </script>
+
+const percentage =
+total === 0
+?
+0
+:
+Math.round(
+(completed/total)*100
+);
+
+
+document
+.getElementById(
+"progressPercent"
+)
+.textContent =
+percentage + "%";
+
+
+document
+.getElementById(
+"progressBar"
+)
+.style.width =
+percentage + "%";
+
+
+document
+.getElementById(
+"progressText"
+)
+.textContent =
+`${completed} of ${total} actions completed`;
+
+
+const message =
+document.getElementById(
+"completionMessage"
+);
+
+
+message.style.display =
+(
+total > 0 &&
+completed === total
+)
+?
+"block"
+:
+"none";
+
+}
+
+
+
+/* FORMAT TIME */
+
+function formatTime(
+timeString
+){
+
+if(!timeString)
+return "";
+
+const parts =
+timeString.split(":");
+
+let hour =
+parseInt(parts[0]);
+
+const minute =
+parts[1];
+
+const period =
+hour >= 12
+?
+"PM"
+:
+"AM";
+
+hour =
+hour % 12;
+
+if(hour === 0)
+hour = 12;
+
+return `${hour}:${minute} ${period}`;
+
+}
+
+
+
+/* END TIME */
+
+function calculateEndTime(
+start,
+minutes
+){
+
+if(!start)
+return "";
+
+const parts =
+start.split(":");
+
+const date =
+new Date();
+
+date.setHours(
+parseInt(parts[0]),
+parseInt(parts[1]),
+0,
+0
+);
+
+date.setMinutes(
+date.getMinutes() +
+parseInt(minutes)
+);
+
+const hour =
+String(
+date.getHours()
+).padStart(2,"0");
+
+const minute =
+String(
+date.getMinutes()
+).padStart(2,"0");
+
+return `${hour}:${minute}`;
+
+}
+
+
+
+/* PRIORITY LABEL */
+
+function priorityLabel(
+priority
+){
+
+if(priority === "must")
+return "MUST DO";
+
+if(priority === "could")
+return "COULD DO";
+
+return "SHOULD DO";
+
+}
+
+
+
+/* BUILD SCHEDULE */
+
+function buildSchedule(){
+
+const schedule =
+document.getElementById(
+"scheduleList"
+);
+
+
+const scheduled =
+dashboardData.actions
+.filter(
+action =>
+action.text.trim() !== "" &&
+action.time !== ""
+)
+.sort(
+(a,b) =>
+a.time.localeCompare(
+b.time
+)
+);
+
+
+schedule.innerHTML =
+"";
+
+
+if(
+scheduled.length === 0
+){
+
+schedule.innerHTML = `
+<div class="schedule-empty">
+Add a start time to an action and it will
+automatically appear here.
+</div>
+`;
+
+return;
+
+}
+
+
+scheduled.forEach(
+action => {
+
+const item =
+document.createElement("div");
+
+item.className =
+"schedule-item";
+
+
+const end =
+calculateEndTime(
+action.time,
+action.duration
+);
+
+
+const badgeClass =
+action.priority === "must"
+?
+"badge-must"
+:
+action.priority === "could"
+?
+"badge-could"
+:
+"badge-should";
+
+
+item.innerHTML = `
+
+<div class="schedule-time">
+${formatTime(action.time)}
+<br>
+<span style="font-size:12px;color:#6b7280;">
+to ${formatTime(end)}
+</span>
+</div>
+
+<div>
+
+<div class="schedule-title">
+${escapeHTML(action.text)}
+</div>
+
+<div class="schedule-meta">
+
+<span class="priority-badge ${badgeClass}">
+${priorityLabel(action.priority)}
+</span>
+
+${action.duration} minutes
+
+${action.completed
+? " • ✓ Completed"
+: ""}
+
+</div>
+
+</div>
+`;
+
+
+schedule.appendChild(
+item
+);
+
+}
+);
+
+}
+
+
+
+/* SAFE TEXT */
+
+function escapeHTML(text){
+
+const div =
+document.createElement("div");
+
+div.textContent =
+text;
+
+return div.innerHTML;
+
+}
+
+
+
+/* SAVE */
+
+function autoSave(){
+
+localStorage.setItem(
+STORAGE_KEY,
+JSON.stringify(
+dashboardData
+)
+);
+
+}
+
+
+function refreshDashboard(){
+
+collectData();
+
+updateProgress();
+
+buildSchedule();
+
+autoSave();
+
+}
+
+
+
+/* MANUAL SAVE */
+
+function saveDashboard(){
+
+refreshDashboard();
+
+const message =
+document.getElementById(
+"savedMessage"
+);
+
+message.style.display =
+"block";
+
+setTimeout(
+() => {
+
+message.style.display =
+"none";
+
+},
+2500
+);
+
+}
+
+
+
+/* LOAD */
+
+function loadDashboard(){
+
+const saved =
+localStorage.getItem(
+STORAGE_KEY
+);
+
+
+if(saved){
+
+try{
+
+const parsed =
+JSON.parse(saved);
+
+dashboardData = {
+
+date:
+parsed.date ||
+getDateKey(),
+
+outcome:
+parsed.outcome || "",
+
+purpose:
+parsed.purpose || "",
+
+actions:
+Array.isArray(
+parsed.actions
+)
+?
+parsed.actions
+:
+[]
+
+};
+
+}
+catch(error){
+
+console.log(
+"Saved dashboard could not be loaded."
+);
+
+}
+
+}
+
+
+document
+.getElementById(
+"outcome"
+)
+.value =
+dashboardData.outcome;
+
+
+document
+.getElementById(
+"purpose"
+)
+.value =
+dashboardData.purpose;
+
+
+const actionList =
+document.getElementById(
+"actionList"
+);
+
+actionList.innerHTML =
+"";
+
+
+if(
+dashboardData.actions.length === 0
+){
+
+dashboardData.actions = [
+{
+text:"",
+completed:false,
+priority:"must",
+time:"",
+duration:"30"
+},
+{
+text:"",
+completed:false,
+priority:"should",
+time:"",
+duration:"30"
+},
+{
+text:"",
+completed:false,
+priority:"could",
+time:"",
+duration:"30"
+}
+];
+
+}
+
+
+dashboardData.actions.forEach(
+createActionCard
+);
+
+
+refreshDashboard();
+
+}
+
+
+
+/* EVENTS */
+
+document
+.getElementById(
+"addActionButton"
+)
+.addEventListener(
+"click",
+addAction
+);
+
+
+document
+.getElementById(
+"saveButton"
+)
+.addEventListener(
+"click",
+saveDashboard
+);
+
+
+document
+.getElementById(
+"outcome"
+)
+.addEventListener(
+"input",
+refreshDashboard
+);
+
+
+document
+.getElementById(
+"purpose"
+)
+.addEventListener(
+"input",
+refreshDashboard
+);
+
+
+
+/* START */
+
+loadDashboard();
+
+</script>
 
 </body>
 </html>
