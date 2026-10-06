@@ -14,7 +14,7 @@
     }
 
     body {
-      font-family: Arial, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
       background: #f4f7fb;
       color: #1f2937;
       padding-bottom: 80px;
@@ -47,12 +47,23 @@
       line-height: 1.5;
     }
 
+    .version {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 5px 9px;
+      background: #dbeafe;
+      color: #1d4ed8;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
     .card {
       background: white;
       border-radius: 16px;
       padding: 20px;
       margin-bottom: 18px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
     }
 
     .card h2 {
@@ -67,7 +78,7 @@
     }
 
     textarea,
-    input {
+    input[type="text"] {
       width: 100%;
       padding: 13px;
       border: 1px solid #d1d5db;
@@ -81,11 +92,50 @@
       resize: vertical;
     }
 
-    .action-input {
-      margin-bottom: 10px;
+    textarea:focus,
+    input[type="text"]:focus {
+      outline: 2px solid #bfdbfe;
+      border-color: #2563eb;
+    }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: 28px 1fr 38px;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 11px;
+    }
+
+    .action-checkbox {
+      width: 21px;
+      height: 21px;
+      cursor: pointer;
+      accent-color: #2563eb;
+    }
+
+    .action-text.completed {
+      text-decoration: line-through;
+      color: #9ca3af;
+      background: #f9fafb;
+    }
+
+    .delete-button {
+      width: 38px;
+      height: 38px;
+      padding: 0;
+      border: none;
+      border-radius: 9px;
+      background: #fee2e2;
+      color: #b91c1c;
+      font-size: 19px;
+      cursor: pointer;
     }
 
     button {
+      font-family: inherit;
+    }
+
+    .add-button {
       width: 100%;
       border: none;
       border-radius: 10px;
@@ -93,39 +143,67 @@
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
-    }
-
-    .add-button {
       background: #e5e7eb;
       color: #1f2937;
       margin-top: 5px;
     }
 
     .save-button {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      padding: 15px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
       background: #2563eb;
       color: white;
-      margin-top: 15px;
+      margin-top: 4px;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .progress-percent {
+      font-size: 25px;
+      font-weight: bold;
+      color: #2563eb;
     }
 
     .progress-background {
       background: #e5e7eb;
-      height: 12px;
+      height: 14px;
       border-radius: 20px;
       overflow: hidden;
-      margin-top: 10px;
+      margin-top: 12px;
     }
 
     .progress-bar {
       width: 0%;
       height: 100%;
       background: #2563eb;
-      transition: width 0.3s;
+      transition: width 0.3s ease;
     }
 
     .progress-text {
-      margin-top: 8px;
+      margin-top: 9px;
       color: #6b7280;
       font-size: 14px;
+    }
+
+    .completion-message {
+      display: none;
+      margin-top: 14px;
+      padding: 12px;
+      background: #ecfdf5;
+      border-radius: 10px;
+      color: #047857;
+      font-weight: bold;
+      text-align: center;
     }
 
     .tip {
@@ -135,6 +213,22 @@
 
     .tip p {
       line-height: 1.6;
+    }
+
+    .saved-message {
+      display: none;
+      margin-top: 12px;
+      text-align: center;
+      color: #047857;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: #9ca3af;
+      font-size: 12px;
+      margin-top: 20px;
     }
 
     @media (max-width: 500px) {
@@ -149,6 +243,16 @@
       .card {
         padding: 17px;
       }
+
+      .action-row {
+        grid-template-columns: 26px 1fr 36px;
+        gap: 7px;
+      }
+
+      .delete-button {
+        width: 36px;
+        height: 36px;
+      }
     }
   </style>
 </head>
@@ -159,24 +263,37 @@
 
     <header>
       <div class="date" id="todayDate"></div>
+
       <h1>Outcome Focus Dashboard</h1>
+
       <p class="subtitle">
         Decide what you want to accomplish, why it matters,
         and what actions will move you forward.
       </p>
+
+      <span class="version">Version 1.1</span>
     </header>
+
+
+    <!-- OUTCOME -->
 
     <section class="card">
 
       <h2>🎯 Today's Most Important Outcome</h2>
 
-      <label for="outcome">What result do I want?</label>
+      <label for="outcome">
+        What result do I want?
+      </label>
+
       <textarea
         id="outcome"
         placeholder="Example: Finish the first version of my website."
       ></textarea>
 
-      <label for="purpose">Why does this matter?</label>
+      <label for="purpose">
+        Why does this matter?
+      </label>
+
       <textarea
         id="purpose"
         placeholder="Write the reason this outcome is important to you."
@@ -184,225 +301,715 @@
 
     </section>
 
+
+    <!-- ACTION PLAN -->
+
     <section class="card">
 
       <h2>⚡ Action Plan</h2>
 
-      <div id="actionList">
-        <input
-          class="action-input"
-          type="text"
-          placeholder="Action 1"
-        >
-
-        <input
-          class="action-input"
-          type="text"
-          placeholder="Action 2"
-        >
-
-        <input
-          class="action-input"
-          type="text"
-          placeholder="Action 3"
-        >
-      </div>
+      <div id="actionList"></div>
 
       <button
         class="add-button"
-        onclick="addAction()"
+        id="addActionButton"
+        type="button"
       >
         + Add Another Action
       </button>
 
     </section>
 
+
+    <!-- PROGRESS -->
+
     <section class="card">
 
-      <h2>📈 Today's Progress</h2>
+      <div class="progress-header">
 
-      <div class="progress-background">
-        <div class="progress-bar" id="progressBar"></div>
+        <h2>📈 Today's Progress</h2>
+
+        <div
+          class="progress-percent"
+          id="progressPercent"
+        >
+          0%
+        </div>
+
       </div>
 
-      <div class="progress-text" id="progressText">
-        0% complete
+      <div class="progress-background">
+
+        <div
+          class="progress-bar"
+          id="progressBar"
+        ></div>
+
+      </div>
+
+      <div
+        class="progress-text"
+        id="progressText"
+      >
+        0 of 0 actions completed
+      </div>
+
+      <div
+        class="completion-message"
+        id="completionMessage"
+      >
+        🎉 Outcome action plan completed!
       </div>
 
     </section>
+
+
+    <!-- FOCUS REMINDER -->
 
     <section class="card tip">
 
       <h2>💡 Focus Reminder</h2>
 
       <p>
-        Don't measure your day only by how many tasks you completed.
-        Measure it by whether your actions moved you toward the result
-        that matters most.
+        Don't measure your day only by how busy you were.
+        Measure it by whether your actions moved you toward
+        the result that matters most.
       </p>
 
     </section>
 
+
     <button
       class="save-button"
-      onclick="saveDashboard()"
+      id="saveButton"
+      type="button"
     >
       Save My Day
     </button>
 
+    <div
+      class="saved-message"
+      id="savedMessage"
+    >
+      ✓ Your day has been saved.
+    </div>
+
+    <div class="footer-note">
+      Outcome Focus Dashboard
+    </div>
+
   </main>
+
 
   <script>
 
-    // Display today's date
+    const STORAGE_KEY = "outcomeFocusDashboardV11";
+
+
+    // -----------------------------------------
+    // DATE
+    // -----------------------------------------
+
     const today = new Date();
 
     document.getElementById("todayDate").textContent =
-      today.toLocaleDateString("en-US", {
-        weekday: "long",
-        month: "long",
-        day: "numeric",
-        year: "numeric"
-      });
+      today.toLocaleDateString(
+        "en-US",
+        {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+          year: "numeric"
+        }
+      );
 
 
-    // Add another action field
-    function addAction() {
+    // -----------------------------------------
+    // DEFAULT DATA
+    // -----------------------------------------
+
+    let dashboardData = {
+      date: getDateKey(),
+      outcome: "",
+      purpose: "",
+      actions: [
+        {
+          text: "",
+          completed: false
+        },
+        {
+          text: "",
+          completed: false
+        },
+        {
+          text: "",
+          completed: false
+        }
+      ]
+    };
+
+
+    // -----------------------------------------
+    // GET TODAY'S DATE KEY
+    // -----------------------------------------
+
+    function getDateKey() {
+
+      const now = new Date();
+
+      const year =
+        now.getFullYear();
+
+      const month =
+        String(now.getMonth() + 1)
+          .padStart(2, "0");
+
+      const day =
+        String(now.getDate())
+          .padStart(2, "0");
+
+      return `${year}-${month}-${day}`;
+    }
+
+
+    // -----------------------------------------
+    // CREATE ACTION ROW
+    // -----------------------------------------
+
+    function createActionRow(
+      action = {
+        text: "",
+        completed: false
+      }
+    ) {
 
       const actionList =
         document.getElementById("actionList");
+
+
+      const row =
+        document.createElement("div");
+
+      row.className =
+        "action-row";
+
+
+      const checkbox =
+        document.createElement("input");
+
+      checkbox.type =
+        "checkbox";
+
+      checkbox.className =
+        "action-checkbox";
+
+      checkbox.checked =
+        action.completed;
+
 
       const input =
         document.createElement("input");
 
-      input.type = "text";
-      input.className = "action-input";
+      input.type =
+        "text";
+
+      input.className =
+        "action-text";
 
       input.placeholder =
-        "Action " + (actionList.children.length + 1);
+        "Enter an action step";
 
-      actionList.appendChild(input);
-
-      updateProgress();
-    }
+      input.value =
+        action.text;
 
 
-    // Calculate progress
-    function updateProgress() {
+      if (action.completed) {
 
-      const actions =
-        document.querySelectorAll(".action-input");
+        input.classList.add(
+          "completed"
+        );
 
-      let completed = 0;
-
-      actions.forEach(action => {
-
-        if (action.value.trim() !== "") {
-          completed++;
-        }
-
-      });
-
-      const percentage =
-        actions.length
-          ? Math.round((completed / actions.length) * 100)
-          : 0;
-
-      document.getElementById("progressBar").style.width =
-        percentage + "%";
-
-      document.getElementById("progressText").textContent =
-        percentage + "% complete";
-    }
+      }
 
 
-    // Save information on this device
-    function saveDashboard() {
+      const deleteButton =
+        document.createElement("button");
 
-      const actions =
-        Array.from(
-          document.querySelectorAll(".action-input")
-        ).map(input => input.value);
+      deleteButton.type =
+        "button";
 
-      const dashboardData = {
+      deleteButton.className =
+        "delete-button";
 
-        outcome:
-          document.getElementById("outcome").value,
+      deleteButton.innerHTML =
+        "&times;";
 
-        purpose:
-          document.getElementById("purpose").value,
-
-        actions: actions
-
-      };
-
-      localStorage.setItem(
-        "outcomeFocusDashboard",
-        JSON.stringify(dashboardData)
+      deleteButton.setAttribute(
+        "aria-label",
+        "Delete action"
       );
 
-      alert("Your day has been saved.");
+
+      checkbox.addEventListener(
+        "change",
+        function () {
+
+          input.classList.toggle(
+            "completed",
+            checkbox.checked
+          );
+
+          collectData();
+          updateProgress();
+          autoSave();
+
+        }
+      );
+
+
+      input.addEventListener(
+        "input",
+        function () {
+
+          collectData();
+          updateProgress();
+          autoSave();
+
+        }
+      );
+
+
+      deleteButton.addEventListener(
+        "click",
+        function () {
+
+          row.remove();
+
+          collectData();
+          updateProgress();
+          autoSave();
+
+        }
+      );
+
+
+      row.appendChild(
+        checkbox
+      );
+
+      row.appendChild(
+        input
+      );
+
+      row.appendChild(
+        deleteButton
+      );
+
+
+      actionList.appendChild(
+        row
+      );
+
     }
 
 
-    // Load previously saved information
+    // -----------------------------------------
+    // ADD ACTION
+    // -----------------------------------------
+
+    function addAction() {
+
+      createActionRow();
+
+      collectData();
+      updateProgress();
+      autoSave();
+
+      const inputs =
+        document.querySelectorAll(
+          ".action-text"
+        );
+
+      const lastInput =
+        inputs[inputs.length - 1];
+
+      if (lastInput) {
+
+        lastInput.focus();
+
+      }
+
+    }
+
+
+    // -----------------------------------------
+    // COLLECT DATA FROM SCREEN
+    // -----------------------------------------
+
+    function collectData() {
+
+      dashboardData.date =
+        getDateKey();
+
+      dashboardData.outcome =
+        document
+          .getElementById("outcome")
+          .value;
+
+      dashboardData.purpose =
+        document
+          .getElementById("purpose")
+          .value;
+
+
+      const rows =
+        document.querySelectorAll(
+          ".action-row"
+        );
+
+
+      dashboardData.actions =
+        Array.from(rows).map(
+          row => {
+
+            return {
+
+              text:
+                row.querySelector(
+                  ".action-text"
+                ).value,
+
+              completed:
+                row.querySelector(
+                  ".action-checkbox"
+                ).checked
+
+            };
+
+          }
+        );
+
+    }
+
+
+    // -----------------------------------------
+    // UPDATE PROGRESS
+    // -----------------------------------------
+
+    function updateProgress() {
+
+      const rows =
+        document.querySelectorAll(
+          ".action-row"
+        );
+
+
+      const meaningfulRows =
+        Array.from(rows).filter(
+          row => {
+
+            return (
+              row
+                .querySelector(
+                  ".action-text"
+                )
+                .value
+                .trim() !== ""
+            );
+
+          }
+        );
+
+
+      const total =
+        meaningfulRows.length;
+
+
+      const completed =
+        meaningfulRows.filter(
+          row => {
+
+            return (
+              row
+                .querySelector(
+                  ".action-checkbox"
+                )
+                .checked
+            );
+
+          }
+        ).length;
+
+
+      const percentage =
+        total === 0
+          ? 0
+          : Math.round(
+              (completed / total) * 100
+            );
+
+
+      document
+        .getElementById(
+          "progressBar"
+        )
+        .style.width =
+          percentage + "%";
+
+
+      document
+        .getElementById(
+          "progressPercent"
+        )
+        .textContent =
+          percentage + "%";
+
+
+      document
+        .getElementById(
+          "progressText"
+        )
+        .textContent =
+          `${completed} of ${total} actions completed`;
+
+
+      const completionMessage =
+        document.getElementById(
+          "completionMessage"
+        );
+
+
+      if (
+        total > 0 &&
+        completed === total
+      ) {
+
+        completionMessage.style.display =
+          "block";
+
+      } else {
+
+        completionMessage.style.display =
+          "none";
+
+      }
+
+    }
+
+
+    // -----------------------------------------
+    // AUTO SAVE
+    // -----------------------------------------
+
+    function autoSave() {
+
+      collectData();
+
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(
+          dashboardData
+        )
+      );
+
+    }
+
+
+    // -----------------------------------------
+    // MANUAL SAVE
+    // -----------------------------------------
+
+    function saveDashboard() {
+
+      autoSave();
+
+      const message =
+        document.getElementById(
+          "savedMessage"
+        );
+
+      message.style.display =
+        "block";
+
+
+      setTimeout(
+        function () {
+
+          message.style.display =
+            "none";
+
+        },
+        2500
+      );
+
+    }
+
+
+    // -----------------------------------------
+    // LOAD SAVED DASHBOARD
+    // -----------------------------------------
+
     function loadDashboard() {
 
       const saved =
-        localStorage.getItem("outcomeFocusDashboard");
-
-      if (!saved) return;
-
-      const data = JSON.parse(saved);
-
-      document.getElementById("outcome").value =
-        data.outcome || "";
-
-      document.getElementById("purpose").value =
-        data.purpose || "";
-
-      const actionList =
-        document.getElementById("actionList");
-
-      actionList.innerHTML = "";
-
-      const savedActions =
-        data.actions && data.actions.length
-          ? data.actions
-          : ["", "", ""];
-
-      savedActions.forEach((action, index) => {
-
-        const input =
-          document.createElement("input");
-
-        input.type = "text";
-        input.className = "action-input";
-        input.placeholder = "Action " + (index + 1);
-        input.value = action;
-
-        actionList.appendChild(input);
-
-      });
-
-      updateProgress();
-    }
+        localStorage.getItem(
+          STORAGE_KEY
+        );
 
 
-    // Update progress while typing
-    document.addEventListener(
-      "input",
-      function(event) {
+      if (saved) {
 
-        if (
-          event.target.classList.contains("action-input")
-        ) {
-          updateProgress();
+        try {
+
+          const parsed =
+            JSON.parse(saved);
+
+
+          dashboardData = {
+
+            date:
+              parsed.date ||
+              getDateKey(),
+
+            outcome:
+              parsed.outcome ||
+              "",
+
+            purpose:
+              parsed.purpose ||
+              "",
+
+            actions:
+              Array.isArray(
+                parsed.actions
+              )
+                ? parsed.actions
+                : []
+
+          };
+
+        } catch (error) {
+
+          console.log(
+            "Saved dashboard could not be loaded."
+          );
+
         }
 
       }
-    );
 
+
+      document
+        .getElementById(
+          "outcome"
+        )
+        .value =
+          dashboardData.outcome;
+
+
+      document
+        .getElementById(
+          "purpose"
+        )
+        .value =
+          dashboardData.purpose;
+
+
+      const actionList =
+        document.getElementById(
+          "actionList"
+        );
+
+      actionList.innerHTML =
+        "";
+
+
+      if (
+        dashboardData.actions.length === 0
+      ) {
+
+        dashboardData.actions =
+          [
+            {
+              text: "",
+              completed: false
+            },
+            {
+              text: "",
+              completed: false
+            },
+            {
+              text: "",
+              completed: false
+            }
+          ];
+
+      }
+
+
+      dashboardData.actions.forEach(
+        action => {
+
+          createActionRow(
+            action
+          );
+
+        }
+      );
+
+
+      updateProgress();
+
+    }
+
+
+    // -----------------------------------------
+    // EVENT LISTENERS
+    // -----------------------------------------
+
+    document
+      .getElementById(
+        "addActionButton"
+      )
+      .addEventListener(
+        "click",
+        addAction
+      );
+
+
+    document
+      .getElementById(
+        "saveButton"
+      )
+      .addEventListener(
+        "click",
+        saveDashboard
+      );
+
+
+    document
+      .getElementById(
+        "outcome"
+      )
+      .addEventListener(
+        "input",
+        autoSave
+      );
+
+
+    document
+      .getElementById(
+        "purpose"
+      )
+      .addEventListener(
+        "input",
+        autoSave
+      );
+
+
+    // -----------------------------------------
+    // START DASHBOARD
+    // -----------------------------------------
 
     loadDashboard();
 
