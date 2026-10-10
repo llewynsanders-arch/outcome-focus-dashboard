@@ -6,670 +6,157 @@
 <title>Life Management System</title>
 
 <style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-
+*{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --blue:#2563eb;
-  --blue-light:#eff6ff;
-  --dark:#1f2937;
-  --gray:#6b7280;
-  --border:#e5e7eb;
-  --background:#f4f7fb;
-  --green:#16a34a;
-  --yellow:#f59e0b;
-  --red:#dc2626;
-  --purple:#7c3aed;
-}
-
-body{
-  font-family:Arial,Helvetica,sans-serif;
-  background:var(--background);
-  color:var(--dark);
-  padding-bottom:80px;
-}
-
-.container{
-  width:94%;
-  max-width:850px;
-  margin:auto;
-  padding:20px 0;
-}
-
-/* HEADER */
-
-header{
-  margin-bottom:18px;
-}
-
-.date{
-  color:var(--gray);
-  font-size:14px;
-  margin-bottom:5px;
-}
-
-h1{
-  font-size:28px;
-  margin-bottom:6px;
-}
-
-.subtitle{
-  color:var(--gray);
-  line-height:1.5;
-}
-
-.version{
-  display:inline-block;
-  margin-top:10px;
-  padding:5px 9px;
-  background:#dbeafe;
-  color:#1d4ed8;
-  border-radius:20px;
-  font-size:12px;
-  font-weight:bold;
-}
-
-/* NAV */
-
-.nav{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-  background:white;
-  padding:8px;
-  border-radius:14px;
-  margin-bottom:20px;
-  box-shadow:0 4px 15px rgba(0,0,0,.05);
-}
-
-.nav button{
-  border:none;
-  border-radius:10px;
-  padding:12px;
-  font-weight:bold;
-  font-size:15px;
-  cursor:pointer;
-  background:#f3f4f6;
-  color:#4b5563;
-}
-
-.nav button.active{
-  background:var(--blue);
-  color:white;
-}
-
-/* GENERAL */
-
-.page{
-  display:none;
-}
-
-.page.active{
-  display:block;
-}
-
-.card{
-  background:white;
-  border-radius:16px;
-  padding:20px;
-  margin-bottom:18px;
-  box-shadow:0 4px 15px rgba(0,0,0,.06);
-}
-
-.card h2{
-  font-size:19px;
-  margin-bottom:14px;
-}
-
-.section-description{
-  color:var(--gray);
-  font-size:14px;
-  line-height:1.55;
-  margin:-5px 0 15px;
-}
-
-label{
-  display:block;
-  font-weight:bold;
-  margin:15px 0 7px;
-}
-
-textarea,
-input[type="text"],
-input[type="time"],
-input[type="number"],
-select{
-  width:100%;
-  padding:12px;
-  border:1px solid #d1d5db;
-  border-radius:10px;
-  font-size:16px;
-  font-family:inherit;
-  background:white;
-}
-
-textarea{
-  min-height:90px;
-  resize:vertical;
-}
-
-textarea:focus,
-input:focus,
-select:focus{
-  outline:2px solid #bfdbfe;
-  border-color:var(--blue);
-}
-
-button{
-  font-family:inherit;
-}
-
-/* LIFE OVERVIEW */
-
-.life-summary{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-  margin-bottom:18px;
-}
-
-.summary-box{
-  background:white;
-  padding:16px 10px;
-  border-radius:14px;
-  text-align:center;
-  box-shadow:0 4px 15px rgba(0,0,0,.05);
-}
-
-.summary-number{
-  font-size:25px;
-  font-weight:bold;
-  color:var(--blue);
-}
-
-.summary-label{
-  color:var(--gray);
-  font-size:12px;
-  margin-top:5px;
-}
-
-/* LIFE AREAS */
-
-.life-area{
-  border:1px solid var(--border);
-  border-radius:15px;
-  padding:15px;
-  margin-bottom:13px;
-  background:#fafafa;
-}
-
-.life-area-top{
-  display:grid;
-  grid-template-columns:1fr 38px;
-  gap:10px;
-  align-items:center;
-}
-
-.area-name{
-  font-weight:bold;
-  font-size:17px;
-}
-
-.delete-button{
-  width:38px;
-  height:38px;
-  border:none;
-  border-radius:9px;
-  background:#fee2e2;
-  color:#b91c1c;
-  font-size:20px;
-  cursor:pointer;
-}
-
-.area-scores{
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  gap:9px;
-  margin-top:13px;
-}
-
-.score-label{
-  color:var(--gray);
-  text-transform:uppercase;
-  font-size:11px;
-  font-weight:bold;
-  margin-bottom:5px;
-}
-
-.gap-box{
-  min-height:47px;
-  border-radius:10px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-size:18px;
-  font-weight:bold;
-}
-
-.gap-low{
-  background:#dcfce7;
-  color:#166534;
-}
-
-.gap-medium{
-  background:#fef3c7;
-  color:#92400e;
-}
-
-.gap-high{
-  background:#fee2e2;
-  color:#b91c1c;
-}
-
-.area-bar-background{
-  height:9px;
-  background:#e5e7eb;
-  border-radius:20px;
-  overflow:hidden;
-  margin-top:13px;
-}
-
-.area-bar{
-  height:100%;
-  background:var(--blue);
-  border-radius:20px;
-}
-
-.area-status{
-  margin-top:8px;
-  color:var(--gray);
-  font-size:13px;
-}
-
-.add-button,
-.save-button,
-.commitment-add-button{
-  width:100%;
-  border:none;
-  border-radius:10px;
-  padding:14px;
-  font-size:16px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.add-button{
-  background:#e5e7eb;
-  color:var(--dark);
-}
-
-.save-button{
-  background:var(--blue);
-  color:white;
-}
-
-.life-save{
-  margin-top:4px;
-}
-
-/* OUTCOME */
-
-.action-card{
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:14px;
-  margin-bottom:14px;
-  background:#fafafa;
-}
-
-.action-main{
-  display:grid;
-  grid-template-columns:28px 1fr 38px;
-  gap:9px;
-  align-items:center;
-}
-
-.action-checkbox{
-  width:21px;
-  height:21px;
-  cursor:pointer;
-  accent-color:var(--blue);
-}
-
-.action-text.completed{
-  text-decoration:line-through;
-  color:#9ca3af;
-}
-
-.action-options{
-  display:grid;
-  grid-template-columns:1.2fr 1fr 1fr;
-  gap:9px;
-  margin-top:11px;
-}
-
-.field-label{
-  font-size:11px;
-  color:var(--gray);
-  margin:0 0 4px;
-  font-weight:bold;
-  text-transform:uppercase;
-}
-
-.priority-must{
-  border-left:5px solid var(--red);
-}
-
-.priority-should{
-  border-left:5px solid var(--yellow);
-}
-
-.priority-could{
-  border-left:5px solid var(--green);
-}
-
-/* COMMITMENTS */
-
-.commitment-card{
-  border:1px solid #c7d2fe;
-  border-left:5px solid #6366f1;
-  background:#f5f7ff;
-  border-radius:14px;
-  padding:14px;
-  margin-bottom:14px;
-}
-
-.commitment-main{
-  display:grid;
-  grid-template-columns:1fr 38px;
-  gap:9px;
-  align-items:center;
-}
-
-.commitment-options{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:9px;
-  margin-top:11px;
-}
-
-.commitment-add-button{
-  background:#e0e7ff;
-  color:#3730a3;
-}
-
-/* CONFLICTS */
-
-.conflict-box{
-  display:none;
-  background:#fff7ed;
-  border:1px solid #fdba74;
-  border-left:5px solid #ea580c;
-  border-radius:12px;
-  padding:14px;
-  margin-bottom:18px;
-}
-
-.conflict-box h3{
-  color:#c2410c;
-  font-size:16px;
-  margin-bottom:8px;
-}
-
-.conflict-item{
-  color:#7c2d12;
-  line-height:1.5;
-  font-size:14px;
-  margin-top:7px;
-}
-
-/* SCHEDULE */
-
-.schedule-empty{
-  color:var(--gray);
-  text-align:center;
-  padding:20px 5px;
-  line-height:1.5;
-}
-
-.schedule-item{
-  display:grid;
-  grid-template-columns:115px 1fr;
-  gap:12px;
-  padding:14px 0;
-  border-bottom:1px solid var(--border);
-}
-
-.schedule-item:last-child{
-  border-bottom:none;
-}
-
-.schedule-item.conflicted{
-  background:#fff7ed;
-  border-radius:10px;
-  padding:12px;
-  margin:4px 0;
-}
-
-.schedule-time{
-  font-weight:bold;
-  color:#1d4ed8;
-}
-
-.schedule-title{
-  font-weight:bold;
-  margin-bottom:5px;
-}
-
-.schedule-meta{
-  font-size:13px;
-  color:var(--gray);
-}
-
-.priority-badge,
-.commitment-badge,
-.conflict-badge{
-  display:inline-block;
-  padding:4px 7px;
-  border-radius:20px;
-  font-size:11px;
-  font-weight:bold;
-  margin-right:5px;
-  margin-bottom:3px;
-}
-
-.badge-must{
-  background:#fee2e2;
-  color:#b91c1c;
-}
-
-.badge-should{
-  background:#fef3c7;
-  color:#92400e;
-}
-
-.badge-could{
-  background:#dcfce7;
-  color:#166534;
-}
-
-.commitment-badge{
-  background:#e0e7ff;
-  color:#3730a3;
-}
-
-.conflict-badge{
-  background:#ffedd5;
-  color:#c2410c;
-}
-
-/* PROGRESS */
-
-.progress-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.progress-percent{
-  font-size:25px;
-  font-weight:bold;
-  color:var(--blue);
-}
-
-.progress-background{
-  background:#e5e7eb;
-  height:14px;
-  border-radius:20px;
-  overflow:hidden;
-  margin-top:12px;
-}
-
-.progress-bar{
-  width:0%;
-  height:100%;
-  background:var(--blue);
-  transition:width .3s ease;
-}
-
-.progress-text{
-  margin-top:9px;
-  color:var(--gray);
-  font-size:14px;
-}
-
-.completion-message{
-  display:none;
-  margin-top:14px;
-  padding:12px;
-  background:#ecfdf5;
-  border-radius:10px;
-  color:#047857;
-  font-weight:bold;
-  text-align:center;
-}
-
-.tip{
-  background:var(--blue-light);
-  border-left:4px solid var(--blue);
-}
-
-.tip p{
-  line-height:1.6;
-}
-
-.saved-message{
-  display:none;
-  text-align:center;
-  color:#047857;
-  font-weight:bold;
-  margin-top:12px;
-}
-
-.footer-note{
-  text-align:center;
-  color:#9ca3af;
-  font-size:12px;
-  margin-top:20px;
-}
+--blue:#2563eb;--blue-light:#eff6ff;--dark:#1f2937;
+--gray:#6b7280;--border:#e5e7eb;--background:#f4f7fb;
+--green:#16a34a;--yellow:#f59e0b;--red:#dc2626;--purple:#7c3aed
+}
+body{font-family:Arial,Helvetica,sans-serif;background:var(--background);color:var(--dark);padding-bottom:80px}
+.container{width:94%;max-width:850px;margin:auto;padding:20px 0}
+header{margin-bottom:18px}
+.date{color:var(--gray);font-size:14px;margin-bottom:5px}
+h1{font-size:28px;margin-bottom:6px}
+.subtitle{color:var(--gray);line-height:1.5}
+.version{display:inline-block;margin-top:10px;padding:5px 9px;background:#dbeafe;color:#1d4ed8;border-radius:20px;font-size:12px;font-weight:bold}
+
+.nav{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:white;padding:8px;border-radius:14px;margin-bottom:20px;box-shadow:0 4px 15px rgba(0,0,0,.05)}
+.nav button{border:none;border-radius:10px;padding:12px;font-weight:bold;font-size:15px;cursor:pointer;background:#f3f4f6;color:#4b5563}
+.nav button.active{background:var(--blue);color:white}
+
+.page{display:none}
+.page.active{display:block}
+.card{background:white;border-radius:16px;padding:20px;margin-bottom:18px;box-shadow:0 4px 15px rgba(0,0,0,.06)}
+.card h2{font-size:19px;margin-bottom:14px}
+.section-description{color:var(--gray);font-size:14px;line-height:1.55;margin:-5px 0 15px}
+label{display:block;font-weight:bold;margin:15px 0 7px}
+textarea,input[type="text"],input[type="time"],input[type="number"],input[type="date"],select{
+width:100%;padding:12px;border:1px solid #d1d5db;border-radius:10px;font-size:16px;font-family:inherit;background:white
+}
+textarea{min-height:90px;resize:vertical}
+textarea:focus,input:focus,select:focus{outline:2px solid #bfdbfe;border-color:var(--blue)}
+button{font-family:inherit}
+
+.life-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
+.summary-box{background:white;padding:16px 10px;border-radius:14px;text-align:center;box-shadow:0 4px 15px rgba(0,0,0,.05)}
+.summary-number{font-size:25px;font-weight:bold;color:var(--blue)}
+.summary-label{color:var(--gray);font-size:12px;margin-top:5px}
+
+.life-area{border:1px solid var(--border);border-radius:15px;padding:15px;margin-bottom:13px;background:#fafafa}
+.life-area-top{display:grid;grid-template-columns:1fr 38px;gap:10px;align-items:center}
+.area-name{font-weight:bold;font-size:17px}
+.delete-button{width:38px;height:38px;border:none;border-radius:9px;background:#fee2e2;color:#b91c1c;font-size:20px;cursor:pointer}
+.area-scores{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-top:13px}
+.score-label,.field-label{color:var(--gray);text-transform:uppercase;font-size:11px;font-weight:bold;margin-bottom:5px}
+.gap-box{min-height:47px;border-radius:10px;display:flex;justify-content:center;align-items:center;font-size:18px;font-weight:bold}
+.gap-low{background:#dcfce7;color:#166534}
+.gap-medium{background:#fef3c7;color:#92400e}
+.gap-high{background:#fee2e2;color:#b91c1c}
+.area-bar-background{height:9px;background:#e5e7eb;border-radius:20px;overflow:hidden;margin-top:13px}
+.area-bar{height:100%;background:var(--blue);border-radius:20px}
+.area-status{margin-top:8px;color:var(--gray);font-size:13px}
+
+.add-button,.save-button,.commitment-add-button{
+width:100%;border:none;border-radius:10px;padding:14px;font-size:16px;font-weight:bold;cursor:pointer
+}
+.add-button{background:#e5e7eb;color:var(--dark)}
+.save-button{background:var(--blue);color:white}
+.commitment-add-button{background:#e0e7ff;color:#3730a3}
+.life-save{margin-top:4px}
+
+.outcome-life-card{border:1px solid var(--border);border-left:5px solid var(--purple);border-radius:14px;padding:15px;margin-bottom:14px;background:#fafafa}
+.outcome-life-top{display:grid;grid-template-columns:1fr 38px;gap:9px;align-items:center}
+.outcome-life-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:11px}
+.outcome-life-actions{margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+.life-action-row{display:grid;grid-template-columns:1fr 38px;gap:8px;margin-top:8px}
+.life-outcome-empty{color:var(--gray);text-align:center;padding:12px 4px 18px;line-height:1.5}
+
+.action-card{border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:14px;background:#fafafa}
+.action-main{display:grid;grid-template-columns:28px 1fr 38px;gap:9px;align-items:center}
+.action-checkbox{width:21px;height:21px;cursor:pointer;accent-color:var(--blue)}
+.action-text.completed{text-decoration:line-through;color:#9ca3af}
+.action-options{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:9px;margin-top:11px}
+.priority-must{border-left:5px solid var(--red)}
+.priority-should{border-left:5px solid var(--yellow)}
+.priority-could{border-left:5px solid var(--green)}
+
+.commitment-card{border:1px solid #c7d2fe;border-left:5px solid #6366f1;background:#f5f7ff;border-radius:14px;padding:14px;margin-bottom:14px}
+.commitment-main{display:grid;grid-template-columns:1fr 38px;gap:9px;align-items:center}
+.commitment-options{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:11px}
+
+.conflict-box{display:none;background:#fff7ed;border:1px solid #fdba74;border-left:5px solid #ea580c;border-radius:12px;padding:14px;margin-bottom:18px}
+.conflict-box h3{color:#c2410c;font-size:16px;margin-bottom:8px}
+.conflict-item{color:#7c2d12;line-height:1.5;font-size:14px;margin-top:7px}
+
+.schedule-empty{color:var(--gray);text-align:center;padding:20px 5px;line-height:1.5}
+.schedule-item{display:grid;grid-template-columns:115px 1fr;gap:12px;padding:14px 0;border-bottom:1px solid var(--border)}
+.schedule-item:last-child{border-bottom:none}
+.schedule-item.conflicted{background:#fff7ed;border-radius:10px;padding:12px;margin:4px 0}
+.schedule-time{font-weight:bold;color:#1d4ed8}
+.schedule-title{font-weight:bold;margin-bottom:5px}
+.schedule-meta{font-size:13px;color:var(--gray)}
+
+.priority-badge,.commitment-badge,.conflict-badge{
+display:inline-block;padding:4px 7px;border-radius:20px;font-size:11px;font-weight:bold;margin-right:5px;margin-bottom:3px
+}
+.badge-must{background:#fee2e2;color:#b91c1c}
+.badge-should{background:#fef3c7;color:#92400e}
+.badge-could{background:#dcfce7;color:#166534}
+.commitment-badge{background:#e0e7ff;color:#3730a3}
+.conflict-badge{background:#ffedd5;color:#c2410c}
+
+.progress-header{display:flex;justify-content:space-between;align-items:center}
+.progress-percent{font-size:25px;font-weight:bold;color:var(--blue)}
+.progress-background{background:#e5e7eb;height:14px;border-radius:20px;overflow:hidden;margin-top:12px}
+.progress-bar{width:0;height:100%;background:var(--blue);transition:width .3s ease}
+.progress-text{margin-top:9px;color:var(--gray);font-size:14px}
+.completion-message{display:none;margin-top:14px;padding:12px;background:#ecfdf5;border-radius:10px;color:#047857;font-weight:bold;text-align:center}
+.tip{background:var(--blue-light);border-left:4px solid var(--blue)}
+.tip p{line-height:1.6}
+.saved-message{display:none;text-align:center;color:#047857;font-weight:bold;margin-top:12px}
+.footer-note{text-align:center;color:#9ca3af;font-size:12px;margin-top:20px}
 
 @media(max-width:600px){
-
-  h1{
-    font-size:24px;
-  }
-
-  .life-summary{
-    grid-template-columns:1fr 1fr 1fr;
-  }
-
-  .summary-number{
-    font-size:21px;
-  }
-
-  .card{
-    padding:16px;
-  }
-
-  .area-scores{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .gap-wrapper{
-    grid-column:1 / -1;
-  }
-
-  .action-options,
-  .commitment-options{
-    grid-template-columns:1fr;
-  }
-
-  .schedule-item{
-    grid-template-columns:1fr;
-    gap:5px;
-  }
+h1{font-size:24px}
+.summary-number{font-size:21px}
+.card{padding:16px}
+.area-scores{grid-template-columns:1fr 1fr}
+.gap-wrapper{grid-column:1/-1}
+.action-options,.commitment-options,.outcome-life-grid{grid-template-columns:1fr}
+.schedule-item{grid-template-columns:1fr;gap:5px}
 }
 </style>
 </head>
 
 <body>
-
 <main class="container">
 
 <header>
-
 <div class="date" id="todayDate"></div>
-
 <h1>Life Management System</h1>
-
 <p class="subtitle">
 Manage the areas of your life that matter, decide what outcomes you want,
 and turn those outcomes into focused daily action.
 </p>
-
-<span class="version">Version 1.4</span>
-
+<span class="version">Version 1.5</span>
 </header>
 
 <nav class="nav">
-
-<button
-id="lifeNav"
-class="active"
-type="button">
-🏠 LIFE
-</button>
-
-<button
-id="todayNav"
-type="button">
-☀️ TODAY
-</button>
-
+<button id="lifeNav" class="active" type="button">🏠 LIFE</button>
+<button id="todayNav" type="button">☀️ TODAY</button>
 </nav>
-
-<!-- =========================
-LIFE PAGE
-========================= -->
 
 <section id="lifePage" class="page active">
 
 <div class="card">
-
 <h2>🧭 Life Assessment</h2>
-
 <p class="section-description">
 Rate where you believe you are today and where you want to be.
 The gap helps you see which areas may deserve more attention.
 </p>
-
 </div>
 
 <div class="life-summary">
-
 <div class="summary-box">
 <div class="summary-number" id="averageCurrent">0</div>
 <div class="summary-label">CURRENT AVG.</div>
@@ -684,1267 +171,773 @@ The gap helps you see which areas may deserve more attention.
 <div class="summary-number" id="largestGap">0</div>
 <div class="summary-label">LARGEST GAP</div>
 </div>
-
 </div>
 
 <div class="card">
-
 <h2>🌱 Areas of Life</h2>
-
 <div id="lifeAreaList"></div>
-
-<button
-class="add-button"
-id="addLifeAreaButton"
-type="button">
+<button class="add-button" id="addLifeAreaButton" type="button">
 + Add Your Own Life Area
 </button>
-
 </div>
 
-<button
-class="save-button life-save"
-id="saveLifeButton"
-type="button">
-Save Life Assessment
+<div class="card">
+<h2>🎯 Life Outcomes</h2>
+<p class="section-description">
+Turn an important area of your life into a clear result. Choose the area,
+define the outcome, explain why it matters, and list the actions that will move it forward.
+</p>
+<div id="lifeOutcomeList"></div>
+<button class="add-button" id="addLifeOutcomeButton" type="button">
++ Add Life Outcome
+</button>
+</div>
+
+<button class="save-button life-save" id="saveLifeButton" type="button">
+Save Life Assessment & Outcomes
 </button>
 
-<div
-class="saved-message"
-id="lifeSavedMessage">
+<div class="saved-message" id="lifeSavedMessage">
 ✓ Your life assessment has been saved.
 </div>
-
 </section>
-
-<!-- =========================
-TODAY PAGE
-========================= -->
 
 <section id="todayPage" class="page">
 
 <section class="card">
-
 <h2>🎯 Today's Most Important Outcome</h2>
 
-<label for="outcome">
-What result do I want?
-</label>
+<label for="outcome">What result do I want?</label>
+<textarea id="outcome" placeholder="Example: Finish the first version of my website."></textarea>
 
-<textarea
-id="outcome"
-placeholder="Example: Finish the first version of my website.">
-</textarea>
-
-<label for="purpose">
-Why does this matter?
-</label>
-
-<textarea
-id="purpose"
-placeholder="Write the reason this outcome is important to you.">
-</textarea>
-
+<label for="purpose">Why does this matter?</label>
+<textarea id="purpose" placeholder="Write the reason this outcome is important to you."></textarea>
 </section>
 
 <section class="card">
-
 <h2>📅 Fixed Commitments</h2>
-
 <p class="section-description">
-Add appointments, meetings, work shifts, pickups,
-classes, or anything else that already has a fixed time.
+Add appointments, meetings, work shifts, pickups, classes,
+or anything else that already has a fixed time.
 </p>
-
 <div id="commitmentList"></div>
-
-<button
-class="commitment-add-button"
-id="addCommitmentButton"
-type="button">
+<button class="commitment-add-button" id="addCommitmentButton" type="button">
 + Add Fixed Commitment
 </button>
-
 </section>
 
 <section class="card">
-
 <h2>⚡ Action Plan</h2>
-
 <p class="section-description">
 Choose the actions that move your most important outcome forward,
 then decide when they belong in your day.
 </p>
-
 <div id="actionList"></div>
-
-<button
-class="add-button"
-id="addActionButton"
-type="button">
+<button class="add-button" id="addActionButton" type="button">
 + Add Another Action
 </button>
-
 </section>
 
-<section
-class="conflict-box"
-id="conflictBox">
-
+<section class="conflict-box" id="conflictBox">
 <h3>⚠️ Schedule Conflict Detected</h3>
-
 <div id="conflictList"></div>
-
 </section>
 
 <section class="card">
-
 <h2>🗓️ Today's Schedule</h2>
-
 <div id="scheduleList"></div>
-
 </section>
 
 <section class="card">
-
 <div class="progress-header">
-
 <h2>📈 Today's Progress</h2>
-
-<div
-class="progress-percent"
-id="progressPercent">
-0%
-</div>
-
+<div class="progress-percent" id="progressPercent">0%</div>
 </div>
 
 <div class="progress-background">
-
-<div
-class="progress-bar"
-id="progressBar">
+<div class="progress-bar" id="progressBar"></div>
 </div>
 
-</div>
-
-<div
-class="progress-text"
-id="progressText">
+<div class="progress-text" id="progressText">
 0 of 0 actions completed
 </div>
 
-<div
-class="completion-message"
-id="completionMessage">
+<div class="completion-message" id="completionMessage">
 🎉 Outcome action plan completed!
 </div>
-
 </section>
 
 <section class="card tip">
-
 <h2>💡 Focus Reminder</h2>
-
 <p>
 Your calendar should reflect your priorities.
 Protect your commitments, then give the actions that move
 your important outcomes forward a specific place in your day.
 </p>
-
 </section>
 
-<button
-class="save-button"
-id="saveTodayButton"
-type="button">
+<button class="save-button" id="saveTodayButton" type="button">
 Save My Day
 </button>
 
-<div
-class="saved-message"
-id="todaySavedMessage">
+<div class="saved-message" id="todaySavedMessage">
 ✓ Your day has been saved.
 </div>
 
 </section>
 
-<div class="footer-note">
-Life Management System
-</div>
-
+<div class="footer-note">Life Management System</div>
 </main>
 
 <script>
+const LIFE_STORAGE_KEY="lifeManagementAreasV15";
+const OLD_LIFE_STORAGE_KEY="lifeManagementAreasV14";
+const LIFE_OUTCOMES_STORAGE_KEY="lifeManagementOutcomesV15";
+const TODAY_STORAGE_KEY="outcomeFocusDashboardV15";
+const OLD_TODAY_STORAGE_KEY="outcomeFocusDashboardV14";
 
-/* =========================
-STORAGE
-========================= */
-
-const LIFE_STORAGE_KEY =
-"lifeManagementAreasV14";
-
-const TODAY_STORAGE_KEY =
-"outcomeFocusDashboardV14";
-
-const OLD_TODAY_STORAGE_KEY =
-"outcomeFocusDashboardV13";
-
-
-/* =========================
-DATE
-========================= */
-
-const today = new Date();
-
-document.getElementById("todayDate").textContent =
-today.toLocaleDateString(
-"en-US",
-{
-weekday:"long",
-month:"long",
-day:"numeric",
-year:"numeric"
-}
-);
-
+const today=new Date();
+document.getElementById("todayDate").textContent=
+today.toLocaleDateString("en-US",{
+weekday:"long",month:"long",day:"numeric",year:"numeric"
+});
 
 function getDateKey(){
-
-const now = new Date();
-
-const year = now.getFullYear();
-
-const month =
-String(now.getMonth()+1).padStart(2,"0");
-
-const day =
-String(now.getDate()).padStart(2,"0");
-
+const now=new Date();
+const year=now.getFullYear();
+const month=String(now.getMonth()+1).padStart(2,"0");
+const day=String(now.getDate()).padStart(2,"0");
 return `${year}-${month}-${day}`;
-
 }
 
-
-/* =========================
-NAVIGATION
-========================= */
-
-const lifeNav =
-document.getElementById("lifeNav");
-
-const todayNav =
-document.getElementById("todayNav");
-
-const lifePage =
-document.getElementById("lifePage");
-
-const todayPage =
-document.getElementById("todayPage");
-
+const lifeNav=document.getElementById("lifeNav");
+const todayNav=document.getElementById("todayNav");
+const lifePage=document.getElementById("lifePage");
+const todayPage=document.getElementById("todayPage");
 
 function showPage(page){
-
 lifePage.classList.remove("active");
 todayPage.classList.remove("active");
-
 lifeNav.classList.remove("active");
 todayNav.classList.remove("active");
 
-if(page === "life"){
-
+if(page==="life"){
 lifePage.classList.add("active");
 lifeNav.classList.add("active");
-
 }else{
-
 todayPage.classList.add("active");
 todayNav.classList.add("active");
-
 }
 
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
-
+window.scrollTo({top:0,behavior:"smooth"});
 }
 
+lifeNav.addEventListener("click",()=>showPage("life"));
+todayNav.addEventListener("click",()=>showPage("today"));
 
-lifeNav.addEventListener(
-"click",
-()=>showPage("life")
-);
-
-todayNav.addEventListener(
-"click",
-()=>showPage("today")
-);
-
-
-/* =========================
-LIFE ASSESSMENT DATA
-========================= */
-
-const defaultLifeAreas = [
-
-{
-name:"💪 Health & Fitness",
-current:5,
-desired:8
-},
-
-{
-name:"💰 Finances",
-current:5,
-desired:8
-},
-
-{
-name:"💼 Career / Business",
-current:5,
-desired:8
-},
-
-{
-name:"❤️ Relationships",
-current:5,
-desired:8
-},
-
-{
-name:"👨‍👩‍👧 Family",
-current:5,
-desired:8
-},
-
-{
-name:"🙏 Spiritual Life",
-current:5,
-desired:8
-},
-
-{
-name:"🧠 Personal Growth",
-current:5,
-desired:8
-},
-
-{
-name:"🏠 Home / Environment",
-current:5,
-desired:8
-},
-
-{
-name:"🎉 Fun / Recreation",
-current:5,
-desired:8
-},
-
-{
-name:"🤝 Contribution / Giving",
-current:5,
-desired:8
-}
-
+const defaultLifeAreas=[
+{name:"💪 Health & Fitness",current:5,desired:8},
+{name:"💰 Finances",current:5,desired:8},
+{name:"💼 Career / Business",current:5,desired:8},
+{name:"❤️ Relationships",current:5,desired:8},
+{name:"👨‍👩‍👧 Family",current:5,desired:8},
+{name:"🙏 Spiritual Life",current:5,desired:8},
+{name:"🧠 Personal Growth",current:5,desired:8},
+{name:"🏠 Home / Environment",current:5,desired:8},
+{name:"🎉 Fun / Recreation",current:5,desired:8},
+{name:"🤝 Contribution / Giving",current:5,desired:8}
 ];
 
-
-let lifeAreas = [];
-
-
-/* =========================
-CREATE LIFE AREA
-========================= */
+let lifeAreas=[];
 
 function createLifeAreaCard(area){
+const list=document.getElementById("lifeAreaList");
+const card=document.createElement("div");
+card.className="life-area";
 
-const list =
-document.getElementById("lifeAreaList");
+const top=document.createElement("div");
+top.className="life-area-top";
 
-const card =
-document.createElement("div");
+const nameInput=document.createElement("input");
+nameInput.type="text";
+nameInput.className="area-name";
+nameInput.value=area.name||"";
+nameInput.placeholder="Name this area of your life";
 
-card.className =
-"life-area";
-
-
-const top =
-document.createElement("div");
-
-top.className =
-"life-area-top";
-
-
-const nameInput =
-document.createElement("input");
-
-nameInput.type =
-"text";
-
-nameInput.className =
-"area-name";
-
-nameInput.value =
-area.name || "";
-
-nameInput.placeholder =
-"Name this area of your life";
-
-
-const deleteButton =
-document.createElement("button");
-
-deleteButton.type =
-"button";
-
-deleteButton.className =
-"delete-button";
-
-deleteButton.innerHTML =
-"&times;";
-
-deleteButton.setAttribute(
-"aria-label",
-"Delete life area"
-);
-
+const deleteButton=document.createElement("button");
+deleteButton.type="button";
+deleteButton.className="delete-button";
+deleteButton.innerHTML="&times;";
+deleteButton.setAttribute("aria-label","Delete life area");
 
 top.appendChild(nameInput);
 top.appendChild(deleteButton);
 
+const scores=document.createElement("div");
+scores.className="area-scores";
 
-const scores =
-document.createElement("div");
+const currentWrap=document.createElement("div");
+currentWrap.innerHTML='<div class="score-label">Current 1–10</div>';
 
-scores.className =
-"area-scores";
-
-
-const currentWrap =
-document.createElement("div");
-
-currentWrap.innerHTML =
-'<div class="score-label">Current 1–10</div>';
-
-
-const current =
-document.createElement("select");
-
-current.className =
-"current-score";
-
+const current=document.createElement("select");
+current.className="current-score";
 
 for(let i=1;i<=10;i++){
-
-const option =
-document.createElement("option");
-
-option.value = i;
-option.textContent = i;
-
+const option=document.createElement("option");
+option.value=i;
+option.textContent=i;
 current.appendChild(option);
-
 }
-
-current.value =
-String(area.current || 5);
-
+current.value=String(area.current||5);
 currentWrap.appendChild(current);
 
+const desiredWrap=document.createElement("div");
+desiredWrap.innerHTML='<div class="score-label">Desired 1–10</div>';
 
-const desiredWrap =
-document.createElement("div");
-
-desiredWrap.innerHTML =
-'<div class="score-label">Desired 1–10</div>';
-
-
-const desired =
-document.createElement("select");
-
-desired.className =
-"desired-score";
-
+const desired=document.createElement("select");
+desired.className="desired-score";
 
 for(let i=1;i<=10;i++){
-
-const option =
-document.createElement("option");
-
-option.value = i;
-option.textContent = i;
-
+const option=document.createElement("option");
+option.value=i;
+option.textContent=i;
 desired.appendChild(option);
-
 }
-
-desired.value =
-String(area.desired || 8);
-
+desired.value=String(area.desired||8);
 desiredWrap.appendChild(desired);
 
+const gapWrap=document.createElement("div");
+gapWrap.className="gap-wrapper";
+gapWrap.innerHTML='<div class="score-label">Improvement Gap</div>';
 
-const gapWrap =
-document.createElement("div");
-
-gapWrap.className =
-"gap-wrapper";
-
-gapWrap.innerHTML =
-'<div class="score-label">Improvement Gap</div>';
-
-
-const gap =
-document.createElement("div");
-
-gap.className =
-"gap-box";
-
+const gap=document.createElement("div");
+gap.className="gap-box";
 gapWrap.appendChild(gap);
-
 
 scores.appendChild(currentWrap);
 scores.appendChild(desiredWrap);
 scores.appendChild(gapWrap);
 
+const barBackground=document.createElement("div");
+barBackground.className="area-bar-background";
 
-const barBackground =
-document.createElement("div");
-
-barBackground.className =
-"area-bar-background";
-
-
-const bar =
-document.createElement("div");
-
-bar.className =
-"area-bar";
-
+const bar=document.createElement("div");
+bar.className="area-bar";
 barBackground.appendChild(bar);
 
-
-const status =
-document.createElement("div");
-
-status.className =
-"area-status";
-
+const status=document.createElement("div");
+status.className="area-status";
 
 card.appendChild(top);
 card.appendChild(scores);
 card.appendChild(barBackground);
 card.appendChild(status);
-
 list.appendChild(card);
 
-
 function updateCard(){
+const currentValue=parseInt(current.value);
+const desiredValue=parseInt(desired.value);
+const improvementGap=Math.max(desiredValue-currentValue,0);
 
-const currentValue =
-parseInt(current.value);
+gap.textContent=improvementGap;
+gap.classList.remove("gap-low","gap-medium","gap-high");
 
-const desiredValue =
-parseInt(desired.value);
-
-const improvementGap =
-Math.max(
-desiredValue-currentValue,
-0
-);
-
-gap.textContent =
-improvementGap;
-
-
-gap.classList.remove(
-"gap-low",
-"gap-medium",
-"gap-high"
-);
-
-
-if(improvementGap <= 2){
-
+if(improvementGap<=2){
 gap.classList.add("gap-low");
-
-}else if(improvementGap <= 4){
-
+}else if(improvementGap<=4){
 gap.classList.add("gap-medium");
-
 }else{
-
 gap.classList.add("gap-high");
-
 }
 
+bar.style.width=(currentValue*10)+"%";
 
-bar.style.width =
-(currentValue*10)+"%";
-
-
-if(currentValue >= desiredValue){
-
-status.textContent =
-"At or above your desired level.";
-
-}else if(improvementGap >= 5){
-
-status.textContent =
-"High opportunity for improvement.";
-
-}else if(improvementGap >= 3){
-
-status.textContent =
-"Meaningful improvement opportunity.";
-
+if(currentValue>=desiredValue){
+status.textContent="At or above your desired level.";
+}else if(improvementGap>=5){
+status.textContent="High opportunity for improvement.";
+}else if(improvementGap>=3){
+status.textContent="Meaningful improvement opportunity.";
 }else{
-
-status.textContent =
-"Relatively close to your desired level.";
-
+status.textContent="Relatively close to your desired level.";
+}
 }
 
-}
+nameInput.addEventListener("input",refreshLifeAssessment);
 
-
-nameInput.addEventListener(
-"input",
-refreshLifeAssessment
-);
-
-current.addEventListener(
-"change",
-()=>{
+current.addEventListener("change",()=>{
 updateCard();
 refreshLifeAssessment();
-}
-);
+});
 
-desired.addEventListener(
-"change",
-()=>{
+desired.addEventListener("change",()=>{
 updateCard();
 refreshLifeAssessment();
-}
-);
+});
 
-
-deleteButton.addEventListener(
-"click",
-()=>{
-
+deleteButton.addEventListener("click",()=>{
 card.remove();
-
 refreshLifeAssessment();
-
-}
-);
-
+});
 
 updateCard();
-
 }
-
-
-/* =========================
-COLLECT LIFE AREAS
-========================= */
 
 function collectLifeAreas(){
+const cards=document.querySelectorAll(".life-area");
 
-const cards =
-document.querySelectorAll(
-".life-area"
-);
-
-lifeAreas =
-Array.from(cards).map(
-card=>({
-
-name:
-card.querySelector(
-".area-name"
-).value,
-
-current:
-parseInt(
-card.querySelector(
-".current-score"
-).value
-),
-
-desired:
-parseInt(
-card.querySelector(
-".desired-score"
-).value
-)
-
-})
-);
-
+lifeAreas=Array.from(cards).map(card=>({
+name:card.querySelector(".area-name").value,
+current:parseInt(card.querySelector(".current-score").value),
+desired:parseInt(card.querySelector(".desired-score").value)
+}));
 }
-
-
-/* =========================
-LIFE SUMMARY
-========================= */
 
 function updateLifeSummary(){
-
-if(lifeAreas.length === 0){
-
-document.getElementById(
-"averageCurrent"
-).textContent = "0";
-
-document.getElementById(
-"averageDesired"
-).textContent = "0";
-
-document.getElementById(
-"largestGap"
-).textContent = "0";
-
+if(lifeAreas.length===0){
+document.getElementById("averageCurrent").textContent="0";
+document.getElementById("averageDesired").textContent="0";
+document.getElementById("largestGap").textContent="0";
 return;
-
 }
 
+const currentTotal=lifeAreas.reduce((sum,area)=>sum+area.current,0);
+const desiredTotal=lifeAreas.reduce((sum,area)=>sum+area.desired,0);
 
-const currentTotal =
-lifeAreas.reduce(
-(sum,area)=>sum+area.current,
-0
+const averageCurrent=(currentTotal/lifeAreas.length).toFixed(1);
+const averageDesired=(desiredTotal/lifeAreas.length).toFixed(1);
+
+const largestGap=Math.max(
+...lifeAreas.map(area=>Math.max(area.desired-area.current,0))
 );
 
-
-const desiredTotal =
-lifeAreas.reduce(
-(sum,area)=>sum+area.desired,
-0
-);
-
-
-const averageCurrent =
-(
-currentTotal /
-lifeAreas.length
-).toFixed(1);
-
-
-const averageDesired =
-(
-desiredTotal /
-lifeAreas.length
-).toFixed(1);
-
-
-const largestGap =
-Math.max(
-...lifeAreas.map(
-area=>
-Math.max(
-area.desired-area.current,
-0
-)
-)
-);
-
-
-document.getElementById(
-"averageCurrent"
-).textContent =
-averageCurrent;
-
-
-document.getElementById(
-"averageDesired"
-).textContent =
-averageDesired;
-
-
-document.getElementById(
-"largestGap"
-).textContent =
-largestGap;
-
+document.getElementById("averageCurrent").textContent=averageCurrent;
+document.getElementById("averageDesired").textContent=averageDesired;
+document.getElementById("largestGap").textContent=largestGap;
 }
-
-
-/* =========================
-SAVE LIFE
-========================= */
 
 function refreshLifeAssessment(){
-
 collectLifeAreas();
-
 updateLifeSummary();
-
-localStorage.setItem(
-LIFE_STORAGE_KEY,
-JSON.stringify(lifeAreas)
-);
-
+localStorage.setItem(LIFE_STORAGE_KEY,JSON.stringify(lifeAreas));
 }
-
 
 function saveLifeAssessment(){
-
 refreshLifeAssessment();
+saveLifeOutcomes();
 
-const message =
-document.getElementById(
-"lifeSavedMessage"
-);
+const message=document.getElementById("lifeSavedMessage");
+message.style.display="block";
 
-message.style.display =
-"block";
-
-setTimeout(
-()=>{
+setTimeout(()=>{
 message.style.display="none";
-},
-2500
-);
-
+},2500);
 }
-
-
-/* =========================
-LOAD LIFE
-========================= */
 
 function loadLifeAssessment(){
+let saved=localStorage.getItem(LIFE_STORAGE_KEY);
 
-const saved =
-localStorage.getItem(
-LIFE_STORAGE_KEY
-);
+if(!saved){
+saved=localStorage.getItem(OLD_LIFE_STORAGE_KEY);
+}
 
 if(saved){
-
 try{
-
-lifeAreas =
-JSON.parse(saved);
-
+lifeAreas=JSON.parse(saved);
 }catch(error){
-
-lifeAreas =
-JSON.parse(
-JSON.stringify(defaultLifeAreas)
-);
-
+lifeAreas=JSON.parse(JSON.stringify(defaultLifeAreas));
 }
-
 }else{
-
-lifeAreas =
-JSON.parse(
-JSON.stringify(defaultLifeAreas)
-);
-
+lifeAreas=JSON.parse(JSON.stringify(defaultLifeAreas));
 }
 
-
-const list =
-document.getElementById(
-"lifeAreaList"
-);
-
-list.innerHTML = "";
-
-
-lifeAreas.forEach(
-createLifeAreaCard
-);
-
-
+const list=document.getElementById("lifeAreaList");
+list.innerHTML="";
+lifeAreas.forEach(createLifeAreaCard);
 refreshLifeAssessment();
-
 }
-
-
-/* =========================
-ADD LIFE AREA
-========================= */
 
 function addLifeArea(){
-
 createLifeAreaCard({
-
 name:"New Life Area",
 current:5,
 desired:8
+});
+refreshLifeAssessment();
+}
 
+/* LIFE OUTCOMES */
+
+let lifeOutcomes=[];
+
+function getLifeAreaNames(){
+collectLifeAreas();
+return lifeAreas.map(area=>area.name.trim()).filter(Boolean);
+}
+
+function createLifeOutcomeCard(outcome){
+const list=document.getElementById("lifeOutcomeList");
+const card=document.createElement("div");
+card.className="outcome-life-card";
+
+const top=document.createElement("div");
+top.className="outcome-life-top";
+
+const title=document.createElement("input");
+title.type="text";
+title.className="life-outcome-title";
+title.placeholder="What result do you want?";
+title.value=outcome.title||"";
+
+const del=document.createElement("button");
+del.type="button";
+del.className="delete-button";
+del.innerHTML="&times;";
+
+top.append(title,del);
+card.appendChild(top);
+
+const grid=document.createElement("div");
+grid.className="outcome-life-grid";
+
+const areaWrap=document.createElement("div");
+areaWrap.innerHTML='<div class="field-label">Area of Life</div>';
+
+const area=document.createElement("select");
+area.className="life-outcome-area";
+
+const names=getLifeAreaNames();
+
+if(names.length===0){
+area.innerHTML='<option value="">No life areas available</option>';
+}else{
+names.forEach(name=>{
+const o=document.createElement("option");
+o.value=name;
+o.textContent=name;
+area.appendChild(o);
+});
+}
+
+if(outcome.area&&!names.includes(outcome.area)){
+const o=document.createElement("option");
+o.value=outcome.area;
+o.textContent=outcome.area;
+area.appendChild(o);
+}
+
+area.value=outcome.area||names[0]||"";
+areaWrap.appendChild(area);
+
+const statusWrap=document.createElement("div");
+statusWrap.innerHTML='<div class="field-label">Status</div>';
+
+const status=document.createElement("select");
+status.className="life-outcome-status";
+status.innerHTML=
+'<option value="active">Active</option>'+
+'<option value="completed">Completed</option>'+
+'<option value="paused">Paused</option>';
+
+status.value=outcome.status||"active";
+statusWrap.appendChild(status);
+
+const dateWrap=document.createElement("div");
+dateWrap.innerHTML='<div class="field-label">Target Date</div>';
+
+const date=document.createElement("input");
+date.type="date";
+date.className="life-outcome-date";
+date.value=outcome.targetDate||"";
+dateWrap.appendChild(date);
+
+const purposeWrap=document.createElement("div");
+purposeWrap.innerHTML='<div class="field-label">Purpose / Why</div>';
+
+const purpose=document.createElement("input");
+purpose.type="text";
+purpose.className="life-outcome-purpose";
+purpose.placeholder="Why does this outcome matter?";
+purpose.value=outcome.purpose||"";
+purposeWrap.appendChild(purpose);
+
+grid.append(areaWrap,statusWrap,dateWrap,purposeWrap);
+card.appendChild(grid);
+
+const actions=document.createElement("div");
+actions.className="outcome-life-actions";
+actions.innerHTML='<div class="field-label">Action Plan</div>';
+
+const actionList=document.createElement("div");
+actionList.className="life-outcome-action-list";
+actions.appendChild(actionList);
+
+const add=document.createElement("button");
+add.type="button";
+add.className="add-button";
+add.style.marginTop="10px";
+add.textContent="+ Add Outcome Action";
+
+actions.appendChild(add);
+card.appendChild(actions);
+
+function addActionRow(text=""){
+const row=document.createElement("div");
+row.className="life-action-row";
+
+const input=document.createElement("input");
+input.type="text";
+input.className="life-outcome-action";
+input.placeholder="Action that moves this outcome forward";
+input.value=text;
+
+const x=document.createElement("button");
+x.type="button";
+x.className="delete-button";
+x.innerHTML="&times;";
+
+row.append(input,x);
+actionList.appendChild(row);
+
+input.addEventListener("input",saveLifeOutcomes);
+
+x.addEventListener("click",()=>{
+row.remove();
+saveLifeOutcomes();
+});
+}
+
+(Array.isArray(outcome.actions)&&outcome.actions.length
+?outcome.actions:[""]).forEach(addActionRow);
+
+add.addEventListener("click",()=>{
+addActionRow("");
+saveLifeOutcomes();
 });
 
-refreshLifeAssessment();
-
-}
-
-
-/* =========================
-TODAY DATA
-========================= */
-
-let dashboardData = {
-
-date:getDateKey(),
-
-outcome:"",
-
-purpose:"",
-
-commitments:[
-{
-text:"",
-start:"",
-end:""
-}
-],
-
-actions:[
-{
-text:"",
-completed:false,
-priority:"must",
-time:"",
-duration:"30"
-},
-{
-text:"",
-completed:false,
-priority:"should",
-time:"",
-duration:"30"
-},
-{
-text:"",
-completed:false,
-priority:"could",
-time:"",
-duration:"30"
-}
-]
-
-};
-
-
-/* =========================
-COMMITMENTS
-========================= */
-
-function createCommitmentCard(commitment){
-
-const list =
-document.getElementById(
-"commitmentList"
+[title,area,status,date,purpose].forEach(el=>
+el.addEventListener(el.tagName==="INPUT"?"input":"change",saveLifeOutcomes)
 );
 
-const card =
-document.createElement("div");
+del.addEventListener("click",()=>{
+card.remove();
+saveLifeOutcomes();
+});
 
-card.className =
-"commitment-card";
+list.appendChild(card);
+}
 
+function collectLifeOutcomes(){
+lifeOutcomes=Array.from(
+document.querySelectorAll(".outcome-life-card")
+).map(card=>({
+title:card.querySelector(".life-outcome-title").value,
+area:card.querySelector(".life-outcome-area").value,
+purpose:card.querySelector(".life-outcome-purpose").value,
+targetDate:card.querySelector(".life-outcome-date").value,
+status:card.querySelector(".life-outcome-status").value,
+actions:Array.from(
+card.querySelectorAll(".life-outcome-action")
+).map(i=>i.value).filter(v=>v.trim()!=="")
+}));
+}
 
-const main =
-document.createElement("div");
+function saveLifeOutcomes(){
+collectLifeOutcomes();
+localStorage.setItem(
+LIFE_OUTCOMES_STORAGE_KEY,
+JSON.stringify(lifeOutcomes)
+);
+}
 
-main.className =
-"commitment-main";
+function loadLifeOutcomes(){
+const saved=localStorage.getItem(LIFE_OUTCOMES_STORAGE_KEY);
 
+if(saved){
+try{
+lifeOutcomes=JSON.parse(saved);
+}catch(e){
+lifeOutcomes=[];
+}
+}
 
-const input =
-document.createElement("input");
+const list=document.getElementById("lifeOutcomeList");
+list.innerHTML="";
 
-input.type =
-"text";
+if(lifeOutcomes.length===0){
+list.innerHTML=
+'<div class="life-outcome-empty">'+
+'No life outcomes yet. Add one when you are ready to turn a life area into a specific result.'+
+'</div>';
+}else{
+lifeOutcomes.forEach(createLifeOutcomeCard);
+}
+}
 
-input.className =
-"commitment-text";
+function addLifeOutcome(){
+const list=document.getElementById("lifeOutcomeList");
+const empty=list.querySelector(".life-outcome-empty");
 
-input.placeholder =
-"Example: Doctor appointment";
+if(empty)empty.remove();
 
-input.value =
-commitment.text || "";
+createLifeOutcomeCard({
+title:"",
+area:getLifeAreaNames()[0]||"",
+purpose:"",
+targetDate:"",
+status:"active",
+actions:[""]
+});
 
+saveLifeOutcomes();
+}
 
-const deleteButton =
-document.createElement("button");
+/* TODAY */
 
-deleteButton.type =
-"button";
+let dashboardData={
+date:getDateKey(),
+outcome:"",
+purpose:"",
+commitments:[
+{text:"",start:"",end:""}
+],
+actions:[
+{text:"",completed:false,priority:"must",time:"",duration:"30"},
+{text:"",completed:false,priority:"should",time:"",duration:"30"},
+{text:"",completed:false,priority:"could",time:"",duration:"30"}
+]
+};
 
-deleteButton.className =
-"delete-button";
+function createCommitmentCard(commitment){
+const list=document.getElementById("commitmentList");
 
-deleteButton.innerHTML =
-"&times;";
+const card=document.createElement("div");
+card.className="commitment-card";
 
+const main=document.createElement("div");
+main.className="commitment-main";
+
+const input=document.createElement("input");
+input.type="text";
+input.className="commitment-text";
+input.placeholder="Example: Doctor appointment";
+input.value=commitment.text||"";
+
+const deleteButton=document.createElement("button");
+deleteButton.type="button";
+deleteButton.className="delete-button";
+deleteButton.innerHTML="&times;";
 
 main.appendChild(input);
 main.appendChild(deleteButton);
 
+const options=document.createElement("div");
+options.className="commitment-options";
 
-const options =
-document.createElement("div");
+const startWrap=document.createElement("div");
+startWrap.innerHTML='<div class="field-label">Start Time</div>';
 
-options.className =
-"commitment-options";
-
-
-const startWrap =
-document.createElement("div");
-
-startWrap.innerHTML =
-'<div class="field-label">Start Time</div>';
-
-
-const start =
-document.createElement("input");
-
-start.type =
-"time";
-
-start.className =
-"commitment-start";
-
-start.value =
-commitment.start || "";
-
+const start=document.createElement("input");
+start.type="time";
+start.className="commitment-start";
+start.value=commitment.start||"";
 startWrap.appendChild(start);
 
+const endWrap=document.createElement("div");
+endWrap.innerHTML='<div class="field-label">End Time</div>';
 
-const endWrap =
-document.createElement("div");
-
-endWrap.innerHTML =
-'<div class="field-label">End Time</div>';
-
-
-const end =
-document.createElement("input");
-
-end.type =
-"time";
-
-end.className =
-"commitment-end";
-
-end.value =
-commitment.end || "";
-
+const end=document.createElement("input");
+end.type="time";
+end.className="commitment-end";
+end.value=commitment.end||"";
 endWrap.appendChild(end);
-
 
 options.appendChild(startWrap);
 options.appendChild(endWrap);
 
 card.appendChild(main);
 card.appendChild(options);
-
 list.appendChild(card);
 
+input.addEventListener("input",refreshToday);
+start.addEventListener("change",refreshToday);
+end.addEventListener("change",refreshToday);
 
-input.addEventListener(
-"input",
-refreshToday
-);
-
-start.addEventListener(
-"change",
-refreshToday
-);
-
-end.addEventListener(
-"change",
-refreshToday
-);
-
-
-deleteButton.addEventListener(
-"click",
-()=>{
-
+deleteButton.addEventListener("click",()=>{
 card.remove();
-
 refreshToday();
-
+});
 }
-);
-
-}
-
 
 function addCommitment(){
-
-createCommitmentCard({
-text:"",
-start:"",
-end:""
-});
-
+createCommitmentCard({text:"",start:"",end:""});
 refreshToday();
-
 }
-
-
-/* =========================
-ACTIONS
-========================= */
 
 function createActionCard(action){
+const list=document.getElementById("actionList");
 
-const list =
-document.getElementById(
-"actionList"
-);
+const card=document.createElement("div");
+card.className="action-card";
 
-const card =
-document.createElement("div");
+const main=document.createElement("div");
+main.className="action-main";
 
-card.className =
-"action-card";
+const checkbox=document.createElement("input");
+checkbox.type="checkbox";
+checkbox.className="action-checkbox";
+checkbox.checked=action.completed||false;
 
-
-const main =
-document.createElement("div");
-
-main.className =
-"action-main";
-
-
-const checkbox =
-document.createElement("input");
-
-checkbox.type =
-"checkbox";
-
-checkbox.className =
-"action-checkbox";
-
-checkbox.checked =
-action.completed || false;
-
-
-const input =
-document.createElement("input");
-
-input.type =
-"text";
-
-input.className =
-"action-text";
-
-input.placeholder =
-"Enter an action step";
-
-input.value =
-action.text || "";
-
+const input=document.createElement("input");
+input.type="text";
+input.className="action-text";
+input.placeholder="Enter an action step";
+input.value=action.text||"";
 
 if(action.completed){
-
-input.classList.add(
-"completed"
-);
-
+input.classList.add("completed");
 }
 
-
-const deleteButton =
-document.createElement("button");
-
-deleteButton.type =
-"button";
-
-deleteButton.className =
-"delete-button";
-
-deleteButton.innerHTML =
-"&times;";
-
+const deleteButton=document.createElement("button");
+deleteButton.type="button";
+deleteButton.className="delete-button";
+deleteButton.innerHTML="&times;";
 
 main.appendChild(checkbox);
 main.appendChild(input);
 main.appendChild(deleteButton);
 
+const options=document.createElement("div");
+options.className="action-options";
 
-const options =
-document.createElement("div");
+const priorityWrap=document.createElement("div");
+priorityWrap.innerHTML='<div class="field-label">Priority</div>';
 
-options.className =
-"action-options";
-
-
-const priorityWrap =
-document.createElement("div");
-
-priorityWrap.innerHTML =
-'<div class="field-label">Priority</div>';
-
-
-const priority =
-document.createElement("select");
-
-priority.className =
-"priority-select";
-
-priority.innerHTML = `
+const priority=document.createElement("select");
+priority.className="priority-select";
+priority.innerHTML=`
 <option value="must">Must Do</option>
 <option value="should">Should Do</option>
 <option value="could">Could Do</option>
 `;
-
-priority.value =
-action.priority || "should";
-
+priority.value=action.priority||"should";
 priorityWrap.appendChild(priority);
 
+const timeWrap=document.createElement("div");
+timeWrap.innerHTML='<div class="field-label">Start Time</div>';
 
-const timeWrap =
-document.createElement("div");
-
-timeWrap.innerHTML =
-'<div class="field-label">Start Time</div>';
-
-
-const time =
-document.createElement("input");
-
-time.type =
-"time";
-
-time.className =
-"time-input";
-
-time.value =
-action.time || "";
-
+const time=document.createElement("input");
+time.type="time";
+time.className="time-input";
+time.value=action.time||"";
 timeWrap.appendChild(time);
 
+const durationWrap=document.createElement("div");
+durationWrap.innerHTML='<div class="field-label">Duration</div>';
 
-const durationWrap =
-document.createElement("div");
-
-durationWrap.innerHTML =
-'<div class="field-label">Duration</div>';
-
-
-const duration =
-document.createElement("select");
-
-duration.className =
-"duration-select";
-
-duration.innerHTML = `
+const duration=document.createElement("select");
+duration.className="duration-select";
+duration.innerHTML=`
 <option value="15">15 min</option>
 <option value="30">30 min</option>
 <option value="45">45 min</option>
@@ -1952,12 +945,8 @@ duration.innerHTML = `
 <option value="90">1.5 hours</option>
 <option value="120">2 hours</option>
 `;
-
-duration.value =
-action.duration || "30";
-
+duration.value=action.duration||"30";
 durationWrap.appendChild(duration);
-
 
 options.appendChild(priorityWrap);
 options.appendChild(timeWrap);
@@ -1965,438 +954,171 @@ options.appendChild(durationWrap);
 
 card.appendChild(main);
 card.appendChild(options);
-
 list.appendChild(card);
 
+applyPriorityStyle(card,priority.value);
 
-applyPriorityStyle(
-card,
-priority.value
-);
-
-
-checkbox.addEventListener(
-"change",
-()=>{
-
-input.classList.toggle(
-"completed",
-checkbox.checked
-);
-
+checkbox.addEventListener("change",()=>{
+input.classList.toggle("completed",checkbox.checked);
 refreshToday();
+});
 
-}
-);
+input.addEventListener("input",refreshToday);
 
-
-input.addEventListener(
-"input",
-refreshToday
-);
-
-
-priority.addEventListener(
-"change",
-()=>{
-
-applyPriorityStyle(
-card,
-priority.value
-);
-
+priority.addEventListener("change",()=>{
+applyPriorityStyle(card,priority.value);
 refreshToday();
+});
 
-}
-);
+time.addEventListener("change",refreshToday);
+duration.addEventListener("change",refreshToday);
 
-
-time.addEventListener(
-"change",
-refreshToday
-);
-
-
-duration.addEventListener(
-"change",
-refreshToday
-);
-
-
-deleteButton.addEventListener(
-"click",
-()=>{
-
+deleteButton.addEventListener("click",()=>{
 card.remove();
-
 refreshToday();
-
-}
-);
-
+});
 }
 
-
-function applyPriorityStyle(
-card,
-priority
-){
-
+function applyPriorityStyle(card,priority){
 card.classList.remove(
 "priority-must",
 "priority-should",
 "priority-could"
 );
-
-card.classList.add(
-"priority-"+priority
-);
-
+card.classList.add("priority-"+priority);
 }
 
-
 function addAction(){
-
 createActionCard({
-
 text:"",
 completed:false,
 priority:"should",
 time:"",
 duration:"30"
-
 });
-
 refreshToday();
-
 }
-
-
-/* =========================
-COLLECT TODAY
-========================= */
 
 function collectTodayData(){
+dashboardData.date=getDateKey();
+dashboardData.outcome=document.getElementById("outcome").value;
+dashboardData.purpose=document.getElementById("purpose").value;
 
-dashboardData.date =
-getDateKey();
+dashboardData.commitments=Array.from(
+document.querySelectorAll(".commitment-card")
+).map(card=>({
+text:card.querySelector(".commitment-text").value,
+start:card.querySelector(".commitment-start").value,
+end:card.querySelector(".commitment-end").value
+}));
 
-dashboardData.outcome =
-document.getElementById(
-"outcome"
-).value;
-
-dashboardData.purpose =
-document.getElementById(
-"purpose"
-).value;
-
-
-dashboardData.commitments =
-Array.from(
-document.querySelectorAll(
-".commitment-card"
-)
-).map(
-card=>({
-
-text:
-card.querySelector(
-".commitment-text"
-).value,
-
-start:
-card.querySelector(
-".commitment-start"
-).value,
-
-end:
-card.querySelector(
-".commitment-end"
-).value
-
-})
-);
-
-
-dashboardData.actions =
-Array.from(
-document.querySelectorAll(
-".action-card"
-)
-).map(
-card=>({
-
-text:
-card.querySelector(
-".action-text"
-).value,
-
-completed:
-card.querySelector(
-".action-checkbox"
-).checked,
-
-priority:
-card.querySelector(
-".priority-select"
-).value,
-
-time:
-card.querySelector(
-".time-input"
-).value,
-
-duration:
-card.querySelector(
-".duration-select"
-).value
-
-})
-);
-
+dashboardData.actions=Array.from(
+document.querySelectorAll(".action-card")
+).map(card=>({
+text:card.querySelector(".action-text").value,
+completed:card.querySelector(".action-checkbox").checked,
+priority:card.querySelector(".priority-select").value,
+time:card.querySelector(".time-input").value,
+duration:card.querySelector(".duration-select").value
+}));
 }
-
-
-/* =========================
-PROGRESS
-========================= */
 
 function updateProgress(){
-
-const cards =
-Array.from(
-document.querySelectorAll(
-".action-card"
-)
+const cards=Array.from(
+document.querySelectorAll(".action-card")
 );
 
-
-const active =
-cards.filter(
-card=>
-card.querySelector(
-".action-text"
-).value.trim() !== ""
+const active=cards.filter(card=>
+card.querySelector(".action-text").value.trim()!==""
 );
 
+const total=active.length;
 
-const total =
-active.length;
-
-
-const completed =
-active.filter(
-card=>
-card.querySelector(
-".action-checkbox"
-).checked
+const completed=active.filter(card=>
+card.querySelector(".action-checkbox").checked
 ).length;
 
+const percentage=
+total===0?0:Math.round((completed/total)*100);
 
-const percentage =
-total === 0
-? 0
-: Math.round(
-(completed/total)*100
-);
-
-
-document.getElementById(
-"progressPercent"
-).textContent =
+document.getElementById("progressPercent").textContent=
 percentage+"%";
 
-
-document.getElementById(
-"progressBar"
-).style.width =
+document.getElementById("progressBar").style.width=
 percentage+"%";
 
-
-document.getElementById(
-"progressText"
-).textContent =
+document.getElementById("progressText").textContent=
 `${completed} of ${total} actions completed`;
 
-
-document.getElementById(
-"completionMessage"
-).style.display =
-total > 0 &&
-completed === total
-? "block"
-: "none";
-
+document.getElementById("completionMessage").style.display=
+total>0&&completed===total?"block":"none";
 }
-
-
-/* =========================
-TIME
-========================= */
 
 function timeToMinutes(time){
-
-if(!time){
-return null;
+if(!time)return null;
+const parts=time.split(":");
+return parseInt(parts[0])*60+parseInt(parts[1]);
 }
-
-const parts =
-time.split(":");
-
-return(
-parseInt(parts[0])*60 +
-parseInt(parts[1])
-);
-
-}
-
 
 function minutesToTime(total){
+total=total%(24*60);
 
-total =
-total%(24*60);
+const hour24=Math.floor(total/60);
+const minute=total%60;
+const period=hour24>=12?"PM":"AM";
 
-const hour24 =
-Math.floor(total/60);
+let hour=hour24%12;
+if(hour===0)hour=12;
 
-const minute =
-total%60;
-
-const period =
-hour24>=12
-? "PM"
-: "AM";
-
-let hour =
-hour24%12;
-
-if(hour===0){
-hour=12;
-}
-
-return(
-hour+
-":"+
+return hour+":"+
 String(minute).padStart(2,"0")+
-" "+
-period
-);
-
+" "+period;
 }
 
-
-function calculateActionEnd(
-start,
-duration
-){
-
-const startMinutes =
-timeToMinutes(start);
-
-if(startMinutes===null){
-return null;
+function calculateActionEnd(start,duration){
+const startMinutes=timeToMinutes(start);
+if(startMinutes===null)return null;
+return startMinutes+parseInt(duration);
 }
-
-return(
-startMinutes+
-parseInt(duration)
-);
-
-}
-
 
 function priorityLabel(priority){
-
-if(priority==="must"){
-return "MUST DO";
-}
-
-if(priority==="could"){
-return "COULD DO";
-}
-
+if(priority==="must")return "MUST DO";
+if(priority==="could")return "COULD DO";
 return "SHOULD DO";
-
 }
-
-
-/* =========================
-TIMELINE
-========================= */
 
 function getTimelineItems(){
+const items=[];
 
-const items = [];
-
-
-dashboardData.commitments.forEach(
-(commitment,index)=>{
-
+dashboardData.commitments.forEach((commitment,index)=>{
 if(
-commitment.text.trim()==="" ||
-commitment.start==="" ||
+commitment.text.trim()===""||
+commitment.start===""||
 commitment.end===""
-){
-return;
-}
+)return;
 
-const start =
-timeToMinutes(
-commitment.start
-);
+const start=timeToMinutes(commitment.start);
+const end=timeToMinutes(commitment.end);
 
-const end =
-timeToMinutes(
-commitment.end
-);
-
-if(
-start===null ||
-end===null ||
-end<=start
-){
-return;
-}
+if(start===null||end===null||end<=start)return;
 
 items.push({
-
 id:"commitment-"+index,
 type:"commitment",
 title:commitment.text,
 start:start,
 end:end,
 conflicted:false
-
+});
 });
 
-}
-);
+dashboardData.actions.forEach((action,index)=>{
+if(action.text.trim()===""||action.time==="")return;
 
-
-dashboardData.actions.forEach(
-(action,index)=>{
-
-if(
-action.text.trim()==="" ||
-action.time===""
-){
-return;
-}
-
-const start =
-timeToMinutes(
-action.time
-);
-
-const end =
-calculateActionEnd(
-action.time,
-action.duration
-);
+const start=timeToMinutes(action.time);
+const end=calculateActionEnd(action.time,action.duration);
 
 items.push({
-
 id:"action-"+index,
 type:"action",
 title:action.text,
@@ -2406,460 +1128,230 @@ priority:action.priority,
 duration:action.duration,
 completed:action.completed,
 conflicted:false
-
+});
 });
 
+return items.sort((a,b)=>a.start-b.start);
 }
-);
-
-
-return items.sort(
-(a,b)=>a.start-b.start
-);
-
-}
-
-
-/* =========================
-CONFLICTS
-========================= */
 
 function detectConflicts(items){
+const conflicts=[];
 
-const conflicts = [];
+for(let i=0;i<items.length;i++){
+for(let j=i+1;j<items.length;j++){
 
+const first=items[i];
+const second=items[j];
 
-for(
-let i=0;
-i<items.length;
-i++
-){
-
-for(
-let j=i+1;
-j<items.length;
-j++
-){
-
-const first =
-items[i];
-
-const second =
-items[j];
-
-
-const overlap =
-first.start < second.end &&
-second.start < first.end;
-
+const overlap=
+first.start<second.end&&
+second.start<first.end;
 
 if(overlap){
-
-first.conflicted = true;
-second.conflicted = true;
+first.conflicted=true;
+second.conflicted=true;
 
 conflicts.push({
-
 first:first.title,
 second:second.title,
-
-start:
-Math.max(
-first.start,
-second.start
-),
-
-end:
-Math.min(
-first.end,
-second.end
-)
-
+start:Math.max(first.start,second.start),
+end:Math.min(first.end,second.end)
 });
-
 }
-
 }
-
 }
-
 
 return conflicts;
-
 }
-
 
 function showConflicts(conflicts){
+const box=document.getElementById("conflictBox");
+const list=document.getElementById("conflictList");
 
-const box =
-document.getElementById(
-"conflictBox"
-);
-
-const list =
-document.getElementById(
-"conflictList"
-);
-
-list.innerHTML = "";
-
+list.innerHTML="";
 
 if(conflicts.length===0){
-
-box.style.display =
-"none";
-
+box.style.display="none";
 return;
-
 }
 
+box.style.display="block";
 
-box.style.display =
-"block";
+conflicts.forEach(conflict=>{
+const item=document.createElement("div");
+item.className="conflict-item";
 
-
-conflicts.forEach(
-conflict=>{
-
-const item =
-document.createElement("div");
-
-item.className =
-"conflict-item";
-
-item.textContent =
+item.textContent=
 `${conflict.first} overlaps with ${conflict.second} from ${minutesToTime(conflict.start)} to ${minutesToTime(conflict.end)}.`;
 
 list.appendChild(item);
-
+});
 }
-);
-
-}
-
-
-/* =========================
-SCHEDULE
-========================= */
 
 function escapeHTML(text){
-
-const div =
-document.createElement("div");
-
-div.textContent =
-text;
-
+const div=document.createElement("div");
+div.textContent=text;
 return div.innerHTML;
-
 }
 
-
 function buildSchedule(){
-
-const schedule =
-document.getElementById(
-"scheduleList"
-);
-
-const items =
-getTimelineItems();
-
-const conflicts =
-detectConflicts(items);
+const schedule=document.getElementById("scheduleList");
+const items=getTimelineItems();
+const conflicts=detectConflicts(items);
 
 showConflicts(conflicts);
-
-schedule.innerHTML = "";
-
+schedule.innerHTML="";
 
 if(items.length===0){
-
-schedule.innerHTML = `
+schedule.innerHTML=`
 <div class="schedule-empty">
 Add a fixed commitment or give an action
 a start time and it will appear here.
 </div>
 `;
-
 return;
-
 }
 
-
-items.forEach(
-item=>{
-
-const row =
-document.createElement("div");
-
-row.className =
-"schedule-item";
-
+items.forEach(item=>{
+const row=document.createElement("div");
+row.className="schedule-item";
 
 if(item.conflicted){
-
-row.classList.add(
-"conflicted"
-);
-
+row.classList.add("conflicted");
 }
 
-
-let details = "";
-
+let details="";
 
 if(item.type==="commitment"){
-
-details = `
+details=`
 <span class="commitment-badge">
 COMMITMENT
 </span>
 `;
-
 }else{
-
-const badgeClass =
+const badgeClass=
 item.priority==="must"
-? "badge-must"
-: item.priority==="could"
-? "badge-could"
-: "badge-should";
+?"badge-must"
+:item.priority==="could"
+?"badge-could"
+:"badge-should";
 
-
-details = `
+details=`
 <span class="priority-badge ${badgeClass}">
 ${priorityLabel(item.priority)}
 </span>
-
 ${item.duration} minutes
-
-${item.completed
-? " • ✓ Completed"
-: ""}
+${item.completed?" • ✓ Completed":""}
 `;
-
 }
 
-
 if(item.conflicted){
-
-details += `
+details+=`
 <span class="conflict-badge">
 ⚠ CONFLICT
 </span>
 `;
-
 }
 
-
-row.innerHTML = `
-
+row.innerHTML=`
 <div class="schedule-time">
-
 ${minutesToTime(item.start)}
-
 <br>
-
 <span style="font-size:12px;color:#6b7280;">
 to ${minutesToTime(item.end)}
 </span>
-
 </div>
 
 <div>
-
 <div class="schedule-title">
 ${escapeHTML(item.title)}
 </div>
-
 <div class="schedule-meta">
 ${details}
 </div>
-
 </div>
 `;
 
-
 schedule.appendChild(row);
-
+});
 }
-);
-
-}
-
-
-/* =========================
-TODAY SAVE
-========================= */
 
 function refreshToday(){
-
 collectTodayData();
-
 updateProgress();
-
 buildSchedule();
 
 localStorage.setItem(
 TODAY_STORAGE_KEY,
 JSON.stringify(dashboardData)
 );
-
 }
-
 
 function saveToday(){
-
 refreshToday();
 
-const message =
-document.getElementById(
-"todaySavedMessage"
-);
+const message=document.getElementById("todaySavedMessage");
+message.style.display="block";
 
-message.style.display =
-"block";
-
-setTimeout(
-()=>{
+setTimeout(()=>{
 message.style.display="none";
-},
-2500
-);
-
+},2500);
 }
-
-
-/* =========================
-LOAD TODAY
-========================= */
 
 function loadToday(){
-
-let saved =
-localStorage.getItem(
-TODAY_STORAGE_KEY
-);
-
-
-/*
-If this is the user's first time opening 1.4,
-bring forward their 1.3 daily data.
-*/
+let saved=localStorage.getItem(TODAY_STORAGE_KEY);
 
 if(!saved){
-
-saved =
-localStorage.getItem(
-OLD_TODAY_STORAGE_KEY
-);
-
+saved=localStorage.getItem(OLD_TODAY_STORAGE_KEY);
 }
 
-
 if(saved){
-
 try{
+const parsed=JSON.parse(saved);
 
-const parsed =
-JSON.parse(saved);
-
-dashboardData = {
-
-date:
-parsed.date ||
-getDateKey(),
-
-outcome:
-parsed.outcome ||
-"",
-
-purpose:
-parsed.purpose ||
-"",
-
-commitments:
-Array.isArray(
-parsed.commitments
-)
-? parsed.commitments
-: [],
-
-actions:
-Array.isArray(
-parsed.actions
-)
-? parsed.actions
-: []
-
+dashboardData={
+date:parsed.date||getDateKey(),
+outcome:parsed.outcome||"",
+purpose:parsed.purpose||"",
+commitments:Array.isArray(parsed.commitments)
+?parsed.commitments:[],
+actions:Array.isArray(parsed.actions)
+?parsed.actions:[]
 };
 
 }catch(error){
-
-console.log(
-"Saved daily data could not be loaded."
-);
-
+console.log("Saved daily data could not be loaded.");
+}
 }
 
-}
-
-
-document.getElementById(
-"outcome"
-).value =
+document.getElementById("outcome").value=
 dashboardData.outcome;
 
-
-document.getElementById(
-"purpose"
-).value =
+document.getElementById("purpose").value=
 dashboardData.purpose;
 
+const commitmentList=
+document.getElementById("commitmentList");
 
-const commitmentList =
-document.getElementById(
-"commitmentList"
-);
+commitmentList.innerHTML="";
 
-commitmentList.innerHTML = "";
-
-
-if(
-dashboardData.commitments.length===0
-){
-
-dashboardData.commitments = [
-{
-text:"",
-start:"",
-end:""
-}
+if(dashboardData.commitments.length===0){
+dashboardData.commitments=[
+{text:"",start:"",end:""}
 ];
-
 }
-
 
 dashboardData.commitments.forEach(
 createCommitmentCard
 );
 
+const actionList=
+document.getElementById("actionList");
 
-const actionList =
-document.getElementById(
-"actionList"
-);
+actionList.innerHTML="";
 
-actionList.innerHTML = "";
-
-
-if(
-dashboardData.actions.length===0
-){
-
-dashboardData.actions = [
-
+if(dashboardData.actions.length===0){
+dashboardData.actions=[
 {
 text:"",
 completed:false,
@@ -2867,7 +1359,6 @@ priority:"must",
 time:"",
 duration:"30"
 },
-
 {
 text:"",
 completed:false,
@@ -2875,7 +1366,6 @@ priority:"should",
 time:"",
 duration:"30"
 },
-
 {
 text:"",
 completed:false,
@@ -2883,90 +1373,43 @@ priority:"could",
 time:"",
 duration:"30"
 }
-
 ];
-
 }
-
 
 dashboardData.actions.forEach(
 createActionCard
 );
 
-
 refreshToday();
-
 }
 
+document.getElementById("addLifeAreaButton")
+.addEventListener("click",addLifeArea);
 
-/* =========================
-EVENTS
-========================= */
+document.getElementById("addLifeOutcomeButton")
+.addEventListener("click",addLifeOutcome);
 
-document.getElementById(
-"addLifeAreaButton"
-).addEventListener(
-"click",
-addLifeArea
-);
+document.getElementById("saveLifeButton")
+.addEventListener("click",saveLifeAssessment);
 
+document.getElementById("addCommitmentButton")
+.addEventListener("click",addCommitment);
 
-document.getElementById(
-"saveLifeButton"
-).addEventListener(
-"click",
-saveLifeAssessment
-);
+document.getElementById("addActionButton")
+.addEventListener("click",addAction);
 
+document.getElementById("saveTodayButton")
+.addEventListener("click",saveToday);
 
-document.getElementById(
-"addCommitmentButton"
-).addEventListener(
-"click",
-addCommitment
-);
+document.getElementById("outcome")
+.addEventListener("input",refreshToday);
 
-
-document.getElementById(
-"addActionButton"
-).addEventListener(
-"click",
-addAction
-);
-
-
-document.getElementById(
-"saveTodayButton"
-).addEventListener(
-"click",
-saveToday
-);
-
-
-document.getElementById(
-"outcome"
-).addEventListener(
-"input",
-refreshToday
-);
-
-
-document.getElementById(
-"purpose"
-).addEventListener(
-"input",
-refreshToday
-);
-
-
-/* =========================
-START
-========================= */
+document.getElementById("purpose")
+.addEventListener("input",refreshToday);
 
 loadLifeAssessment();
-
+loadLifeOutcomes();
 loadToday();
-
 </script>
 
 </body>
