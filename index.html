@@ -8,63 +8,276 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
---blue:#2563eb;--blue-light:#eff6ff;--dark:#1f2937;
---gray:#6b7280;--border:#e5e7eb;--background:#f4f7fb;
---green:#16a34a;--yellow:#f59e0b;--red:#dc2626;--purple:#7c3aed
+--blue:#2563eb;
+--blue-light:#eff6ff;
+--dark:#1f2937;
+--gray:#6b7280;
+--border:#e5e7eb;
+--background:#f4f7fb;
+--green:#16a34a;
+--yellow:#f59e0b;
+--red:#dc2626;
+--purple:#7c3aed;
+--gold:#d97706
 }
-body{font-family:Arial,Helvetica,sans-serif;background:var(--background);color:var(--dark);padding-bottom:80px}
-.container{width:94%;max-width:850px;margin:auto;padding:20px 0}
+
+body{
+font-family:Arial,Helvetica,sans-serif;
+background:var(--background);
+color:var(--dark);
+padding-bottom:80px
+}
+
+.container{
+width:94%;
+max-width:850px;
+margin:auto;
+padding:20px 0
+}
+
 header{margin-bottom:18px}
 .date{color:var(--gray);font-size:14px;margin-bottom:5px}
 h1{font-size:28px;margin-bottom:6px}
 .subtitle{color:var(--gray);line-height:1.5}
-.version{display:inline-block;margin-top:10px;padding:5px 9px;background:#dbeafe;color:#1d4ed8;border-radius:20px;font-size:12px;font-weight:bold}
 
-.nav{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:white;padding:8px;border-radius:14px;margin-bottom:20px;box-shadow:0 4px 15px rgba(0,0,0,.05)}
-.nav button{border:none;border-radius:10px;padding:12px;font-weight:bold;font-size:15px;cursor:pointer;background:#f3f4f6;color:#4b5563}
-.nav button.active{background:var(--blue);color:white}
+.version{
+display:inline-block;
+margin-top:10px;
+padding:5px 9px;
+background:#dbeafe;
+color:#1d4ed8;
+border-radius:20px;
+font-size:12px;
+font-weight:bold
+}
+
+.nav{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px;
+background:white;
+padding:8px;
+border-radius:14px;
+margin-bottom:20px;
+box-shadow:0 4px 15px rgba(0,0,0,.05)
+}
+
+.nav button{
+border:none;
+border-radius:10px;
+padding:12px;
+font-weight:bold;
+font-size:15px;
+cursor:pointer;
+background:#f3f4f6;
+color:#4b5563
+}
+
+.nav button.active{
+background:var(--blue);
+color:white
+}
 
 .page{display:none}
 .page.active{display:block}
-.card{background:white;border-radius:16px;padding:20px;margin-bottom:18px;box-shadow:0 4px 15px rgba(0,0,0,.06)}
-.card h2{font-size:19px;margin-bottom:14px}
-.section-description{color:var(--gray);font-size:14px;line-height:1.55;margin:-5px 0 15px}
 
-label{display:block;font-weight:bold;margin:15px 0 7px}
-
-textarea,input[type="text"],input[type="time"],input[type="number"],input[type="date"],select{
-width:100%;padding:12px;border:1px solid #d1d5db;border-radius:10px;font-size:16px;font-family:inherit;background:white
+.card{
+background:white;
+border-radius:16px;
+padding:20px;
+margin-bottom:18px;
+box-shadow:0 4px 15px rgba(0,0,0,.06)
 }
-textarea{min-height:90px;resize:vertical}
-textarea:focus,input:focus,select:focus{outline:2px solid #bfdbfe;border-color:var(--blue)}
+
+.card h2{
+font-size:19px;
+margin-bottom:14px
+}
+
+.section-description{
+color:var(--gray);
+font-size:14px;
+line-height:1.55;
+margin:-5px 0 15px
+}
+
+label{
+display:block;
+font-weight:bold;
+margin:15px 0 7px
+}
+
+textarea,
+input[type="text"],
+input[type="time"],
+input[type="number"],
+input[type="date"],
+select{
+width:100%;
+padding:12px;
+border:1px solid #d1d5db;
+border-radius:10px;
+font-size:16px;
+font-family:inherit;
+background:white
+}
+
+textarea{
+min-height:90px;
+resize:vertical
+}
+
+textarea:focus,
+input:focus,
+select:focus{
+outline:2px solid #bfdbfe;
+border-color:var(--blue)
+}
+
 button{font-family:inherit}
 
-.life-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
-.summary-box{background:white;padding:16px 10px;border-radius:14px;text-align:center;box-shadow:0 4px 15px rgba(0,0,0,.05)}
-.summary-number{font-size:25px;font-weight:bold;color:var(--blue)}
-.summary-label{color:var(--gray);font-size:12px;margin-top:5px}
+/* LIFE SUMMARY */
 
-.life-area{border:1px solid var(--border);border-radius:15px;padding:15px;margin-bottom:13px;background:#fafafa}
-.life-area-top{display:grid;grid-template-columns:1fr 38px;gap:10px;align-items:center}
-.area-name{font-weight:bold;font-size:17px}
-.delete-button{width:38px;height:38px;border:none;border-radius:9px;background:#fee2e2;color:#b91c1c;font-size:20px;cursor:pointer}
-.area-scores{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;margin-top:13px}
-.score-label,.field-label{color:var(--gray);text-transform:uppercase;font-size:11px;font-weight:bold;margin-bottom:5px}
-.gap-box{min-height:47px;border-radius:10px;display:flex;justify-content:center;align-items:center;font-size:18px;font-weight:bold}
+.life-summary{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:10px;
+margin-bottom:18px
+}
+
+.summary-box{
+background:white;
+padding:16px 10px;
+border-radius:14px;
+text-align:center;
+box-shadow:0 4px 15px rgba(0,0,0,.05)
+}
+
+.summary-number{
+font-size:25px;
+font-weight:bold;
+color:var(--blue)
+}
+
+.summary-label{
+color:var(--gray);
+font-size:12px;
+margin-top:5px
+}
+
+/* LIFE AREAS */
+
+.life-area{
+border:1px solid var(--border);
+border-radius:15px;
+padding:15px;
+margin-bottom:13px;
+background:#fafafa
+}
+
+.life-area-top{
+display:grid;
+grid-template-columns:1fr 38px;
+gap:10px;
+align-items:center
+}
+
+.area-name{
+font-weight:bold;
+font-size:17px
+}
+
+.delete-button{
+width:38px;
+height:38px;
+border:none;
+border-radius:9px;
+background:#fee2e2;
+color:#b91c1c;
+font-size:20px;
+cursor:pointer
+}
+
+.area-scores{
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+gap:9px;
+margin-top:13px
+}
+
+.score-label,
+.field-label{
+color:var(--gray);
+text-transform:uppercase;
+font-size:11px;
+font-weight:bold;
+margin-bottom:5px
+}
+
+.gap-box{
+min-height:47px;
+border-radius:10px;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:18px;
+font-weight:bold
+}
+
 .gap-low{background:#dcfce7;color:#166534}
 .gap-medium{background:#fef3c7;color:#92400e}
 .gap-high{background:#fee2e2;color:#b91c1c}
-.area-bar-background{height:9px;background:#e5e7eb;border-radius:20px;overflow:hidden;margin-top:13px}
-.area-bar{height:100%;background:var(--blue);border-radius:20px}
-.area-status{margin-top:8px;color:var(--gray);font-size:13px}
 
-.add-button,.save-button,.commitment-add-button{
-width:100%;border:none;border-radius:10px;padding:14px;font-size:16px;font-weight:bold;cursor:pointer
+.area-bar-background{
+height:9px;
+background:#e5e7eb;
+border-radius:20px;
+overflow:hidden;
+margin-top:13px
 }
-.add-button{background:#e5e7eb;color:var(--dark)}
-.save-button{background:var(--blue);color:white}
-.commitment-add-button{background:#e0e7ff;color:#3730a3}
+
+.area-bar{
+height:100%;
+background:var(--blue);
+border-radius:20px
+}
+
+.area-status{
+margin-top:8px;
+color:var(--gray);
+font-size:13px
+}
+
+.add-button,
+.save-button,
+.commitment-add-button{
+width:100%;
+border:none;
+border-radius:10px;
+padding:14px;
+font-size:16px;
+font-weight:bold;
+cursor:pointer
+}
+
+.add-button{
+background:#e5e7eb;
+color:var(--dark)
+}
+
+.save-button{
+background:var(--blue);
+color:white
+}
+
+.commitment-add-button{
+background:#e0e7ff;
+color:#3730a3
+}
+
 .life-save{margin-top:4px}
+
+/* LIFE OUTCOMES */
 
 .outcome-life-card{
 border:1px solid var(--border);
@@ -74,19 +287,57 @@ padding:15px;
 margin-bottom:14px;
 background:#fafafa
 }
-.outcome-life-top{display:grid;grid-template-columns:1fr 38px;gap:9px;align-items:center}
-.outcome-life-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:11px}
-.outcome-life-actions{margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
-.life-action-row{display:grid;grid-template-columns:1fr auto 38px;gap:8px;margin-top:8px;align-items:center}
+
+.outcome-life-top{
+display:grid;
+grid-template-columns:1fr 38px;
+gap:9px;
+align-items:center
+}
+
+.outcome-life-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:9px;
+margin-top:11px
+}
+
+.outcome-life-actions{
+margin-top:12px;
+padding-top:12px;
+border-top:1px solid var(--border)
+}
+
+.life-action-row{
+display:grid;
+grid-template-columns:1fr auto 38px;
+gap:8px;
+margin-top:8px;
+align-items:center
+}
 
 .send-today-button{
-border:none;border-radius:9px;padding:11px 12px;background:#dbeafe;color:#1d4ed8;
-font-size:13px;font-weight:bold;cursor:pointer;white-space:nowrap
+border:none;
+border-radius:9px;
+padding:11px 12px;
+background:#dbeafe;
+color:#1d4ed8;
+font-size:13px;
+font-weight:bold;
+cursor:pointer;
+white-space:nowrap
 }
-.send-today-button.added{background:#dcfce7;color:#166534}
+
+.send-today-button.added{
+background:#dcfce7;
+color:#166534
+}
 
 .life-outcome-empty{
-color:var(--gray);text-align:center;padding:12px 4px 18px;line-height:1.5
+color:var(--gray);
+text-align:center;
+padding:12px 4px 18px;
+line-height:1.5
 }
 
 /* DAILY PLANNER */
@@ -108,7 +359,11 @@ align-items:flex-start;
 margin-bottom:8px
 }
 
-.planner-title{font-size:16px;font-weight:bold;line-height:1.4}
+.planner-title{
+font-size:16px;
+font-weight:bold;
+line-height:1.4
+}
 
 .planner-area{
 font-size:12px;
@@ -127,7 +382,10 @@ line-height:1.45;
 margin-bottom:11px
 }
 
-.planner-actions{display:grid;gap:8px}
+.planner-actions{
+display:grid;
+gap:8px
+}
 
 .planner-action{
 display:grid;
@@ -140,7 +398,10 @@ padding:10px;
 background:white
 }
 
-.planner-action-text{font-size:14px;line-height:1.4}
+.planner-action-text{
+font-size:14px;
+line-height:1.4
+}
 
 .planner-add{
 border:none;
@@ -179,6 +440,101 @@ font-size:13px;
 color:#1e40af;
 font-weight:bold
 }
+
+/* TOP 3 FOCUS */
+
+.top3-card{
+border:2px solid #fde68a;
+background:#fffbeb
+}
+
+.top3-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+margin-bottom:6px
+}
+
+.top3-count{
+font-size:12px;
+font-weight:bold;
+padding:6px 9px;
+border-radius:20px;
+background:#fef3c7;
+color:#92400e
+}
+
+.top3-list{
+display:grid;
+gap:10px;
+margin-top:14px
+}
+
+.top3-slot{
+display:grid;
+grid-template-columns:52px 1fr auto;
+gap:10px;
+align-items:center;
+padding:12px;
+background:white;
+border:1px solid #fde68a;
+border-radius:12px
+}
+
+.top3-rank{
+font-size:25px;
+text-align:center
+}
+
+.top3-text{
+font-weight:bold;
+line-height:1.4
+}
+
+.top3-empty-text{
+color:#9ca3af;
+font-weight:normal
+}
+
+.top3-remove{
+border:none;
+border-radius:8px;
+background:#fee2e2;
+color:#b91c1c;
+padding:8px 10px;
+font-weight:bold;
+cursor:pointer
+}
+
+.top3-empty{
+padding:18px;
+text-align:center;
+color:var(--gray);
+background:white;
+border:1px dashed #fbbf24;
+border-radius:12px;
+line-height:1.5
+}
+
+.focus-select{
+border:none;
+border-radius:8px;
+padding:9px;
+font-size:12px;
+font-weight:bold;
+background:#fef3c7;
+color:#92400e;
+cursor:pointer;
+width:100%
+}
+
+.focus-select.focused{
+background:#f59e0b;
+color:white
+}
+
+/* TODAY */
 
 .today-transfer-message{
 display:none;
@@ -222,7 +578,7 @@ color:#9ca3af
 
 .action-options{
 display:grid;
-grid-template-columns:1.2fr 1fr 1fr;
+grid-template-columns:1.2fr 1fr 1fr 1.2fr;
 gap:9px;
 margin-top:11px
 }
@@ -292,7 +648,9 @@ padding:14px 0;
 border-bottom:1px solid var(--border)
 }
 
-.schedule-item:last-child{border-bottom:none}
+.schedule-item:last-child{
+border-bottom:none
+}
 
 .schedule-item.conflicted{
 background:#fff7ed;
@@ -316,7 +674,10 @@ font-size:13px;
 color:var(--gray)
 }
 
-.priority-badge,.commitment-badge,.conflict-badge{
+.priority-badge,
+.commitment-badge,
+.conflict-badge,
+.focus-badge{
 display:inline-block;
 padding:4px 7px;
 border-radius:20px;
@@ -331,6 +692,7 @@ margin-bottom:3px
 .badge-could{background:#dcfce7;color:#166534}
 .commitment-badge{background:#e0e7ff;color:#3730a3}
 .conflict-badge{background:#ffedd5;color:#c2410c}
+.focus-badge{background:#fef3c7;color:#92400e}
 
 .progress-header{
 display:flex;
@@ -381,7 +743,9 @@ background:var(--blue-light);
 border-left:4px solid var(--blue)
 }
 
-.tip p{line-height:1.6}
+.tip p{
+line-height:1.6
+}
 
 .saved-message{
 display:none;
@@ -398,22 +762,74 @@ font-size:12px;
 margin-top:20px
 }
 
-@media(max-width:600px){
+@media(max-width:700px){
+
 h1{font-size:24px}
 .summary-number{font-size:21px}
 .card{padding:16px}
-.area-scores{grid-template-columns:1fr 1fr}
-.gap-wrapper{grid-column:1/-1}
-.action-options,.commitment-options,.outcome-life-grid{grid-template-columns:1fr}
-.life-action-row{grid-template-columns:1fr 38px}
-.send-today-button{grid-column:1/-1;grid-row:2;width:100%}
-.life-action-row .delete-button{grid-column:2;grid-row:1}
-.planner-top{display:block}
-.planner-area{display:inline-block;margin-top:7px}
-.planner-action{grid-template-columns:1fr}
-.planner-add{width:100%}
-.schedule-item{grid-template-columns:1fr;gap:5px}
+
+.area-scores{
+grid-template-columns:1fr 1fr
 }
+
+.gap-wrapper{
+grid-column:1/-1
+}
+
+.action-options,
+.commitment-options,
+.outcome-life-grid{
+grid-template-columns:1fr
+}
+
+.life-action-row{
+grid-template-columns:1fr 38px
+}
+
+.send-today-button{
+grid-column:1/-1;
+grid-row:2;
+width:100%
+}
+
+.life-action-row .delete-button{
+grid-column:2;
+grid-row:1
+}
+
+.planner-top{
+display:block
+}
+
+.planner-area{
+display:inline-block;
+margin-top:7px
+}
+
+.planner-action{
+grid-template-columns:1fr
+}
+
+.planner-add{
+width:100%
+}
+
+.top3-slot{
+grid-template-columns:42px 1fr
+}
+
+.top3-remove{
+grid-column:1/-1;
+width:100%
+}
+
+.schedule-item{
+grid-template-columns:1fr;
+gap:5px
+}
+
+}
+
 </style>
 </head>
 
@@ -422,6 +838,7 @@ h1{font-size:24px}
 <main class="container">
 
 <header>
+
 <div class="date" id="todayDate"></div>
 
 <h1>Life Management System</h1>
@@ -431,23 +848,37 @@ Manage the areas of your life that matter, decide what outcomes you want,
 and turn those outcomes into focused daily action.
 </p>
 
-<span class="version">Version 1.7</span>
+<span class="version">Version 1.8</span>
+
 </header>
 
 <nav class="nav">
-<button id="lifeNav" class="active" type="button">🏠 LIFE</button>
-<button id="todayNav" type="button">☀️ TODAY</button>
+
+<button id="lifeNav" class="active" type="button">
+🏠 LIFE
+</button>
+
+<button id="todayNav" type="button">
+☀️ TODAY
+</button>
+
 </nav>
+
+<!-- ======================================================
+     LIFE PAGE
+     ====================================================== -->
 
 <section id="lifePage" class="page active">
 
 <div class="card">
+
 <h2>🧭 Life Assessment</h2>
 
 <p class="section-description">
 Rate where you believe you are today and where you want to be.
 The gap helps you see which areas may deserve more attention.
 </p>
+
 </div>
 
 <div class="life-summary">
@@ -508,6 +939,10 @@ Save Life Assessment & Outcomes
 
 </section>
 
+<!-- ======================================================
+     TODAY PAGE
+     ====================================================== -->
+
 <section id="todayPage" class="page">
 
 <div class="today-transfer-message" id="todayTransferMessage">
@@ -523,11 +958,37 @@ Review your active Life Outcomes and deliberately choose the actions that deserv
 </p>
 
 <div class="planner-summary">
+
 <span>Active Life Outcomes</span>
+
 <span id="activeOutcomeCount">0</span>
+
 </div>
 
 <div id="dailyPlannerList"></div>
+
+</section>
+
+<!-- TOP 3 -->
+
+<section class="card top3-card">
+
+<div class="top3-header">
+
+<h2>⭐ Today's Top 3 Focus</h2>
+
+<div class="top3-count" id="top3Count">
+0 of 3 selected
+</div>
+
+</div>
+
+<p class="section-description">
+Choose up to three TODAY actions that deserve your strongest focus.
+Focus #1 is your most important action.
+</p>
+
+<div id="top3List"></div>
 
 </section>
 
@@ -535,13 +996,19 @@ Review your active Life Outcomes and deliberately choose the actions that deserv
 
 <h2>🎯 Today's Most Important Outcome</h2>
 
-<label for="outcome">What result do I want?</label>
+<label for="outcome">
+What result do I want?
+</label>
 
-<textarea id="outcome" placeholder="Example: Finish the first version of my website."></textarea>
+<textarea id="outcome"
+placeholder="Example: Finish the first version of my website."></textarea>
 
-<label for="purpose">Why does this matter?</label>
+<label for="purpose">
+Why does this matter?
+</label>
 
-<textarea id="purpose" placeholder="Write the reason this outcome is important to you."></textarea>
+<textarea id="purpose"
+placeholder="Write the reason this outcome is important to you."></textarea>
 
 </section>
 
@@ -550,12 +1017,15 @@ Review your active Life Outcomes and deliberately choose the actions that deserv
 <h2>📅 Fixed Commitments</h2>
 
 <p class="section-description">
-Add appointments, meetings, work shifts, pickups, classes, or anything else that already has a fixed time.
+Add appointments, meetings, work shifts, pickups, classes,
+or anything else that already has a fixed time.
 </p>
 
 <div id="commitmentList"></div>
 
-<button class="commitment-add-button" id="addCommitmentButton" type="button">
+<button class="commitment-add-button"
+id="addCommitmentButton"
+type="button">
 + Add Fixed Commitment
 </button>
 
@@ -566,12 +1036,15 @@ Add appointments, meetings, work shifts, pickups, classes, or anything else that
 <h2>⚡ Action Plan</h2>
 
 <p class="section-description">
-Choose the actions that move your most important outcome forward, then decide when they belong in your day.
+Choose the actions that move your most important outcome forward.
+Use the Focus selector to choose Focus #1, #2, or #3.
 </p>
 
 <div id="actionList"></div>
 
-<button class="add-button" id="addActionButton" type="button">
+<button class="add-button"
+id="addActionButton"
+type="button">
 + Add Another Action
 </button>
 
@@ -599,19 +1072,27 @@ Choose the actions that move your most important outcome forward, then decide wh
 
 <h2>📈 Today's Progress</h2>
 
-<div class="progress-percent" id="progressPercent">0%</div>
+<div class="progress-percent"
+id="progressPercent">
+0%
+</div>
 
 </div>
 
 <div class="progress-background">
-<div class="progress-bar" id="progressBar"></div>
+
+<div class="progress-bar"
+id="progressBar"></div>
+
 </div>
 
-<div class="progress-text" id="progressText">
+<div class="progress-text"
+id="progressText">
 0 of 0 actions completed
 </div>
 
-<div class="completion-message" id="completionMessage">
+<div class="completion-message"
+id="completionMessage">
 🎉 Outcome action plan completed!
 </div>
 
@@ -622,17 +1103,22 @@ Choose the actions that move your most important outcome forward, then decide wh
 <h2>💡 Focus Reminder</h2>
 
 <p>
-Your calendar should reflect your priorities. Protect your commitments,
-then give the actions that move your important outcomes forward a specific place in your day.
+Your calendar should reflect your priorities.
+Protect your commitments, identify your Top 3,
+then give the actions that move your important outcomes
+forward a specific place in your day.
 </p>
 
 </section>
 
-<button class="save-button" id="saveTodayButton" type="button">
+<button class="save-button"
+id="saveTodayButton"
+type="button">
 Save My Day
 </button>
 
-<div class="saved-message" id="todaySavedMessage">
+<div class="saved-message"
+id="todaySavedMessage">
 ✓ Your day has been saved.
 </div>
 
@@ -647,20 +1133,21 @@ Life Management System
 <script>
 
 /* =========================================================
-   VERSION 1.7 STORAGE
+   STORAGE
    ========================================================= */
 
-const LIFE_STORAGE_KEY="lifeManagementAreasV17";
-const OLD_LIFE_STORAGE_KEY="lifeManagementAreasV16";
+const LIFE_STORAGE_KEY="lifeManagementAreasV18";
+const OLD_LIFE_STORAGE_KEY="lifeManagementAreasV17";
+const OLDER_LIFE_STORAGE_KEY="lifeManagementAreasV16";
 
-const LIFE_OUTCOMES_STORAGE_KEY="lifeManagementOutcomesV17";
-const OLD_LIFE_OUTCOMES_STORAGE_KEY="lifeManagementOutcomesV16";
-const OLDER_LIFE_OUTCOMES_STORAGE_KEY="lifeManagementOutcomesV15";
+const LIFE_OUTCOMES_STORAGE_KEY="lifeManagementOutcomesV18";
+const OLD_LIFE_OUTCOMES_STORAGE_KEY="lifeManagementOutcomesV17";
+const OLDER_LIFE_OUTCOMES_STORAGE_KEY="lifeManagementOutcomesV16";
+const OLDEST_LIFE_OUTCOMES_STORAGE_KEY="lifeManagementOutcomesV15";
 
-const TODAY_STORAGE_KEY="outcomeFocusDashboardV17";
-const OLD_TODAY_STORAGE_KEY="outcomeFocusDashboardV16";
-const OLDER_TODAY_STORAGE_KEY="outcomeFocusDashboardV15";
-
+const TODAY_STORAGE_KEY="outcomeFocusDashboardV18";
+const OLD_TODAY_STORAGE_KEY="outcomeFocusDashboardV17";
+const OLDER_TODAY_STORAGE_KEY="outcomeFocusDashboardV16";
 
 /* =========================================================
    DATE
@@ -686,7 +1173,6 @@ const now=new Date();
 return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}-${String(now.getDate()).padStart(2,"0")}`;
 
 }
-
 
 /* =========================================================
    NAVIGATION
@@ -717,6 +1203,7 @@ todayPage.classList.add("active");
 todayNav.classList.add("active");
 
 renderDailyPlanner();
+renderTop3();
 
 }
 
@@ -736,7 +1223,6 @@ todayNav.addEventListener(
 "click",
 ()=>showPage("today")
 );
-
 
 /* =========================================================
    LIFE ASSESSMENT
@@ -775,51 +1261,33 @@ const list=document.getElementById("lifeAreaList");
 const card=document.createElement("div");
 card.className="life-area";
 
-
 const top=document.createElement("div");
 top.className="life-area-top";
 
-
 const name=document.createElement("input");
-
 name.type="text";
 name.className="area-name";
 name.value=area.name||"";
 
-
 const del=document.createElement("button");
-
 del.type="button";
 del.className="delete-button";
 del.innerHTML="&times;";
 
-
-top.append(
-name,
-del
-);
-
+top.append(name,del);
 
 const scores=document.createElement("div");
 scores.className="area-scores";
 
-
-function scoreBox(
-label,
-className,
-value
-){
+function scoreBox(label,className,value){
 
 const wrap=document.createElement("div");
 
 wrap.innerHTML=
 `<div class="score-label">${label}</div>`;
 
-
 const select=document.createElement("select");
-
 select.className=className;
-
 
 for(let i=1;i<=10;i++){
 
@@ -832,19 +1300,13 @@ select.appendChild(option);
 
 }
 
-
 select.value=String(value);
 
 wrap.appendChild(select);
 
-
-return {
-wrap,
-select
-};
+return {wrap,select};
 
 }
-
 
 const currentScore=
 scoreBox(
@@ -853,7 +1315,6 @@ scoreBox(
 area.current||5
 );
 
-
 const desiredScore=
 scoreBox(
 "Desired 1–10",
@@ -861,21 +1322,16 @@ scoreBox(
 area.desired||8
 );
 
-
 const gapWrap=document.createElement("div");
-
 gapWrap.className="gap-wrapper";
 
 gapWrap.innerHTML=
 '<div class="score-label">Improvement Gap</div>';
 
-
 const gap=document.createElement("div");
-
 gap.className="gap-box";
 
 gapWrap.appendChild(gap);
-
 
 scores.append(
 currentScore.wrap,
@@ -883,24 +1339,16 @@ desiredScore.wrap,
 gapWrap
 );
 
-
 const barBackground=document.createElement("div");
-
-barBackground.className=
-"area-bar-background";
-
+barBackground.className="area-bar-background";
 
 const bar=document.createElement("div");
-
 bar.className="area-bar";
 
 barBackground.appendChild(bar);
 
-
 const status=document.createElement("div");
-
 status.className="area-status";
-
 
 card.append(
 top,
@@ -909,9 +1357,7 @@ barBackground,
 status
 );
 
-
 list.appendChild(card);
-
 
 function updateCard(){
 
@@ -927,17 +1373,14 @@ desiredValue-currentValue,
 0
 );
 
-
 gap.textContent=
 improvementGap;
-
 
 gap.classList.remove(
 "gap-low",
 "gap-medium",
 "gap-high"
 );
-
 
 if(improvementGap<=2){
 
@@ -953,10 +1396,8 @@ gap.classList.add("gap-high");
 
 }
 
-
 bar.style.width=
 (currentValue*10)+"%";
-
 
 if(currentValue>=desiredValue){
 
@@ -982,12 +1423,10 @@ status.textContent=
 
 }
 
-
 name.addEventListener(
 "input",
 refreshLifeAssessment
 );
-
 
 currentScore.select.addEventListener(
 "change",
@@ -999,7 +1438,6 @@ refreshLifeAssessment();
 }
 );
 
-
 desiredScore.select.addEventListener(
 "change",
 ()=>{
@@ -1010,23 +1448,19 @@ refreshLifeAssessment();
 }
 );
 
-
 del.addEventListener(
 "click",
 ()=>{
 
 card.remove();
-
 refreshLifeAssessment();
 
 }
 );
 
-
 updateCard();
 
 }
-
 
 function collectLifeAreas(){
 
@@ -1055,41 +1489,33 @@ card.querySelector(".desired-score").value
 
 }
 
-
 function updateLifeSummary(){
 
 if(!lifeAreas.length){
 
 document.getElementById("averageCurrent").textContent="0";
-
 document.getElementById("averageDesired").textContent="0";
-
 document.getElementById("largestGap").textContent="0";
 
 return;
 
 }
 
-
 const currentAverage=
 (
 lifeAreas.reduce(
 (sum,area)=>sum+area.current,
 0
-)
-/lifeAreas.length
+)/lifeAreas.length
 ).toFixed(1);
-
 
 const desiredAverage=
 (
 lifeAreas.reduce(
 (sum,area)=>sum+area.desired,
 0
-)
-/lifeAreas.length
+)/lifeAreas.length
 ).toFixed(1);
-
 
 const biggestGap=
 Math.max(
@@ -1102,7 +1528,6 @@ area.desired-area.current,
 )
 );
 
-
 document.getElementById("averageCurrent").textContent=
 currentAverage;
 
@@ -1113,7 +1538,6 @@ document.getElementById("largestGap").textContent=
 biggestGap;
 
 }
-
 
 function refreshLifeAssessment(){
 
@@ -1128,78 +1552,83 @@ JSON.stringify(lifeAreas)
 
 }
 
+function parseArrayStorage(value){
 
-function loadLifeAssessment(){
-
-let saved=
-localStorage.getItem(
-LIFE_STORAGE_KEY
-);
-
-if(!saved){
-
-saved=
-localStorage.getItem(
-OLD_LIFE_STORAGE_KEY
-);
-
+if(!value){
+return null;
 }
-
-
-if(saved){
 
 try{
 
-lifeAreas=
-JSON.parse(saved);
+const parsed=JSON.parse(value);
 
-}catch(error){
+if(Array.isArray(parsed)){
+return parsed;
+}
 
-lifeAreas=
-JSON.parse(
-JSON.stringify(
-defaultLifeAreas
-)
-);
+}catch(error){}
+
+return null;
 
 }
+
+function loadLifeAssessment(){
+
+const v18=
+parseArrayStorage(
+localStorage.getItem(LIFE_STORAGE_KEY)
+);
+
+const v17=
+parseArrayStorage(
+localStorage.getItem(OLD_LIFE_STORAGE_KEY)
+);
+
+const v16=
+parseArrayStorage(
+localStorage.getItem(OLDER_LIFE_STORAGE_KEY)
+);
+
+if(v18 && v18.length){
+
+lifeAreas=v18;
+
+}else if(v17 && v17.length){
+
+lifeAreas=v17;
+
+}else if(v16 && v16.length){
+
+lifeAreas=v16;
 
 }else{
 
 lifeAreas=
 JSON.parse(
-JSON.stringify(
-defaultLifeAreas
-)
+JSON.stringify(defaultLifeAreas)
 );
 
 }
-
 
 const list=
 document.getElementById("lifeAreaList");
 
 list.innerHTML="";
 
-
 lifeAreas.forEach(
 createLifeAreaCard
 );
 
-
 refreshLifeAssessment();
 
 }
-
 
 function addLifeArea(){
 
 createLifeAreaCard({
 
 name:"New Life Area",
-
 current:5,
-
 desired:8
 
 });
@@ -1208,34 +1637,26 @@ refreshLifeAssessment();
 
 }
 
-
 /* =========================================================
    LIFE OUTCOMES
    ========================================================= */
 
 let lifeOutcomes=[];
 
-
 function getLifeAreaNames(){
 
 collectLifeAreas();
 
 return lifeAreas
-.map(
-area=>area.name.trim()
-)
+.map(area=>area.name.trim())
 .filter(Boolean);
 
 }
 
-
 function createLifeOutcomeCard(outcome){
 
 const list=
-document.getElementById(
-"lifeOutcomeList"
-);
-
+document.getElementById("lifeOutcomeList");
 
 const card=
 document.createElement("div");
@@ -1243,13 +1664,11 @@ document.createElement("div");
 card.className=
 "outcome-life-card";
 
-
 const top=
 document.createElement("div");
 
 top.className=
 "outcome-life-top";
-
 
 const title=
 document.createElement("input");
@@ -1265,29 +1684,16 @@ title.placeholder=
 title.value=
 outcome.title||"";
 
-
 const del=
 document.createElement("button");
 
 del.type="button";
+del.className="delete-button";
+del.innerHTML="&times;";
 
-del.className=
-"delete-button";
-
-del.innerHTML=
-"&times;";
-
-
-top.append(
-title,
-del
-);
-
+top.append(title,del);
 
 card.appendChild(top);
-
-
-/* AREA / STATUS / DATE / PURPOSE */
 
 const grid=
 document.createElement("div");
@@ -1295,6 +1701,7 @@ document.createElement("div");
 grid.className=
 "outcome-life-grid";
 
+/* AREA */
 
 const areaWrap=
 document.createElement("div");
@@ -1302,17 +1709,14 @@ document.createElement("div");
 areaWrap.innerHTML=
 '<div class="field-label">Area of Life</div>';
 
-
 const area=
 document.createElement("select");
 
 area.className=
 "life-outcome-area";
 
-
 const names=
 getLifeAreaNames();
-
 
 if(names.length===0){
 
@@ -1320,31 +1724,25 @@ const option=
 document.createElement("option");
 
 option.value="";
-
-option.textContent=
-"No life areas available";
+option.textContent="No life areas available";
 
 area.appendChild(option);
 
 }else{
 
-names.forEach(
-name=>{
+names.forEach(name=>{
 
 const option=
 document.createElement("option");
 
 option.value=name;
-
 option.textContent=name;
 
 area.appendChild(option);
 
-}
-);
+});
 
 }
-
 
 if(
 outcome.area &&
@@ -1354,25 +1752,19 @@ outcome.area &&
 const option=
 document.createElement("option");
 
-option.value=
-outcome.area;
-
-option.textContent=
-outcome.area;
+option.value=outcome.area;
+option.textContent=outcome.area;
 
 area.appendChild(option);
 
 }
-
 
 area.value=
 outcome.area||
 names[0]||
 "";
 
-
 areaWrap.appendChild(area);
-
 
 /* STATUS */
 
@@ -1382,13 +1774,11 @@ document.createElement("div");
 statusWrap.innerHTML=
 '<div class="field-label">Status</div>';
 
-
 const status=
 document.createElement("select");
 
 status.className=
 "life-outcome-status";
-
 
 status.innerHTML=
 `
@@ -1397,16 +1787,13 @@ status.innerHTML=
 <option value="paused">Paused</option>
 `;
 
-
 status.value=
 outcome.status||
 "active";
 
-
 statusWrap.appendChild(status);
 
-
-/* DATE */
+/* TARGET DATE */
 
 const dateWrap=
 document.createElement("div");
@@ -1414,22 +1801,14 @@ document.createElement("div");
 dateWrap.innerHTML=
 '<div class="field-label">Target Date</div>';
 
-
 const date=
 document.createElement("input");
 
 date.type="date";
-
-date.className=
-"life-outcome-date";
-
-date.value=
-outcome.targetDate||
-"";
-
+date.className="life-outcome-date";
+date.value=outcome.targetDate||"";
 
 dateWrap.appendChild(date);
-
 
 /* PURPOSE */
 
@@ -1438,7 +1817,6 @@ document.createElement("div");
 
 purposeWrap.innerHTML=
 '<div class="field-label">Purpose / Why</div>';
-
 
 const purpose=
 document.createElement("input");
@@ -1455,9 +1833,7 @@ purpose.value=
 outcome.purpose||
 "";
 
-
 purposeWrap.appendChild(purpose);
-
 
 grid.append(
 areaWrap,
@@ -1466,9 +1842,7 @@ dateWrap,
 purposeWrap
 );
 
-
 card.appendChild(grid);
-
 
 /* ACTIONS */
 
@@ -1478,10 +1852,8 @@ document.createElement("div");
 actions.className=
 "outcome-life-actions";
 
-
 actions.innerHTML=
 '<div class="field-label">Action Plan</div>';
-
 
 const actionList=
 document.createElement("div");
@@ -1489,40 +1861,27 @@ document.createElement("div");
 actionList.className=
 "life-outcome-action-list";
 
-
 actions.appendChild(actionList);
-
 
 const add=
 document.createElement("button");
 
 add.type="button";
-
-add.className=
-"add-button";
-
-add.style.marginTop=
-"10px";
-
-add.textContent=
-"+ Add Outcome Action";
-
+add.className="add-button";
+add.style.marginTop="10px";
+add.textContent="+ Add Outcome Action";
 
 actions.appendChild(add);
 
 card.appendChild(actions);
 
-
-function addActionRow(
-text=""
-){
+function addActionRow(text=""){
 
 const row=
 document.createElement("div");
 
 row.className=
 "life-action-row";
-
 
 const input=
 document.createElement("input");
@@ -1535,35 +1894,21 @@ input.className=
 input.placeholder=
 "Action that moves this outcome forward";
 
-input.value=
-text;
-
+input.value=text;
 
 const sendButton=
 document.createElement("button");
 
-sendButton.type=
-"button";
-
-sendButton.className=
-"send-today-button";
-
-sendButton.textContent=
-"→ Add to TODAY";
-
+sendButton.type="button";
+sendButton.className="send-today-button";
+sendButton.textContent="→ Add to TODAY";
 
 const deleteButton=
 document.createElement("button");
 
-deleteButton.type=
-"button";
-
-deleteButton.className=
-"delete-button";
-
-deleteButton.innerHTML=
-"&times;";
-
+deleteButton.type="button";
+deleteButton.className="delete-button";
+deleteButton.innerHTML="&times;";
 
 row.append(
 input,
@@ -1571,21 +1916,17 @@ sendButton,
 deleteButton
 );
 
-
 actionList.appendChild(row);
-
 
 input.addEventListener(
 "input",
 ()=>{
 
 saveLifeOutcomes();
-
 renderDailyPlanner();
 
 }
 );
-
 
 sendButton.addEventListener(
 "click",
@@ -1594,39 +1935,27 @@ sendButton.addEventListener(
 const actionText=
 input.value.trim();
 
-
 if(actionText===""){
 
 input.focus();
-
 return;
 
 }
 
-
 addLifeActionToToday(
 
 actionText,
-
 title.value.trim(),
-
 purpose.value.trim(),
-
 area.value,
-
 true
 
 );
 
-
 sendButton.textContent=
 "✓ Added to TODAY";
 
-
-sendButton.classList.add(
-"added"
-);
-
+sendButton.classList.add("added");
 
 setTimeout(
 ()=>{
@@ -1634,9 +1963,7 @@ setTimeout(
 sendButton.textContent=
 "→ Add to TODAY";
 
-sendButton.classList.remove(
-"added"
-);
+sendButton.classList.remove("added");
 
 },
 1800
@@ -1645,7 +1972,6 @@ sendButton.classList.remove(
 }
 );
 
-
 deleteButton.addEventListener(
 "click",
 ()=>{
@@ -1653,14 +1979,12 @@ deleteButton.addEventListener(
 row.remove();
 
 saveLifeOutcomes();
-
 renderDailyPlanner();
 
 }
 );
 
 }
-
 
 (
 Array.isArray(outcome.actions) &&
@@ -1670,82 +1994,67 @@ outcome.actions
 :
 [""]
 )
-.forEach(
-addActionRow
-);
-
+.forEach(addActionRow);
 
 add.addEventListener(
 "click",
 ()=>{
 
 addActionRow("");
-
 saveLifeOutcomes();
 
 }
 );
-
 
 title.addEventListener(
 "input",
 ()=>{
 
 saveLifeOutcomes();
-
 renderDailyPlanner();
 
 }
 );
-
 
 area.addEventListener(
 "change",
 ()=>{
 
 saveLifeOutcomes();
-
 renderDailyPlanner();
 
 }
 );
-
 
 status.addEventListener(
 "change",
 ()=>{
 
 saveLifeOutcomes();
-
 renderDailyPlanner();
 
 }
 );
-
 
 date.addEventListener(
 "change",
 ()=>{
 
 saveLifeOutcomes();
-
 renderDailyPlanner();
 
 }
 );
-
 
 purpose.addEventListener(
 "input",
 ()=>{
 
 saveLifeOutcomes();
-
 renderDailyPlanner();
 
 }
 );
-
 
 del.addEventListener(
 "click",
@@ -1754,17 +2063,14 @@ del.addEventListener(
 card.remove();
 
 saveLifeOutcomes();
-
 renderDailyPlanner();
 
 }
 );
 
-
 list.appendChild(card);
 
 }
-
 
 function collectLifeOutcomes(){
 
@@ -1820,134 +2126,72 @@ value=>value.trim()!==""
 
 }
 
-
 function saveLifeOutcomes(){
 
 collectLifeOutcomes();
-
-localStorage.setItem(
-
-LIFE_OUTCOMES_STORAGE_KEY,
-
-JSON.stringify(
-lifeOutcomes
-)
-
-);
-
-}
-
-
-/* =========================================================
-   FIXED V1.7 MIGRATION
-   ========================================================= */
-
-function parseOutcomeStorage(
-storageValue
-){
-
-if(!storageValue){
-
-return null;
-
-}
-
-
-try{
-
-const parsed=
-JSON.parse(
-storageValue
-);
-
-
-if(
-Array.isArray(parsed)
-){
-
-return parsed;
-
-}
-
-
-}catch(error){
-
-console.log(
-"Life Outcome storage could not be read."
-);
-
-}
-
-
-return null;
-
-}
-
-
-function loadLifeOutcomes(){
-
-const v17=
-parseOutcomeStorage(
-localStorage.getItem(
-LIFE_OUTCOMES_STORAGE_KEY
-)
-);
-
-
-const v16=
-parseOutcomeStorage(
-localStorage.getItem(
-OLD_LIFE_OUTCOMES_STORAGE_KEY
-)
-);
-
-
-const v15=
-parseOutcomeStorage(
-localStorage.getItem(
-OLDER_LIFE_OUTCOMES_STORAGE_KEY
-)
-);
-
-
-/*
-IMPORTANT MIGRATION RULE:
-
-If the first V1.7 build accidentally saved
-an empty [] before the old outcomes were migrated,
-do NOT allow that empty V1.7 array to hide
-good V1.6 or V1.5 data.
-*/
-
-
-if(
-v17 &&
-v17.length>0
-){
-
-lifeOutcomes=
-v17;
-
-}else if(
-v16 &&
-v16.length>0
-){
-
-lifeOutcomes=
-v16;
 
 localStorage.setItem(
 LIFE_OUTCOMES_STORAGE_KEY,
 JSON.stringify(lifeOutcomes)
 );
 
-}else if(
-v15 &&
-v15.length>0
-){
+}
 
-lifeOutcomes=
-v15;
+function loadLifeOutcomes(){
+
+const v18=
+parseArrayStorage(
+localStorage.getItem(
+LIFE_OUTCOMES_STORAGE_KEY
+)
+);
+
+const v17=
+parseArrayStorage(
+localStorage.getItem(
+OLD_LIFE_OUTCOMES_STORAGE_KEY
+)
+);
+
+const v16=
+parseArrayStorage(
+localStorage.getItem(
+OLDER_LIFE_OUTCOMES_STORAGE_KEY
+)
+);
+
+const v15=
+parseArrayStorage(
+localStorage.getItem(
+OLDEST_LIFE_OUTCOMES_STORAGE_KEY
+)
+);
+
+if(v18 && v18.length){
+
+lifeOutcomes=v18;
+
+}else if(v17 && v17.length){
+
+lifeOutcomes=v17;
+
+localStorage.setItem(
+LIFE_OUTCOMES_STORAGE_KEY,
+JSON.stringify(lifeOutcomes)
+);
+
+}else if(v16 && v16.length){
+
+lifeOutcomes=v16;
+
+localStorage.setItem(
+LIFE_OUTCOMES_STORAGE_KEY,
+JSON.stringify(lifeOutcomes)
+);
+
+}else if(v15 && v15.length){
+
+lifeOutcomes=v15;
 
 localStorage.setItem(
 LIFE_OUTCOMES_STORAGE_KEY,
@@ -1960,19 +2204,14 @@ lifeOutcomes=[];
 
 }
 
-
 const list=
 document.getElementById(
 "lifeOutcomeList"
 );
 
-
 list.innerHTML="";
 
-
-if(
-lifeOutcomes.length===0
-){
+if(lifeOutcomes.length===0){
 
 list.innerHTML=
 `
@@ -1991,7 +2230,6 @@ createLifeOutcomeCard
 
 }
 
-
 function addLifeOutcome(){
 
 const list=
@@ -1999,66 +2237,46 @@ document.getElementById(
 "lifeOutcomeList"
 );
 
-
 const empty=
 list.querySelector(
 ".life-outcome-empty"
 );
 
-
 if(empty){
-
 empty.remove();
-
 }
-
 
 createLifeOutcomeCard({
 
 title:"",
-
-area:
-getLifeAreaNames()[0]||
-"",
-
+area:getLifeAreaNames()[0]||"",
 purpose:"",
-
 targetDate:"",
-
 status:"active",
-
 actions:[""]
 
 });
-
 
 saveLifeOutcomes();
 
 }
 
-
 function saveLifeAssessment(){
 
 refreshLifeAssessment();
-
 saveLifeOutcomes();
-
 
 const message=
 document.getElementById(
 "lifeSavedMessage"
 );
 
-
-message.style.display=
-"block";
-
+message.style.display="block";
 
 setTimeout(
 ()=>{
 
-message.style.display=
-"none";
+message.style.display="none";
 
 },
 2500
@@ -2066,15 +2284,13 @@ message.style.display=
 
 }
 
-
 /* =========================================================
-   TODAY
+   TODAY DATA
    ========================================================= */
 
 let dashboardData={
 
-date:
-getDateKey(),
+date:getDateKey(),
 
 outcome:"",
 
@@ -2095,7 +2311,8 @@ text:"",
 completed:false,
 priority:"must",
 time:"",
-duration:"30"
+duration:"30",
+focus:0
 },
 
 {
@@ -2103,7 +2320,8 @@ text:"",
 completed:false,
 priority:"should",
 time:"",
-duration:"30"
+duration:"30",
+focus:0
 },
 
 {
@@ -2111,23 +2329,58 @@ text:"",
 completed:false,
 priority:"could",
 time:"",
-duration:"30"
+duration:"30",
+focus:0
 }
 
 ]
 
 };
 
+function normalizeActions(actions){
 
-function todayHasAction(
-text
-){
+if(!Array.isArray(actions)){
+return [];
+}
+
+return actions.map(
+action=>({
+
+text:action.text||"",
+
+completed:
+Boolean(action.completed),
+
+priority:
+action.priority||"should",
+
+time:
+action.time||"",
+
+duration:
+String(action.duration||"30"),
+
+focus:
+[1,2,3].includes(
+Number(action.focus)
+)
+?
+Number(action.focus)
+:
+0
+
+})
+);
+
+}
+
+function todayHasAction(text){
 
 return dashboardData.actions.some(
 
 action=>
 
-action.text
+(action.text||"")
 .trim()
 .toLowerCase()
 
@@ -2141,7 +2394,6 @@ text
 
 }
 
-
 /* =========================================================
    DAILY PLANNER
    ========================================================= */
@@ -2153,18 +2405,9 @@ document.getElementById(
 "dailyPlannerList"
 );
 
-
 if(!list){
-
 return;
-
 }
-
-
-/*
-If LIFE cards exist, collect their latest state.
-If they do not exist yet, preserve the loaded array.
-*/
 
 if(
 document.querySelectorAll(
@@ -2176,26 +2419,20 @@ collectLifeOutcomes();
 
 }
 
-
 const active=
 lifeOutcomes.filter(
 outcome=>
 (outcome.status||"active")==="active"
 );
 
-
 document.getElementById(
 "activeOutcomeCount"
 ).textContent=
 active.length;
 
-
 list.innerHTML="";
 
-
-if(
-active.length===0
-){
+if(active.length===0){
 
 list.innerHTML=
 `
@@ -2209,7 +2446,6 @@ return;
 
 }
 
-
 active.forEach(
 outcome=>{
 
@@ -2219,13 +2455,11 @@ document.createElement("div");
 card.className=
 "planner-card";
 
-
 const top=
 document.createElement("div");
 
 top.className=
 "planner-top";
-
 
 const title=
 document.createElement("div");
@@ -2237,7 +2471,6 @@ title.textContent=
 outcome.title||
 "Untitled Life Outcome";
 
-
 const area=
 document.createElement("div");
 
@@ -2248,19 +2481,11 @@ area.textContent=
 outcome.area||
 "Life Outcome";
 
-
-top.append(
-title,
-area
-);
-
+top.append(title,area);
 
 card.appendChild(top);
 
-
-if(
-outcome.purpose
-){
+if(outcome.purpose){
 
 const purpose=
 document.createElement("div");
@@ -2269,23 +2494,17 @@ purpose.className=
 "planner-purpose";
 
 purpose.textContent=
-"Why: "+
-outcome.purpose;
+"Why: "+outcome.purpose;
 
-
-card.appendChild(
-purpose
-);
+card.appendChild(purpose);
 
 }
-
 
 const actions=
 document.createElement("div");
 
 actions.className=
 "planner-actions";
-
 
 if(
 !Array.isArray(outcome.actions) ||
@@ -2310,7 +2529,6 @@ document.createElement("div");
 row.className=
 "planner-action";
 
-
 const text=
 document.createElement("div");
 
@@ -2320,24 +2538,15 @@ text.className=
 text.textContent=
 actionText;
 
-
 const button=
 document.createElement("button");
 
-button.type=
-"button";
-
-button.className=
-"planner-add";
-
+button.type="button";
+button.className="planner-add";
 
 function updateButton(){
 
-if(
-todayHasAction(
-actionText
-)
-){
+if(todayHasAction(actionText)){
 
 button.textContent=
 "✓ In TODAY";
@@ -2359,19 +2568,13 @@ button.classList.remove(
 
 }
 
-
 updateButton();
-
 
 button.addEventListener(
 "click",
 ()=>{
 
-if(
-todayHasAction(
-actionText
-)
-){
+if(todayHasAction(actionText)){
 
 showTransferMessage(
 "✓ That action is already in TODAY."
@@ -2381,82 +2584,54 @@ return;
 
 }
 
-
 addLifeActionToToday(
 
 actionText,
-
 outcome.title,
-
 outcome.purpose,
-
 outcome.area,
-
 false
 
 );
-
 
 renderDailyPlanner();
 
 }
 );
 
+row.append(text,button);
 
-row.append(
-text,
-button
-);
-
-
-actions.appendChild(
-row
-);
+actions.appendChild(row);
 
 }
 );
 
 }
 
+card.appendChild(actions);
 
-card.appendChild(
-actions
-);
-
-
-list.appendChild(
-card
-);
+list.appendChild(card);
 
 }
 );
 
 }
 
-
-function showTransferMessage(
-text
-){
+function showTransferMessage(text){
 
 const message=
 document.getElementById(
 "todayTransferMessage"
 );
 
+message.textContent=text;
 
-message.textContent=
-text;
-
-
-message.style.display=
-"block";
-
+message.style.display="block";
 
 setTimeout(
 ()=>{
 
-message.style.display=
-"none";
+message.style.display="none";
 
 },
 3000
@@ -2464,67 +2639,41 @@ message.style.display=
 
 }
 
-
 function addLifeActionToToday(
 
 actionText,
-
 outcomeTitle,
-
 outcomePurpose,
-
 lifeArea,
-
 switchToToday
 
 ){
 
 collectTodayData();
 
-
 const duplicate=
-todayHasAction(
-actionText
-);
+todayHasAction(actionText);
 
-
-if(
-!duplicate
-){
+if(!duplicate){
 
 dashboardData.actions.push({
 
-text:
-actionText,
-
-completed:
-false,
-
-priority:
-"should",
-
-time:
-"",
-
-duration:
-"30"
+text:actionText,
+completed:false,
+priority:"should",
+time:"",
+duration:"30",
+focus:0
 
 });
 
 }
 
-
 const outcomeField=
-document.getElementById(
-"outcome"
-);
-
+document.getElementById("outcome");
 
 const purposeField=
-document.getElementById(
-"purpose"
-);
-
+document.getElementById("purpose");
 
 if(
 outcomeField.value.trim()==="" &&
@@ -2539,7 +2688,6 @@ outcomeTitle;
 
 }
 
-
 if(
 purposeField.value.trim()==="" &&
 outcomePurpose
@@ -2553,22 +2701,11 @@ outcomePurpose;
 
 }
 
-
-localStorage.setItem(
-
-TODAY_STORAGE_KEY,
-
-JSON.stringify(
-dashboardData
-)
-
-);
-
+saveTodayDataOnly();
 
 renderTodayActions();
-
 renderDailyPlanner();
-
+renderTop3();
 
 showTransferMessage(
 
@@ -2580,33 +2717,235 @@ duplicate
 
 );
 
+if(switchToToday){
 
-if(
-switchToToday
-){
+showPage("today");
 
-showPage(
-"today"
+}
+
+}
+
+/* =========================================================
+   TOP 3 FOCUS
+   ========================================================= */
+
+function getFocusAction(rank){
+
+return dashboardData.actions.find(
+action=>Number(action.focus)===rank
 );
 
 }
 
+function focusRankLabel(rank){
+
+if(rank===1){
+return "🥇";
 }
 
+if(rank===2){
+return "🥈";
+}
+
+return "🥉";
+
+}
+
+function setActionFocus(
+actionIndex,
+rank
+){
+
+collectTodayData();
+
+rank=
+Number(rank);
+
+if(rank>0){
+
+dashboardData.actions.forEach(
+(action,index)=>{
+
+if(
+index!==actionIndex &&
+Number(action.focus)===rank
+){
+
+action.focus=0;
+
+}
+
+}
+);
+
+}
+
+dashboardData.actions[actionIndex].focus=
+rank;
+
+saveTodayDataOnly();
+
+renderTodayActions();
+renderTop3();
+buildSchedule();
+
+}
+
+function removeFocusRank(rank){
+
+collectTodayData();
+
+dashboardData.actions.forEach(
+action=>{
+
+if(Number(action.focus)===rank){
+
+action.focus=0;
+
+}
+
+}
+);
+
+saveTodayDataOnly();
+
+renderTodayActions();
+renderTop3();
+buildSchedule();
+
+}
+
+function renderTop3(){
+
+const list=
+document.getElementById(
+"top3List"
+);
+
+if(!list){
+return;
+}
+
+const focused=
+dashboardData.actions.filter(
+action=>
+[1,2,3].includes(
+Number(action.focus)
+)
+);
+
+document.getElementById(
+"top3Count"
+).textContent=
+`${focused.length} of 3 selected`;
+
+list.innerHTML="";
+
+const meaningfulActions=
+dashboardData.actions.filter(
+action=>
+(action.text||"").trim()!==""
+);
+
+if(meaningfulActions.length===0){
+
+list.innerHTML=
+`
+<div class="top3-empty">
+Add or choose TODAY actions first.
+Then you can select your three strongest priorities for the day.
+</div>
+`;
+
+return;
+
+}
+
+for(let rank=1;rank<=3;rank++){
+
+const action=
+getFocusAction(rank);
+
+const slot=
+document.createElement("div");
+
+slot.className=
+"top3-slot";
+
+const rankBox=
+document.createElement("div");
+
+rankBox.className=
+"top3-rank";
+
+rankBox.textContent=
+focusRankLabel(rank);
+
+const text=
+document.createElement("div");
+
+text.className=
+"top3-text";
+
+if(action){
+
+text.textContent=
+action.text;
+
+}else{
+
+text.textContent=
+`Focus #${rank} not selected`;
+
+text.classList.add(
+"top3-empty-text"
+);
+
+}
+
+slot.append(
+rankBox,
+text
+);
+
+if(action){
+
+const remove=
+document.createElement("button");
+
+remove.type="button";
+
+remove.className=
+"top3-remove";
+
+remove.textContent=
+"Remove";
+
+remove.addEventListener(
+"click",
+()=>removeFocusRank(rank)
+);
+
+slot.appendChild(remove);
+
+}
+
+list.appendChild(slot);
+
+}
+
+}
 
 /* =========================================================
-   FIXED COMMITMENTS
+   COMMITMENTS
    ========================================================= */
 
-function createCommitmentCard(
-commitment
-){
+function createCommitmentCard(commitment){
 
 const list=
 document.getElementById(
 "commitmentList"
 );
-
 
 const card=
 document.createElement("div");
@@ -2614,19 +2953,16 @@ document.createElement("div");
 card.className=
 "commitment-card";
 
-
 const main=
 document.createElement("div");
 
 main.className=
 "commitment-main";
 
-
 const input=
 document.createElement("input");
 
-input.type=
-"text";
+input.type="text";
 
 input.className=
 "commitment-text";
@@ -2635,28 +2971,19 @@ input.placeholder=
 "Example: Doctor appointment";
 
 input.value=
-commitment.text||
-"";
-
+commitment.text||"";
 
 const deleteButton=
 document.createElement("button");
 
-deleteButton.type=
-"button";
-
-deleteButton.className=
-"delete-button";
-
-deleteButton.innerHTML=
-"&times;";
-
+deleteButton.type="button";
+deleteButton.className="delete-button";
+deleteButton.innerHTML="&times;";
 
 main.append(
 input,
 deleteButton
 );
-
 
 const options=
 document.createElement("div");
@@ -2664,32 +2991,20 @@ document.createElement("div");
 options.className=
 "commitment-options";
 
-
 const startWrap=
 document.createElement("div");
 
 startWrap.innerHTML=
 '<div class="field-label">Start Time</div>';
 
-
 const start=
 document.createElement("input");
 
-start.type=
-"time";
+start.type="time";
+start.className="commitment-start";
+start.value=commitment.start||"";
 
-start.className=
-"commitment-start";
-
-start.value=
-commitment.start||
-"";
-
-
-startWrap.appendChild(
-start
-);
-
+startWrap.appendChild(start);
 
 const endWrap=
 document.createElement("div");
@@ -2697,67 +3012,47 @@ document.createElement("div");
 endWrap.innerHTML=
 '<div class="field-label">End Time</div>';
 
-
 const end=
 document.createElement("input");
 
-end.type=
-"time";
+end.type="time";
+end.className="commitment-end";
+end.value=commitment.end||"";
 
-end.className=
-"commitment-end";
-
-end.value=
-commitment.end||
-"";
-
-
-endWrap.appendChild(
-end
-);
-
+endWrap.appendChild(end);
 
 options.append(
 startWrap,
 endWrap
 );
 
-
 card.append(
 main,
 options
 );
 
-
-list.appendChild(
-card
-);
-
+list.appendChild(card);
 
 input.addEventListener(
 "input",
 refreshToday
 );
 
-
 start.addEventListener(
 "change",
 refreshToday
 );
-
 
 end.addEventListener(
 "change",
 refreshToday
 );
 
-
 deleteButton.addEventListener(
 "click",
 ()=>{
 
 card.remove();
-
 refreshToday();
 
 }
@@ -2765,31 +3060,27 @@ refreshToday();
 
 }
 
-
 function addCommitment(){
 
 createCommitmentCard({
 
 text:"",
-
 start:"",
-
 end:""
 
 });
-
 
 refreshToday();
 
 }
 
-
 /* =========================================================
-   TODAY ACTIONS
+   ACTIONS
    ========================================================= */
 
 function createActionCard(
-action
+action,
+actionIndex
 ){
 
 const list=
@@ -2797,13 +3088,11 @@ document.getElementById(
 "actionList"
 );
 
-
 const card=
 document.createElement("div");
 
 card.className=
 "action-card";
-
 
 const main=
 document.createElement("div");
@@ -2811,41 +3100,22 @@ document.createElement("div");
 main.className=
 "action-main";
 
-
 const checkbox=
 document.createElement("input");
 
-checkbox.type=
-"checkbox";
-
-checkbox.className=
-"action-checkbox";
-
-checkbox.checked=
-action.completed||
-false;
-
+checkbox.type="checkbox";
+checkbox.className="action-checkbox";
+checkbox.checked=action.completed||false;
 
 const input=
 document.createElement("input");
 
-input.type=
-"text";
+input.type="text";
+input.className="action-text";
+input.placeholder="Enter an action step";
+input.value=action.text||"";
 
-input.className=
-"action-text";
-
-input.placeholder=
-"Enter an action step";
-
-input.value=
-action.text||
-"";
-
-
-if(
-action.completed
-){
+if(action.completed){
 
 input.classList.add(
 "completed"
@@ -2853,19 +3123,12 @@ input.classList.add(
 
 }
 
-
 const deleteButton=
 document.createElement("button");
 
-deleteButton.type=
-"button";
-
-deleteButton.className=
-"delete-button";
-
-deleteButton.innerHTML=
-"&times;";
-
+deleteButton.type="button";
+deleteButton.className="delete-button";
+deleteButton.innerHTML="&times;";
 
 main.append(
 checkbox,
@@ -2873,13 +3136,11 @@ input,
 deleteButton
 );
 
-
 const options=
 document.createElement("div");
 
 options.className=
 "action-options";
-
 
 /* PRIORITY */
 
@@ -2889,13 +3150,11 @@ document.createElement("div");
 priorityWrap.innerHTML=
 '<div class="field-label">Priority</div>';
 
-
 const priority=
 document.createElement("select");
 
 priority.className=
 "priority-select";
-
 
 priority.innerHTML=
 `
@@ -2904,16 +3163,11 @@ priority.innerHTML=
 <option value="could">Could Do</option>
 `;
 
-
 priority.value=
 action.priority||
 "should";
 
-
-priorityWrap.appendChild(
-priority
-);
-
+priorityWrap.appendChild(priority);
 
 /* TIME */
 
@@ -2923,25 +3177,14 @@ document.createElement("div");
 timeWrap.innerHTML=
 '<div class="field-label">Start Time</div>';
 
-
 const time=
 document.createElement("input");
 
-time.type=
-"time";
+time.type="time";
+time.className="time-input";
+time.value=action.time||"";
 
-time.className=
-"time-input";
-
-time.value=
-action.time||
-"";
-
-
-timeWrap.appendChild(
-time
-);
-
+timeWrap.appendChild(time);
 
 /* DURATION */
 
@@ -2951,13 +3194,11 @@ document.createElement("div");
 durationWrap.innerHTML=
 '<div class="field-label">Duration</div>';
 
-
 const duration=
 document.createElement("select");
 
 duration.className=
 "duration-select";
-
 
 duration.innerHTML=
 `
@@ -2969,40 +3210,65 @@ duration.innerHTML=
 <option value="120">2 hours</option>
 `;
 
-
 duration.value=
 action.duration||
 "30";
 
+durationWrap.appendChild(duration);
 
-durationWrap.appendChild(
-duration
+/* FOCUS */
+
+const focusWrap=
+document.createElement("div");
+
+focusWrap.innerHTML=
+'<div class="field-label">Top 3 Focus</div>';
+
+const focus=
+document.createElement("select");
+
+focus.className=
+"focus-select";
+
+focus.innerHTML=
+`
+<option value="0">Not Top 3</option>
+<option value="1">🥇 Focus #1</option>
+<option value="2">🥈 Focus #2</option>
+<option value="3">🥉 Focus #3</option>
+`;
+
+focus.value=
+String(action.focus||0);
+
+if(Number(action.focus)>0){
+
+focus.classList.add(
+"focused"
 );
 
+}
+
+focusWrap.appendChild(focus);
 
 options.append(
 priorityWrap,
 timeWrap,
-durationWrap
+durationWrap,
+focusWrap
 );
-
 
 card.append(
 main,
 options
 );
 
-
-list.appendChild(
-card
-);
-
+list.appendChild(card);
 
 applyPriorityStyle(
 card,
 priority.value
 );
-
 
 checkbox.addEventListener(
 "change",
@@ -3018,12 +3284,10 @@ refreshToday();
 }
 );
 
-
 input.addEventListener(
 "input",
 refreshToday
 );
-
 
 priority.addEventListener(
 "change",
@@ -3039,18 +3303,27 @@ refreshToday();
 }
 );
 
-
 time.addEventListener(
 "change",
 refreshToday
 );
-
 
 duration.addEventListener(
 "change",
 refreshToday
 );
 
+focus.addEventListener(
+"change",
+()=>{
+
+setActionFocus(
+actionIndex,
+parseInt(focus.value)
+);
+
+}
+);
 
 deleteButton.addEventListener(
 "click",
@@ -3059,14 +3332,13 @@ deleteButton.addEventListener(
 card.remove();
 
 refreshToday();
-
 renderDailyPlanner();
+renderTop3();
 
 }
 );
 
 }
-
 
 function applyPriorityStyle(
 card,
@@ -3074,46 +3346,36 @@ priority
 ){
 
 card.classList.remove(
-
 "priority-must",
-
 "priority-should",
-
 "priority-could"
-
 );
 
-
 card.classList.add(
-
 "priority-"+priority
-
 );
 
 }
-
 
 function addAction(){
 
-createActionCard({
+collectTodayData();
+
+dashboardData.actions.push({
 
 text:"",
-
 completed:false,
-
 priority:"should",
-
 time:"",
-
-duration:"30"
+duration:"30",
+focus:0
 
 });
 
-
-refreshToday();
+saveTodayDataOnly();
+renderTodayActions();
 
 }
-
 
 function renderTodayActions(){
 
@@ -3122,9 +3384,7 @@ document.getElementById(
 "actionList"
 );
 
-
 actionList.innerHTML="";
-
 
 if(
 dashboardData.actions.length===0
@@ -3137,7 +3397,8 @@ text:"",
 completed:false,
 priority:"must",
 time:"",
-duration:"30"
+duration:"30",
+focus:0
 },
 
 {
@@ -3145,7 +3406,8 @@ text:"",
 completed:false,
 priority:"should",
 time:"",
-duration:"30"
+duration:"30",
+focus:0
 },
 
 {
@@ -3153,18 +3415,26 @@ text:"",
 completed:false,
 priority:"could",
 time:"",
-duration:"30"
+duration:"30",
+focus:0
 }
 
 ];
 
 }
 
-
-dashboardData.actions.forEach(
-createActionCard
+dashboardData.actions=
+normalizeActions(
+dashboardData.actions
 );
 
+dashboardData.actions.forEach(
+(action,index)=>
+createActionCard(
+action,
+index
+)
+);
 
 document.getElementById(
 "outcome"
@@ -3172,23 +3442,20 @@ document.getElementById(
 dashboardData.outcome||
 "";
 
-
 document.getElementById(
 "purpose"
 ).value=
 dashboardData.purpose||
 "";
 
-
 updateProgress();
-
 buildSchedule();
+renderTop3();
 
 }
 
-
 /* =========================================================
-   COLLECT TODAY DATA
+   COLLECT TODAY
    ========================================================= */
 
 function collectTodayData(){
@@ -3196,18 +3463,15 @@ function collectTodayData(){
 dashboardData.date=
 getDateKey();
 
-
 dashboardData.outcome=
 document.getElementById(
 "outcome"
 ).value;
 
-
 dashboardData.purpose=
 document.getElementById(
 "purpose"
 ).value;
-
 
 dashboardData.commitments=
 Array.from(
@@ -3236,7 +3500,6 @@ card.querySelector(
 })
 );
 
-
 dashboardData.actions=
 Array.from(
 document.querySelectorAll(
@@ -3244,7 +3507,7 @@ document.querySelectorAll(
 )
 )
 .map(
-card=>({
+(card,index)=>({
 
 text:
 card.querySelector(
@@ -3269,13 +3532,19 @@ card.querySelector(
 duration:
 card.querySelector(
 ".duration-select"
+).value,
+
+focus:
+parseInt(
+card.querySelector(
+".focus-select"
 ).value
+)||0
 
 })
 );
 
 }
-
 
 /* =========================================================
    PROGRESS
@@ -3290,7 +3559,6 @@ document.querySelectorAll(
 )
 );
 
-
 const active=
 cards.filter(
 card=>
@@ -3299,10 +3567,8 @@ card.querySelector(
 ).value.trim()!==""
 );
 
-
 const total=
 active.length;
-
 
 const completed=
 active.filter(
@@ -3311,7 +3577,6 @@ card.querySelector(
 ".action-checkbox"
 ).checked
 ).length;
-
 
 const percentage=
 total===0
@@ -3322,24 +3587,20 @@ Math.round(
 (completed/total)*100
 );
 
-
 document.getElementById(
 "progressPercent"
 ).textContent=
 percentage+"%";
-
 
 document.getElementById(
 "progressBar"
 ).style.width=
 percentage+"%";
 
-
 document.getElementById(
 "progressText"
 ).textContent=
 `${completed} of ${total} actions completed`;
-
 
 document.getElementById(
 "completionMessage"
@@ -3353,25 +3614,18 @@ completed===total
 
 }
 
-
 /* =========================================================
    SCHEDULE
    ========================================================= */
 
-function timeToMinutes(
-time
-){
+function timeToMinutes(time){
 
 if(!time){
-
 return null;
-
 }
-
 
 const parts=
 time.split(":");
-
 
 return (
 parseInt(parts[0])*60
@@ -3380,24 +3634,16 @@ parseInt(parts[1]);
 
 }
 
-
-function minutesToTime(
-total
-){
+function minutesToTime(total){
 
 total=
 total%(24*60);
 
-
 const hour24=
-Math.floor(
-total/60
-);
-
+Math.floor(total/60);
 
 const minute=
 total%60;
-
 
 const period=
 hour24>=12
@@ -3406,17 +3652,12 @@ hour24>=12
 :
 "AM";
 
-
 let hour=
 hour24%12;
 
-
 if(hour===0){
-
 hour=12;
-
 }
-
 
 return (
 hour+
@@ -3428,26 +3669,17 @@ period
 
 }
 
-
 function calculateActionEnd(
 start,
 duration
 ){
 
 const startMinutes=
-timeToMinutes(
-start
-);
+timeToMinutes(start);
 
-
-if(
-startMinutes===null
-){
-
+if(startMinutes===null){
 return null;
-
 }
-
 
 return (
 startMinutes+
@@ -3456,38 +3688,23 @@ parseInt(duration)
 
 }
 
+function priorityLabel(priority){
 
-function priorityLabel(
-priority
-){
-
-if(
-priority==="must"
-){
-
+if(priority==="must"){
 return "MUST DO";
-
 }
 
-
-if(
-priority==="could"
-){
-
+if(priority==="could"){
 return "COULD DO";
-
 }
-
 
 return "SHOULD DO";
 
 }
 
-
 function getTimelineItems(){
 
 const items=[];
-
 
 dashboardData.commitments.forEach(
 (commitment,index)=>{
@@ -3497,60 +3714,40 @@ commitment.text.trim()==="" ||
 commitment.start==="" ||
 commitment.end===""
 ){
-
 return;
-
 }
-
 
 const start=
 timeToMinutes(
 commitment.start
 );
 
-
 const end=
 timeToMinutes(
 commitment.end
 );
-
 
 if(
 start===null ||
 end===null ||
 end<=start
 ){
-
 return;
-
 }
-
 
 items.push({
 
-id:
-"commitment-"+index,
-
-type:
-"commitment",
-
-title:
-commitment.text,
-
-start:
-start,
-
-end:
-end,
-
-conflicted:
-false
+id:"commitment-"+index,
+type:"commitment",
+title:commitment.text,
+start:start,
+end:end,
+conflicted:false
 
 });
 
 }
 );
-
 
 dashboardData.actions.forEach(
 (action,index)=>{
@@ -3559,17 +3756,13 @@ if(
 action.text.trim()==="" ||
 action.time===""
 ){
-
 return;
-
 }
-
 
 const start=
 timeToMinutes(
 action.time
 );
-
 
 const end=
 calculateActionEnd(
@@ -3577,41 +3770,23 @@ action.time,
 action.duration
 );
 
-
 items.push({
 
-id:
-"action-"+index,
-
-type:
-"action",
-
-title:
-action.text,
-
-start:
-start,
-
-end:
-end,
-
-priority:
-action.priority,
-
-duration:
-action.duration,
-
-completed:
-action.completed,
-
-conflicted:
-false
+id:"action-"+index,
+type:"action",
+title:action.text,
+start:start,
+end:end,
+priority:action.priority,
+duration:action.duration,
+completed:action.completed,
+focus:Number(action.focus)||0,
+conflicted:false
 
 });
 
 }
 );
-
 
 return items.sort(
 (a,b)=>a.start-b.start
@@ -3619,13 +3794,9 @@ return items.sort(
 
 }
 
-
-function detectConflicts(
-items
-){
+function detectConflicts(items){
 
 const conflicts=[];
-
 
 for(
 let i=0;
@@ -3642,44 +3813,27 @@ j++
 const first=
 items[i];
 
-
 const second=
 items[j];
-
 
 const overlap=
 first.start<second.end &&
 second.start<first.end;
 
+if(overlap){
 
-if(
-overlap
-){
-
-first.conflicted=
-true;
-
-
-second.conflicted=
-true;
-
+first.conflicted=true;
+second.conflicted=true;
 
 conflicts.push({
 
-first:
-first.title,
-
-second:
-second.title,
-
-start:
-Math.max(
+first:first.title,
+second:second.title,
+start:Math.max(
 first.start,
 second.start
 ),
-
-end:
-Math.min(
+end:Math.min(
 first.end,
 second.end
 )
@@ -3692,46 +3846,32 @@ second.end
 
 }
 
-
 return conflicts;
 
 }
 
-
-function showConflicts(
-conflicts
-){
+function showConflicts(conflicts){
 
 const box=
 document.getElementById(
 "conflictBox"
 );
 
-
 const list=
 document.getElementById(
 "conflictList"
 );
 
-
 list.innerHTML="";
 
+if(conflicts.length===0){
 
-if(
-conflicts.length===0
-){
-
-box.style.display=
-"none";
-
+box.style.display="none";
 return;
 
 }
 
-
-box.style.display=
-"block";
-
+box.style.display="block";
 
 conflicts.forEach(
 conflict=>{
@@ -3742,35 +3882,26 @@ document.createElement("div");
 item.className=
 "conflict-item";
 
-
 item.textContent=
 `${conflict.first} overlaps with ${conflict.second} from ${minutesToTime(conflict.start)} to ${minutesToTime(conflict.end)}.`;
 
-
-list.appendChild(
-item
-);
+list.appendChild(item);
 
 }
 );
 
 }
 
-
-function escapeHTML(
-text
-){
+function escapeHTML(text){
 
 const div=
 document.createElement("div");
 
-div.textContent=
-text;
+div.textContent=text;
 
 return div.innerHTML;
 
 }
-
 
 function buildSchedule(){
 
@@ -3779,28 +3910,17 @@ document.getElementById(
 "scheduleList"
 );
 
-
 const items=
 getTimelineItems();
 
-
 const conflicts=
-detectConflicts(
-items
-);
+detectConflicts(items);
 
-
-showConflicts(
-conflicts
-);
-
+showConflicts(conflicts);
 
 schedule.innerHTML="";
 
-
-if(
-items.length===0
-){
+if(items.length===0){
 
 schedule.innerHTML=
 `
@@ -3813,7 +3933,6 @@ return;
 
 }
 
-
 items.forEach(
 item=>{
 
@@ -3823,10 +3942,7 @@ document.createElement("div");
 row.className=
 "schedule-item";
 
-
-if(
-item.conflicted
-){
+if(item.conflicted){
 
 row.classList.add(
 "conflicted"
@@ -3834,13 +3950,9 @@ row.classList.add(
 
 }
 
-
 let details="";
 
-
-if(
-item.type==="commitment"
-){
+if(item.type==="commitment"){
 
 details=
 '<span class="commitment-badge">COMMITMENT</span>';
@@ -3858,28 +3970,41 @@ item.priority==="could"
 :
 "badge-should";
 
-
 details=
 `
 <span class="priority-badge ${badgeClass}">
 ${priorityLabel(item.priority)}
 </span>
-${item.duration} minutes
-${item.completed?" • ✓ Completed":""}
+`;
+
+if(item.focus>0){
+
+details+=
+`
+<span class="focus-badge">
+${focusRankLabel(item.focus)} FOCUS #${item.focus}
+</span>
 `;
 
 }
 
+details+=
+`${item.duration} minutes`;
 
-if(
-item.conflicted
-){
+if(item.completed){
+
+details+=" • ✓ Completed";
+
+}
+
+}
+
+if(item.conflicted){
 
 details+=
 '<span class="conflict-badge">⚠ CONFLICT</span>';
 
 }
-
 
 row.innerHTML=
 `
@@ -3908,66 +4033,55 @@ ${details}
 </div>
 `;
 
-
-schedule.appendChild(
-row
-);
+schedule.appendChild(row);
 
 }
 );
 
 }
-
 
 /* =========================================================
-   TODAY SAVE / LOAD
+   SAVE / LOAD TODAY
    ========================================================= */
+
+function saveTodayDataOnly(){
+
+localStorage.setItem(
+TODAY_STORAGE_KEY,
+JSON.stringify(dashboardData)
+);
+
+}
 
 function refreshToday(){
 
 collectTodayData();
 
 updateProgress();
-
 buildSchedule();
+renderTop3();
 
-
-localStorage.setItem(
-
-TODAY_STORAGE_KEY,
-
-JSON.stringify(
-dashboardData
-)
-
-);
-
+saveTodayDataOnly();
 
 renderDailyPlanner();
 
 }
 
-
 function saveToday(){
 
 refreshToday();
-
 
 const message=
 document.getElementById(
 "todaySavedMessage"
 );
 
-
-message.style.display=
-"block";
-
+message.style.display="block";
 
 setTimeout(
 ()=>{
 
-message.style.display=
-"none";
+message.style.display="none";
 
 },
 2500
@@ -3975,27 +4089,16 @@ message.style.display=
 
 }
 
+function parseTodayStorage(value){
 
-/* SAFER TODAY MIGRATION */
-
-function parseTodayStorage(
-storageValue
-){
-
-if(!storageValue){
-
+if(!value){
 return null;
-
 }
-
 
 try{
 
 const parsed=
-JSON.parse(
-storageValue
-);
-
+JSON.parse(value);
 
 if(
 parsed &&
@@ -4006,49 +4109,29 @@ return parsed;
 
 }
 
-
-}catch(error){
-
-console.log(
-"Daily storage could not be read."
-);
-
-}
-
+}catch(error){}
 
 return null;
 
 }
 
-
-function hasUsefulTodayData(
-data
-){
+function hasUsefulTodayData(data){
 
 if(!data){
-
 return false;
-
 }
-
 
 if(
 (data.outcome||"").trim()!==""
 ){
-
 return true;
-
 }
-
 
 if(
 (data.purpose||"").trim()!==""
 ){
-
 return true;
-
 }
-
 
 if(
 Array.isArray(data.actions) &&
@@ -4057,11 +4140,8 @@ action=>
 (action.text||"").trim()!==""
 )
 ){
-
 return true;
-
 }
-
 
 if(
 Array.isArray(data.commitments) &&
@@ -4070,85 +4150,53 @@ commitment=>
 (commitment.text||"").trim()!==""
 )
 ){
-
 return true;
-
 }
-
 
 return false;
 
 }
 
-
 function loadToday(){
 
-const v17=
+const v18=
 parseTodayStorage(
 localStorage.getItem(
 TODAY_STORAGE_KEY
 )
 );
 
-
-const v16=
+const v17=
 parseTodayStorage(
 localStorage.getItem(
 OLD_TODAY_STORAGE_KEY
 )
 );
 
-
-const v15=
+const v16=
 parseTodayStorage(
 localStorage.getItem(
 OLDER_TODAY_STORAGE_KEY
 )
 );
 
-
 let savedData=null;
 
+if(hasUsefulTodayData(v18)){
 
-if(
-hasUsefulTodayData(v17)
-){
+savedData=v18;
+
+}else if(hasUsefulTodayData(v17)){
 
 savedData=v17;
 
-}else if(
-hasUsefulTodayData(v16)
-){
+}else if(hasUsefulTodayData(v16)){
 
 savedData=v16;
 
+}else if(v18){
 
-localStorage.setItem(
-
-TODAY_STORAGE_KEY,
-
-JSON.stringify(
-savedData
-)
-
-);
-
-}else if(
-hasUsefulTodayData(v15)
-){
-
-savedData=v15;
-
-
-localStorage.setItem(
-
-TODAY_STORAGE_KEY,
-
-JSON.stringify(
-savedData
-)
-
-);
+savedData=v18;
 
 }else if(v17){
 
@@ -4158,16 +4206,9 @@ savedData=v17;
 
 savedData=v16;
 
-}else if(v15){
-
-savedData=v15;
-
 }
 
-
-if(
-savedData
-){
+if(savedData){
 
 dashboardData={
 
@@ -4193,39 +4234,30 @@ savedData.commitments
 [],
 
 actions:
-Array.isArray(
+normalizeActions(
 savedData.actions
 )
-?
-savedData.actions
-:
-[]
 
 };
 
 }
-
 
 document.getElementById(
 "outcome"
 ).value=
 dashboardData.outcome;
 
-
 document.getElementById(
 "purpose"
 ).value=
 dashboardData.purpose;
-
 
 const commitmentList=
 document.getElementById(
 "commitmentList"
 );
 
-
 commitmentList.innerHTML="";
-
 
 if(
 dashboardData.commitments.length===0
@@ -4243,21 +4275,18 @@ end:""
 
 }
 
-
 dashboardData.commitments.forEach(
 createCommitmentCard
 );
 
-
 renderTodayActions();
 
-refreshToday();
+saveTodayDataOnly();
 
 }
 
-
 /* =========================================================
-   EVENT LISTENERS
+   EVENTS
    ========================================================= */
 
 document.getElementById(
@@ -4267,14 +4296,12 @@ document.getElementById(
 addLifeArea
 );
 
-
 document.getElementById(
 "addLifeOutcomeButton"
 ).addEventListener(
 "click",
 addLifeOutcome
 );
-
 
 document.getElementById(
 "saveLifeButton"
@@ -4283,14 +4310,12 @@ document.getElementById(
 saveLifeAssessment
 );
 
-
 document.getElementById(
 "addCommitmentButton"
 ).addEventListener(
 "click",
 addCommitment
 );
-
 
 document.getElementById(
 "addActionButton"
@@ -4299,14 +4324,12 @@ document.getElementById(
 addAction
 );
 
-
 document.getElementById(
 "saveTodayButton"
 ).addEventListener(
 "click",
 saveToday
 );
-
 
 document.getElementById(
 "outcome"
@@ -4315,7 +4338,6 @@ document.getElementById(
 refreshToday
 );
 
-
 document.getElementById(
 "purpose"
 ).addEventListener(
@@ -4323,9 +4345,8 @@ document.getElementById(
 refreshToday
 );
 
-
 /* =========================================================
-   START APPLICATION
+   START
    ========================================================= */
 
 loadLifeAssessment();
@@ -4335,6 +4356,8 @@ loadLifeOutcomes();
 loadToday();
 
 renderDailyPlanner();
+
+renderTop3();
 
 </script>
 
