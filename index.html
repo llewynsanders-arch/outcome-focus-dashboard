@@ -7,7 +7,6 @@
 <title>Outcome Focus Dashboard</title>
 
 <style>
-
 * {
   box-sizing: border-box;
   margin: 0;
@@ -23,7 +22,7 @@ body {
 
 .container {
   width: 92%;
-  max-width: 760px;
+  max-width: 780px;
   margin: auto;
   padding: 24px 0;
 }
@@ -72,6 +71,13 @@ h1 {
   margin-bottom: 15px;
 }
 
+.section-description {
+  color: #6b7280;
+  line-height: 1.5;
+  font-size: 14px;
+  margin: -5px 0 15px;
+}
+
 label {
   display: block;
   font-weight: bold;
@@ -103,8 +109,7 @@ select:focus {
   border-color: #2563eb;
 }
 
-
-/* ACTION CARDS */
+/* ACTIONS */
 
 .action-card {
   border: 1px solid #e5e7eb;
@@ -171,10 +176,35 @@ select:focus {
   border-left: 5px solid #16a34a;
 }
 
+/* COMMITMENTS */
+
+.commitment-card {
+  border: 1px solid #c7d2fe;
+  border-left: 5px solid #6366f1;
+  background: #f5f7ff;
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+
+.commitment-main {
+  display: grid;
+  grid-template-columns: 1fr 38px;
+  gap: 9px;
+  align-items: center;
+}
+
+.commitment-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+  margin-top: 11px;
+}
 
 /* BUTTONS */
 
 .add-button,
+.commitment-add-button,
 .save-button {
   width: 100%;
   border: none;
@@ -190,11 +220,40 @@ select:focus {
   color: #1f2937;
 }
 
+.commitment-add-button {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
 .save-button {
   background: #2563eb;
   color: white;
 }
 
+/* CONFLICTS */
+
+.conflict-box {
+  display: none;
+  background: #fff7ed;
+  border: 1px solid #fdba74;
+  border-left: 5px solid #ea580c;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 18px;
+}
+
+.conflict-box h3 {
+  color: #c2410c;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.conflict-item {
+  color: #7c2d12;
+  line-height: 1.5;
+  font-size: 14px;
+  margin-top: 7px;
+}
 
 /* SCHEDULE */
 
@@ -207,7 +266,7 @@ select:focus {
 
 .schedule-item {
   display: grid;
-  grid-template-columns: 110px 1fr;
+  grid-template-columns: 115px 1fr;
   gap: 12px;
   padding: 14px 0;
   border-bottom: 1px solid #e5e7eb;
@@ -215,6 +274,13 @@ select:focus {
 
 .schedule-item:last-child {
   border-bottom: none;
+}
+
+.schedule-item.conflicted {
+  background: #fff7ed;
+  border-radius: 10px;
+  padding: 12px;
+  margin: 4px 0;
 }
 
 .schedule-time {
@@ -232,13 +298,16 @@ select:focus {
   color: #6b7280;
 }
 
-.priority-badge {
+.priority-badge,
+.commitment-badge,
+.conflict-badge {
   display: inline-block;
   padding: 4px 7px;
   border-radius: 20px;
   font-size: 11px;
   font-weight: bold;
   margin-right: 5px;
+  margin-bottom: 3px;
 }
 
 .badge-must {
@@ -256,6 +325,15 @@ select:focus {
   color: #166534;
 }
 
+.commitment-badge {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.conflict-badge {
+  background: #ffedd5;
+  color: #c2410c;
+}
 
 /* PROGRESS */
 
@@ -327,11 +405,7 @@ select:focus {
   margin-top: 20px;
 }
 
-
-/* MOBILE */
-
 @media(max-width:600px) {
-
   h1 {
     font-size: 24px;
   }
@@ -344,7 +418,8 @@ select:focus {
     padding: 17px;
   }
 
-  .action-options {
+  .action-options,
+  .commitment-options {
     grid-template-columns: 1fr;
   }
 
@@ -352,1191 +427,1757 @@ select:focus {
     grid-template-columns: 1fr;
     gap: 5px;
   }
-
 }
-
 </style>
 </head>
-
 
 <body>
 
 <main class="container">
 
 <header>
+  <div class="date" id="todayDate"></div>
 
-<div class="date" id="todayDate"></div>
+  <h1>Outcome Focus Dashboard</h1>
 
-<h1>Outcome Focus Dashboard</h1>
+  <p class="subtitle">
+    Turn your desired outcome into prioritized actions,
+    protect your fixed commitments, and build a realistic day.
+  </p>
 
-<p class="subtitle">
-Turn your desired outcome into prioritized actions
-and give those actions a place in your day.
-</p>
-
-<span class="version">
-Version 1.2
-</span>
-
+  <span class="version">Version 1.3</span>
 </header>
-
 
 <!-- OUTCOME -->
 
 <section class="card">
 
-<h2>🎯 Today's Most Important Outcome</h2>
+  <h2>🎯 Today's Most Important Outcome</h2>
 
-<label for="outcome">
-What result do I want?
-</label>
+  <label for="outcome">
+    What result do I want?
+  </label>
 
-<textarea
-id="outcome"
-placeholder="Example: Finish the first version of my website."
-></textarea>
+  <textarea
+    id="outcome"
+    placeholder="Example: Finish the first version of my website."
+  ></textarea>
 
+  <label for="purpose">
+    Why does this matter?
+  </label>
 
-<label for="purpose">
-Why does this matter?
-</label>
-
-<textarea
-id="purpose"
-placeholder="Write the reason this outcome is important to you."
-></textarea>
+  <textarea
+    id="purpose"
+    placeholder="Write the reason this outcome is important to you."
+  ></textarea>
 
 </section>
 
+<!-- FIXED COMMITMENTS -->
 
+<section class="card">
+
+  <h2>📅 Fixed Commitments</h2>
+
+  <p class="section-description">
+    Add appointments, meetings, work shifts, pickups,
+    classes, or anything else that already has a fixed time.
+  </p>
+
+  <div id="commitmentList"></div>
+
+  <button
+    class="commitment-add-button"
+    id="addCommitmentButton"
+    type="button">
+    + Add Fixed Commitment
+  </button>
+
+</section>
 
 <!-- ACTION PLAN -->
 
 <section class="card">
 
-<h2>⚡ Action Plan</h2>
+  <h2>⚡ Action Plan</h2>
 
-<div id="actionList"></div>
+  <p class="section-description">
+    Choose the actions that move your most important outcome forward,
+    then decide when they belong in your day.
+  </p>
 
-<button
-class="add-button"
-id="addActionButton"
-type="button">
-+ Add Another Action
-</button>
+  <div id="actionList"></div>
+
+  <button
+    class="add-button"
+    id="addActionButton"
+    type="button">
+    + Add Another Action
+  </button>
 
 </section>
 
+<!-- CONFLICT WARNING -->
 
+<section
+  class="conflict-box"
+  id="conflictBox">
+
+  <h3>⚠️ Schedule Conflict Detected</h3>
+
+  <div id="conflictList"></div>
+
+</section>
 
 <!-- SCHEDULE -->
 
 <section class="card">
 
-<h2>🗓️ Today's Schedule</h2>
+  <h2>🗓️ Today's Schedule</h2>
 
-<div id="scheduleList"></div>
+  <div id="scheduleList"></div>
 
 </section>
-
-
 
 <!-- PROGRESS -->
 
 <section class="card">
 
-<div class="progress-header">
+  <div class="progress-header">
 
-<h2>📈 Today's Progress</h2>
+    <h2>📈 Today's Progress</h2>
 
-<div
-class="progress-percent"
-id="progressPercent">
-0%
-</div>
+    <div
+      class="progress-percent"
+      id="progressPercent">
+      0%
+    </div>
 
-</div>
+  </div>
 
-<div class="progress-background">
+  <div class="progress-background">
 
-<div
-class="progress-bar"
-id="progressBar">
-</div>
+    <div
+      class="progress-bar"
+      id="progressBar">
+    </div>
 
-</div>
+  </div>
 
-<div
-class="progress-text"
-id="progressText">
-0 of 0 actions completed
-</div>
+  <div
+    class="progress-text"
+    id="progressText">
+    0 of 0 actions completed
+  </div>
 
-<div
-class="completion-message"
-id="completionMessage">
-🎉 Outcome action plan completed!
-</div>
+  <div
+    class="completion-message"
+    id="completionMessage">
+    🎉 Outcome action plan completed!
+  </div>
 
 </section>
-
-
 
 <!-- REMINDER -->
 
 <section class="card tip">
 
-<h2>💡 Focus Reminder</h2>
+  <h2>💡 Focus Reminder</h2>
 
-<p>
-Your calendar should reflect your priorities.
-Decide what matters, choose the actions that move
-the result forward, and give those actions a specific
-place in your day.
-</p>
+  <p>
+    Fixed commitments define the boundaries of your day.
+    Your priority actions should fit around those boundaries
+    instead of competing with them.
+  </p>
 
 </section>
 
-
 <button
-class="save-button"
-id="saveButton"
-type="button">
-Save My Day
+  class="save-button"
+  id="saveButton"
+  type="button">
+  Save My Day
 </button>
 
-
 <div
-class="saved-message"
-id="savedMessage">
-✓ Your day has been saved.
+  class="saved-message"
+  id="savedMessage">
+  ✓ Your day has been saved.
 </div>
 
-
 <div class="footer-note">
-Outcome Focus Dashboard
+  Outcome Focus Dashboard
 </div>
 
 </main>
 
-
-
 <script>
 
 const STORAGE_KEY =
-"outcomeFocusDashboardV12";
+  "outcomeFocusDashboardV13";
 
 
 /* DATE */
 
 const today =
-new Date();
+  new Date();
 
 document
-.getElementById("todayDate")
-.textContent =
-today.toLocaleDateString(
-"en-US",
-{
-weekday:"long",
-month:"long",
-day:"numeric",
-year:"numeric"
-}
-);
-
+  .getElementById("todayDate")
+  .textContent =
+  today.toLocaleDateString(
+    "en-US",
+    {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      year: "numeric"
+    }
+  );
 
 
 /* DATA */
 
 let dashboardData = {
 
-date:getDateKey(),
+  date: getDateKey(),
 
-outcome:"",
+  outcome: "",
 
-purpose:"",
+  purpose: "",
 
-actions:[
-{
-text:"",
-completed:false,
-priority:"must",
-time:"",
-duration:"30"
-},
-{
-text:"",
-completed:false,
-priority:"should",
-time:"",
-duration:"30"
-},
-{
-text:"",
-completed:false,
-priority:"could",
-time:"",
-duration:"30"
-}
-]
+  commitments: [
+    {
+      text: "",
+      start: "",
+      end: ""
+    }
+  ],
+
+  actions: [
+    {
+      text: "",
+      completed: false,
+      priority: "must",
+      time: "",
+      duration: "30"
+    },
+    {
+      text: "",
+      completed: false,
+      priority: "should",
+      time: "",
+      duration: "30"
+    },
+    {
+      text: "",
+      completed: false,
+      priority: "could",
+      time: "",
+      duration: "30"
+    }
+  ]
 
 };
 
 
+function getDateKey() {
 
-function getDateKey(){
+  const now =
+    new Date();
 
-const now =
-new Date();
+  const year =
+    now.getFullYear();
 
-const year =
-now.getFullYear();
+  const month =
+    String(
+      now.getMonth() + 1
+    ).padStart(2, "0");
 
-const month =
-String(
-now.getMonth()+1
-).padStart(2,"0");
+  const day =
+    String(
+      now.getDate()
+    ).padStart(2, "0");
 
-const day =
-String(
-now.getDate()
-).padStart(2,"0");
-
-return `${year}-${month}-${day}`;
+  return `${year}-${month}-${day}`;
 
 }
 
+
+/* CREATE COMMITMENT */
+
+function createCommitmentCard(commitment) {
+
+  const commitmentList =
+    document.getElementById(
+      "commitmentList"
+    );
+
+  const card =
+    document.createElement("div");
+
+  card.className =
+    "commitment-card";
+
+
+  const main =
+    document.createElement("div");
+
+  main.className =
+    "commitment-main";
+
+
+  const input =
+    document.createElement("input");
+
+  input.type =
+    "text";
+
+  input.className =
+    "commitment-text";
+
+  input.placeholder =
+    "Example: Doctor appointment";
+
+  input.value =
+    commitment.text || "";
+
+
+  const deleteButton =
+    document.createElement("button");
+
+  deleteButton.type =
+    "button";
+
+  deleteButton.className =
+    "delete-button";
+
+  deleteButton.innerHTML =
+    "&times;";
+
+  deleteButton.setAttribute(
+    "aria-label",
+    "Delete commitment"
+  );
+
+
+  main.appendChild(
+    input
+  );
+
+  main.appendChild(
+    deleteButton
+  );
+
+
+  const options =
+    document.createElement("div");
+
+  options.className =
+    "commitment-options";
+
+
+  const startWrap =
+    document.createElement("div");
+
+  startWrap.innerHTML =
+    '<div class="field-label">Start Time</div>';
+
+
+  const start =
+    document.createElement("input");
+
+  start.type =
+    "time";
+
+  start.className =
+    "commitment-start";
+
+  start.value =
+    commitment.start || "";
+
+  startWrap.appendChild(
+    start
+  );
+
+
+  const endWrap =
+    document.createElement("div");
+
+  endWrap.innerHTML =
+    '<div class="field-label">End Time</div>';
+
+
+  const end =
+    document.createElement("input");
+
+  end.type =
+    "time";
+
+  end.className =
+    "commitment-end";
+
+  end.value =
+    commitment.end || "";
+
+  endWrap.appendChild(
+    end
+  );
+
+
+  options.appendChild(
+    startWrap
+  );
+
+  options.appendChild(
+    endWrap
+  );
+
+
+  card.appendChild(
+    main
+  );
+
+  card.appendChild(
+    options
+  );
+
+
+  commitmentList.appendChild(
+    card
+  );
+
+
+  input.addEventListener(
+    "input",
+    refreshDashboard
+  );
+
+  start.addEventListener(
+    "change",
+    refreshDashboard
+  );
+
+  end.addEventListener(
+    "change",
+    refreshDashboard
+  );
+
+  deleteButton.addEventListener(
+    "click",
+    function() {
+
+      card.remove();
+
+      refreshDashboard();
+
+    }
+  );
+
+}
+
+
+/* ADD COMMITMENT */
+
+function addCommitment() {
+
+  createCommitmentCard({
+    text: "",
+    start: "",
+    end: ""
+  });
+
+  refreshDashboard();
+
+}
 
 
 /* CREATE ACTION */
 
-function createActionCard(action){
+function createActionCard(action) {
 
-const actionList =
-document.getElementById(
-"actionList"
-);
+  const actionList =
+    document.getElementById(
+      "actionList"
+    );
 
-const card =
-document.createElement("div");
+  const card =
+    document.createElement("div");
 
-card.className =
-"action-card";
-
-
-const main =
-document.createElement("div");
-
-main.className =
-"action-main";
+  card.className =
+    "action-card";
 
 
-const checkbox =
-document.createElement("input");
+  const main =
+    document.createElement("div");
 
-checkbox.type =
-"checkbox";
-
-checkbox.className =
-"action-checkbox";
-
-checkbox.checked =
-action.completed || false;
+  main.className =
+    "action-main";
 
 
-const input =
-document.createElement("input");
+  const checkbox =
+    document.createElement("input");
 
-input.type =
-"text";
+  checkbox.type =
+    "checkbox";
 
-input.className =
-"action-text";
+  checkbox.className =
+    "action-checkbox";
 
-input.placeholder =
-"Enter an action step";
-
-input.value =
-action.text || "";
+  checkbox.checked =
+    action.completed || false;
 
 
-if(action.completed){
+  const input =
+    document.createElement("input");
 
-input.classList.add(
-"completed"
-);
+  input.type =
+    "text";
+
+  input.className =
+    "action-text";
+
+  input.placeholder =
+    "Enter an action step";
+
+  input.value =
+    action.text || "";
+
+
+  if (action.completed) {
+
+    input.classList.add(
+      "completed"
+    );
+
+  }
+
+
+  const deleteButton =
+    document.createElement("button");
+
+  deleteButton.type =
+    "button";
+
+  deleteButton.className =
+    "delete-button";
+
+  deleteButton.innerHTML =
+    "&times;";
+
+  deleteButton.setAttribute(
+    "aria-label",
+    "Delete action"
+  );
+
+
+  main.appendChild(
+    checkbox
+  );
+
+  main.appendChild(
+    input
+  );
+
+  main.appendChild(
+    deleteButton
+  );
+
+
+  const options =
+    document.createElement("div");
+
+  options.className =
+    "action-options";
+
+
+  const priorityWrap =
+    document.createElement("div");
+
+  priorityWrap.innerHTML =
+    '<div class="field-label">Priority</div>';
+
+
+  const priority =
+    document.createElement("select");
+
+  priority.className =
+    "priority-select";
+
+  priority.innerHTML = `
+    <option value="must">Must Do</option>
+    <option value="should">Should Do</option>
+    <option value="could">Could Do</option>
+  `;
+
+  priority.value =
+    action.priority || "should";
+
+  priorityWrap.appendChild(
+    priority
+  );
+
+
+  const timeWrap =
+    document.createElement("div");
+
+  timeWrap.innerHTML =
+    '<div class="field-label">Start Time</div>';
+
+
+  const time =
+    document.createElement("input");
+
+  time.type =
+    "time";
+
+  time.className =
+    "time-input";
+
+  time.value =
+    action.time || "";
+
+  timeWrap.appendChild(
+    time
+  );
+
+
+  const durationWrap =
+    document.createElement("div");
+
+  durationWrap.innerHTML =
+    '<div class="field-label">Duration</div>';
+
+
+  const duration =
+    document.createElement("select");
+
+  duration.className =
+    "duration-select";
+
+  duration.innerHTML = `
+    <option value="15">15 min</option>
+    <option value="30">30 min</option>
+    <option value="45">45 min</option>
+    <option value="60">1 hour</option>
+    <option value="90">1.5 hours</option>
+    <option value="120">2 hours</option>
+  `;
+
+  duration.value =
+    action.duration || "30";
+
+  durationWrap.appendChild(
+    duration
+  );
+
+
+  options.appendChild(
+    priorityWrap
+  );
+
+  options.appendChild(
+    timeWrap
+  );
+
+  options.appendChild(
+    durationWrap
+  );
+
+
+  card.appendChild(
+    main
+  );
+
+  card.appendChild(
+    options
+  );
+
+
+  actionList.appendChild(
+    card
+  );
+
+
+  applyPriorityStyle(
+    card,
+    priority.value
+  );
+
+
+  checkbox.addEventListener(
+    "change",
+    function() {
+
+      input.classList.toggle(
+        "completed",
+        checkbox.checked
+      );
+
+      refreshDashboard();
+
+    }
+  );
+
+
+  input.addEventListener(
+    "input",
+    refreshDashboard
+  );
+
+
+  priority.addEventListener(
+    "change",
+    function() {
+
+      applyPriorityStyle(
+        card,
+        priority.value
+      );
+
+      refreshDashboard();
+
+    }
+  );
+
+
+  time.addEventListener(
+    "change",
+    refreshDashboard
+  );
+
+
+  duration.addEventListener(
+    "change",
+    refreshDashboard
+  );
+
+
+  deleteButton.addEventListener(
+    "click",
+    function() {
+
+      card.remove();
+
+      refreshDashboard();
+
+    }
+  );
 
 }
-
-
-const deleteButton =
-document.createElement("button");
-
-deleteButton.type =
-"button";
-
-deleteButton.className =
-"delete-button";
-
-deleteButton.innerHTML =
-"&times;";
-
-deleteButton.setAttribute(
-"aria-label",
-"Delete action"
-);
-
-
-main.appendChild(
-checkbox
-);
-
-main.appendChild(
-input
-);
-
-main.appendChild(
-deleteButton
-);
-
-
-
-/* OPTIONS */
-
-const options =
-document.createElement("div");
-
-options.className =
-"action-options";
-
-
-/* PRIORITY */
-
-const priorityWrap =
-document.createElement("div");
-
-priorityWrap.innerHTML =
-'<div class="field-label">Priority</div>';
-
-
-const priority =
-document.createElement("select");
-
-priority.className =
-"priority-select";
-
-priority.innerHTML = `
-<option value="must">Must Do</option>
-<option value="should">Should Do</option>
-<option value="could">Could Do</option>
-`;
-
-priority.value =
-action.priority || "should";
-
-priorityWrap.appendChild(
-priority
-);
-
-
-
-/* TIME */
-
-const timeWrap =
-document.createElement("div");
-
-timeWrap.innerHTML =
-'<div class="field-label">Start Time</div>';
-
-
-const time =
-document.createElement("input");
-
-time.type =
-"time";
-
-time.className =
-"time-input";
-
-time.value =
-action.time || "";
-
-timeWrap.appendChild(
-time
-);
-
-
-
-/* DURATION */
-
-const durationWrap =
-document.createElement("div");
-
-durationWrap.innerHTML =
-'<div class="field-label">Duration</div>';
-
-
-const duration =
-document.createElement("select");
-
-duration.className =
-"duration-select";
-
-duration.innerHTML = `
-<option value="15">15 min</option>
-<option value="30">30 min</option>
-<option value="45">45 min</option>
-<option value="60">1 hour</option>
-<option value="90">1.5 hours</option>
-<option value="120">2 hours</option>
-`;
-
-duration.value =
-action.duration || "30";
-
-durationWrap.appendChild(
-duration
-);
-
-
-options.appendChild(
-priorityWrap
-);
-
-options.appendChild(
-timeWrap
-);
-
-options.appendChild(
-durationWrap
-);
-
-
-card.appendChild(
-main
-);
-
-card.appendChild(
-options
-);
-
-
-actionList.appendChild(
-card
-);
-
-
-applyPriorityStyle(
-card,
-priority.value
-);
-
-
-
-/* EVENTS */
-
-checkbox.addEventListener(
-"change",
-function(){
-
-input.classList.toggle(
-"completed",
-checkbox.checked
-);
-
-refreshDashboard();
-
-}
-);
-
-
-input.addEventListener(
-"input",
-refreshDashboard
-);
-
-
-priority.addEventListener(
-"change",
-function(){
-
-applyPriorityStyle(
-card,
-priority.value
-);
-
-refreshDashboard();
-
-}
-);
-
-
-time.addEventListener(
-"change",
-refreshDashboard
-);
-
-
-duration.addEventListener(
-"change",
-refreshDashboard
-);
-
-
-deleteButton.addEventListener(
-"click",
-function(){
-
-card.remove();
-
-refreshDashboard();
-
-}
-);
-
-}
-
 
 
 /* PRIORITY STYLE */
 
 function applyPriorityStyle(
-card,
-priority
-){
+  card,
+  priority
+) {
 
-card.classList.remove(
-"priority-must",
-"priority-should",
-"priority-could"
-);
+  card.classList.remove(
+    "priority-must",
+    "priority-should",
+    "priority-could"
+  );
 
-card.classList.add(
-"priority-" + priority
-);
+  card.classList.add(
+    "priority-" + priority
+  );
 
 }
-
 
 
 /* ADD ACTION */
 
-function addAction(){
+function addAction() {
 
-createActionCard({
-text:"",
-completed:false,
-priority:"should",
-time:"",
-duration:"30"
-});
+  createActionCard({
+    text: "",
+    completed: false,
+    priority: "should",
+    time: "",
+    duration: "30"
+  });
 
-refreshDashboard();
+  refreshDashboard();
 
 }
-
 
 
 /* COLLECT DATA */
 
-function collectData(){
+function collectData() {
 
-dashboardData.date =
-getDateKey();
+  dashboardData.date =
+    getDateKey();
 
-dashboardData.outcome =
-document
-.getElementById("outcome")
-.value;
+  dashboardData.outcome =
+    document
+      .getElementById("outcome")
+      .value;
 
-dashboardData.purpose =
-document
-.getElementById("purpose")
-.value;
-
-
-const cards =
-document.querySelectorAll(
-".action-card"
-);
+  dashboardData.purpose =
+    document
+      .getElementById("purpose")
+      .value;
 
 
-dashboardData.actions =
-Array.from(cards).map(
-card => ({
+  const commitmentCards =
+    document.querySelectorAll(
+      ".commitment-card"
+    );
 
-text:
-card
-.querySelector(".action-text")
-.value,
 
-completed:
-card
-.querySelector(".action-checkbox")
-.checked,
+  dashboardData.commitments =
+    Array.from(
+      commitmentCards
+    ).map(
+      card => ({
 
-priority:
-card
-.querySelector(".priority-select")
-.value,
+        text:
+          card
+            .querySelector(
+              ".commitment-text"
+            )
+            .value,
 
-time:
-card
-.querySelector(".time-input")
-.value,
+        start:
+          card
+            .querySelector(
+              ".commitment-start"
+            )
+            .value,
 
-duration:
-card
-.querySelector(".duration-select")
-.value
+        end:
+          card
+            .querySelector(
+              ".commitment-end"
+            )
+            .value
 
-})
-);
+      })
+    );
+
+
+  const actionCards =
+    document.querySelectorAll(
+      ".action-card"
+    );
+
+
+  dashboardData.actions =
+    Array.from(
+      actionCards
+    ).map(
+      card => ({
+
+        text:
+          card
+            .querySelector(
+              ".action-text"
+            )
+            .value,
+
+        completed:
+          card
+            .querySelector(
+              ".action-checkbox"
+            )
+            .checked,
+
+        priority:
+          card
+            .querySelector(
+              ".priority-select"
+            )
+            .value,
+
+        time:
+          card
+            .querySelector(
+              ".time-input"
+            )
+            .value,
+
+        duration:
+          card
+            .querySelector(
+              ".duration-select"
+            )
+            .value
+
+      })
+    );
 
 }
-
 
 
 /* PROGRESS */
 
-function updateProgress(){
+function updateProgress() {
 
-const cards =
-Array.from(
-document.querySelectorAll(
-".action-card"
-)
-);
-
-
-const active =
-cards.filter(
-card =>
-card
-.querySelector(".action-text")
-.value
-.trim() !== ""
-);
+  const cards =
+    Array.from(
+      document.querySelectorAll(
+        ".action-card"
+      )
+    );
 
 
-const total =
-active.length;
+  const active =
+    cards.filter(
+      card =>
+        card
+          .querySelector(
+            ".action-text"
+          )
+          .value
+          .trim() !== ""
+    );
 
 
-const completed =
-active.filter(
-card =>
-card
-.querySelector(".action-checkbox")
-.checked
-).length;
+  const total =
+    active.length;
 
 
-const percentage =
-total === 0
-?
-0
-:
-Math.round(
-(completed/total)*100
-);
+  const completed =
+    active.filter(
+      card =>
+        card
+          .querySelector(
+            ".action-checkbox"
+          )
+          .checked
+    ).length;
 
 
-document
-.getElementById(
-"progressPercent"
-)
-.textContent =
-percentage + "%";
+  const percentage =
+    total === 0
+      ? 0
+      : Math.round(
+          (completed / total) * 100
+        );
 
 
-document
-.getElementById(
-"progressBar"
-)
-.style.width =
-percentage + "%";
+  document
+    .getElementById(
+      "progressPercent"
+    )
+    .textContent =
+    percentage + "%";
 
 
-document
-.getElementById(
-"progressText"
-)
-.textContent =
-`${completed} of ${total} actions completed`;
+  document
+    .getElementById(
+      "progressBar"
+    )
+    .style.width =
+    percentage + "%";
 
 
-const message =
-document.getElementById(
-"completionMessage"
-);
+  document
+    .getElementById(
+      "progressText"
+    )
+    .textContent =
+    `${completed} of ${total} actions completed`;
 
 
-message.style.display =
-(
-total > 0 &&
-completed === total
-)
-?
-"block"
-:
-"none";
-
-}
+  const message =
+    document.getElementById(
+      "completionMessage"
+    );
 
 
-
-/* FORMAT TIME */
-
-function formatTime(
-timeString
-){
-
-if(!timeString)
-return "";
-
-const parts =
-timeString.split(":");
-
-let hour =
-parseInt(parts[0]);
-
-const minute =
-parts[1];
-
-const period =
-hour >= 12
-?
-"PM"
-:
-"AM";
-
-hour =
-hour % 12;
-
-if(hour === 0)
-hour = 12;
-
-return `${hour}:${minute} ${period}`;
+  message.style.display =
+    (
+      total > 0 &&
+      completed === total
+    )
+      ? "block"
+      : "none";
 
 }
 
 
+/* TIME HELPERS */
 
-/* END TIME */
+function timeToMinutes(time) {
 
-function calculateEndTime(
-start,
-minutes
-){
+  if (!time) {
+    return null;
+  }
 
-if(!start)
-return "";
+  const parts =
+    time.split(":");
 
-const parts =
-start.split(":");
-
-const date =
-new Date();
-
-date.setHours(
-parseInt(parts[0]),
-parseInt(parts[1]),
-0,
-0
-);
-
-date.setMinutes(
-date.getMinutes() +
-parseInt(minutes)
-);
-
-const hour =
-String(
-date.getHours()
-).padStart(2,"0");
-
-const minute =
-String(
-date.getMinutes()
-).padStart(2,"0");
-
-return `${hour}:${minute}`;
+  return (
+    parseInt(parts[0]) * 60 +
+    parseInt(parts[1])
+  );
 
 }
 
 
+function minutesToTime(totalMinutes) {
 
-/* PRIORITY LABEL */
+  totalMinutes =
+    totalMinutes % (24 * 60);
 
-function priorityLabel(
-priority
-){
+  const hour24 =
+    Math.floor(
+      totalMinutes / 60
+    );
 
-if(priority === "must")
-return "MUST DO";
+  const minute =
+    totalMinutes % 60;
 
-if(priority === "could")
-return "COULD DO";
+  const period =
+    hour24 >= 12
+      ? "PM"
+      : "AM";
 
-return "SHOULD DO";
+  let hour =
+    hour24 % 12;
+
+  if (hour === 0) {
+    hour = 12;
+  }
+
+  return (
+    hour +
+    ":" +
+    String(minute)
+      .padStart(2, "0") +
+    " " +
+    period
+  );
 
 }
 
+
+function formatTime(time) {
+
+  const minutes =
+    timeToMinutes(time);
+
+  if (minutes === null) {
+    return "";
+  }
+
+  return minutesToTime(
+    minutes
+  );
+
+}
+
+
+function calculateActionEnd(
+  start,
+  duration
+) {
+
+  const startMinutes =
+    timeToMinutes(start);
+
+  if (startMinutes === null) {
+    return null;
+  }
+
+  return (
+    startMinutes +
+    parseInt(duration)
+  );
+
+}
+
+
+/* PRIORITY */
+
+function priorityLabel(priority) {
+
+  if (priority === "must") {
+    return "MUST DO";
+  }
+
+  if (priority === "could") {
+    return "COULD DO";
+  }
+
+  return "SHOULD DO";
+
+}
+
+
+/* CREATE TIMELINE */
+
+function getTimelineItems() {
+
+  const items = [];
+
+
+  dashboardData.commitments
+    .forEach(
+      (commitment, index) => {
+
+        if (
+          commitment.text.trim() === "" ||
+          commitment.start === "" ||
+          commitment.end === ""
+        ) {
+          return;
+        }
+
+        const start =
+          timeToMinutes(
+            commitment.start
+          );
+
+        const end =
+          timeToMinutes(
+            commitment.end
+          );
+
+        if (
+          start === null ||
+          end === null ||
+          end <= start
+        ) {
+          return;
+        }
+
+        items.push({
+          id: "commitment-" + index,
+          type: "commitment",
+          title: commitment.text,
+          start: start,
+          end: end,
+          conflicted: false
+        });
+
+      }
+    );
+
+
+  dashboardData.actions
+    .forEach(
+      (action, index) => {
+
+        if (
+          action.text.trim() === "" ||
+          action.time === ""
+        ) {
+          return;
+        }
+
+        const start =
+          timeToMinutes(
+            action.time
+          );
+
+        const end =
+          calculateActionEnd(
+            action.time,
+            action.duration
+          );
+
+        items.push({
+          id: "action-" + index,
+          type: "action",
+          title: action.text,
+          start: start,
+          end: end,
+          priority: action.priority,
+          duration: action.duration,
+          completed: action.completed,
+          conflicted: false
+        });
+
+      }
+    );
+
+
+  return items.sort(
+    (a, b) =>
+      a.start - b.start
+  );
+
+}
+
+
+/* CONFLICT DETECTION */
+
+function detectConflicts(items) {
+
+  const conflicts = [];
+
+
+  for (
+    let i = 0;
+    i < items.length;
+    i++
+  ) {
+
+    for (
+      let j = i + 1;
+      j < items.length;
+      j++
+    ) {
+
+      const first =
+        items[i];
+
+      const second =
+        items[j];
+
+
+      const overlap =
+        first.start < second.end &&
+        second.start < first.end;
+
+
+      if (overlap) {
+
+        first.conflicted =
+          true;
+
+        second.conflicted =
+          true;
+
+
+        conflicts.push({
+          first:
+            first.title,
+
+          second:
+            second.title,
+
+          start:
+            Math.max(
+              first.start,
+              second.start
+            ),
+
+          end:
+            Math.min(
+              first.end,
+              second.end
+            )
+        });
+
+      }
+
+    }
+
+  }
+
+
+  return conflicts;
+
+}
+
+
+/* SHOW CONFLICTS */
+
+function showConflicts(
+  conflicts
+) {
+
+  const box =
+    document.getElementById(
+      "conflictBox"
+    );
+
+  const list =
+    document.getElementById(
+      "conflictList"
+    );
+
+
+  list.innerHTML =
+    "";
+
+
+  if (
+    conflicts.length === 0
+  ) {
+
+    box.style.display =
+      "none";
+
+    return;
+
+  }
+
+
+  box.style.display =
+    "block";
+
+
+  conflicts.forEach(
+    conflict => {
+
+      const item =
+        document.createElement(
+          "div"
+        );
+
+      item.className =
+        "conflict-item";
+
+      item.textContent =
+        `${conflict.first} overlaps with ${conflict.second} from ${minutesToTime(conflict.start)} to ${minutesToTime(conflict.end)}.`;
+
+      list.appendChild(
+        item
+      );
+
+    }
+  );
+
+}
 
 
 /* BUILD SCHEDULE */
 
-function buildSchedule(){
+function buildSchedule() {
 
-const schedule =
-document.getElementById(
-"scheduleList"
-);
-
-
-const scheduled =
-dashboardData.actions
-.filter(
-action =>
-action.text.trim() !== "" &&
-action.time !== ""
-)
-.sort(
-(a,b) =>
-a.time.localeCompare(
-b.time
-)
-);
+  const schedule =
+    document.getElementById(
+      "scheduleList"
+    );
 
 
-schedule.innerHTML =
-"";
+  const items =
+    getTimelineItems();
 
 
-if(
-scheduled.length === 0
-){
+  const conflicts =
+    detectConflicts(
+      items
+    );
 
-schedule.innerHTML = `
-<div class="schedule-empty">
-Add a start time to an action and it will
-automatically appear here.
-</div>
-`;
 
-return;
+  showConflicts(
+    conflicts
+  );
+
+
+  schedule.innerHTML =
+    "";
+
+
+  if (
+    items.length === 0
+  ) {
+
+    schedule.innerHTML = `
+      <div class="schedule-empty">
+        Add a fixed commitment or give an action
+        a start time and it will appear here.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  items.forEach(
+    item => {
+
+      const row =
+        document.createElement(
+          "div"
+        );
+
+      row.className =
+        "schedule-item";
+
+
+      if (
+        item.conflicted
+      ) {
+
+        row.classList.add(
+          "conflicted"
+        );
+
+      }
+
+
+      let details =
+        "";
+
+
+      if (
+        item.type ===
+        "commitment"
+      ) {
+
+        details = `
+          <span class="commitment-badge">
+            COMMITMENT
+          </span>
+        `;
+
+      } else {
+
+        const badgeClass =
+          item.priority === "must"
+            ? "badge-must"
+            : item.priority === "could"
+              ? "badge-could"
+              : "badge-should";
+
+
+        details = `
+          <span class="priority-badge ${badgeClass}">
+            ${priorityLabel(item.priority)}
+          </span>
+
+          ${item.duration} minutes
+
+          ${item.completed
+            ? " • ✓ Completed"
+            : ""}
+        `;
+
+      }
+
+
+      if (
+        item.conflicted
+      ) {
+
+        details += `
+          <span class="conflict-badge">
+            ⚠ CONFLICT
+          </span>
+        `;
+
+      }
+
+
+      row.innerHTML = `
+
+        <div class="schedule-time">
+
+          ${minutesToTime(item.start)}
+
+          <br>
+
+          <span
+            style="font-size:12px;color:#6b7280;">
+
+            to ${minutesToTime(item.end)}
+
+          </span>
+
+        </div>
+
+        <div>
+
+          <div class="schedule-title">
+            ${escapeHTML(item.title)}
+          </div>
+
+          <div class="schedule-meta">
+            ${details}
+          </div>
+
+        </div>
+      `;
+
+
+      schedule.appendChild(
+        row
+      );
+
+    }
+  );
 
 }
-
-
-scheduled.forEach(
-action => {
-
-const item =
-document.createElement("div");
-
-item.className =
-"schedule-item";
-
-
-const end =
-calculateEndTime(
-action.time,
-action.duration
-);
-
-
-const badgeClass =
-action.priority === "must"
-?
-"badge-must"
-:
-action.priority === "could"
-?
-"badge-could"
-:
-"badge-should";
-
-
-item.innerHTML = `
-
-<div class="schedule-time">
-${formatTime(action.time)}
-<br>
-<span style="font-size:12px;color:#6b7280;">
-to ${formatTime(end)}
-</span>
-</div>
-
-<div>
-
-<div class="schedule-title">
-${escapeHTML(action.text)}
-</div>
-
-<div class="schedule-meta">
-
-<span class="priority-badge ${badgeClass}">
-${priorityLabel(action.priority)}
-</span>
-
-${action.duration} minutes
-
-${action.completed
-? " • ✓ Completed"
-: ""}
-
-</div>
-
-</div>
-`;
-
-
-schedule.appendChild(
-item
-);
-
-}
-);
-
-}
-
 
 
 /* SAFE TEXT */
 
-function escapeHTML(text){
+function escapeHTML(text) {
 
-const div =
-document.createElement("div");
+  const div =
+    document.createElement(
+      "div"
+    );
 
-div.textContent =
-text;
+  div.textContent =
+    text;
 
-return div.innerHTML;
+  return div.innerHTML;
 
 }
-
 
 
 /* SAVE */
 
-function autoSave(){
+function autoSave() {
 
-localStorage.setItem(
-STORAGE_KEY,
-JSON.stringify(
-dashboardData
-)
-);
-
-}
-
-
-function refreshDashboard(){
-
-collectData();
-
-updateProgress();
-
-buildSchedule();
-
-autoSave();
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(
+      dashboardData
+    )
+  );
 
 }
 
+
+function refreshDashboard() {
+
+  collectData();
+
+  updateProgress();
+
+  buildSchedule();
+
+  autoSave();
+
+}
 
 
 /* MANUAL SAVE */
 
-function saveDashboard(){
+function saveDashboard() {
 
-refreshDashboard();
+  refreshDashboard();
 
-const message =
-document.getElementById(
-"savedMessage"
-);
+  const message =
+    document.getElementById(
+      "savedMessage"
+    );
 
-message.style.display =
-"block";
+  message.style.display =
+    "block";
 
-setTimeout(
-() => {
+  setTimeout(
+    () => {
 
-message.style.display =
-"none";
+      message.style.display =
+        "none";
 
-},
-2500
-);
+    },
+    2500
+  );
 
 }
-
 
 
 /* LOAD */
 
-function loadDashboard(){
+function loadDashboard() {
 
-const saved =
-localStorage.getItem(
-STORAGE_KEY
-);
+  const saved =
+    localStorage.getItem(
+      STORAGE_KEY
+    );
 
 
-if(saved){
+  if (saved) {
 
-try{
+    try {
 
-const parsed =
-JSON.parse(saved);
+      const parsed =
+        JSON.parse(saved);
 
-dashboardData = {
 
-date:
-parsed.date ||
-getDateKey(),
+      dashboardData = {
 
-outcome:
-parsed.outcome || "",
+        date:
+          parsed.date ||
+          getDateKey(),
 
-purpose:
-parsed.purpose || "",
+        outcome:
+          parsed.outcome ||
+          "",
 
-actions:
-Array.isArray(
-parsed.actions
-)
-?
-parsed.actions
-:
-[]
+        purpose:
+          parsed.purpose ||
+          "",
 
-};
+        commitments:
+          Array.isArray(
+            parsed.commitments
+          )
+            ? parsed.commitments
+            : [],
+
+        actions:
+          Array.isArray(
+            parsed.actions
+          )
+            ? parsed.actions
+            : []
+
+      };
+
+    } catch (error) {
+
+      console.log(
+        "Saved dashboard could not be loaded."
+      );
+
+    }
+
+  }
+
+
+  document
+    .getElementById(
+      "outcome"
+    )
+    .value =
+    dashboardData.outcome;
+
+
+  document
+    .getElementById(
+      "purpose"
+    )
+    .value =
+    dashboardData.purpose;
+
+
+  const commitmentList =
+    document.getElementById(
+      "commitmentList"
+    );
+
+  commitmentList.innerHTML =
+    "";
+
+
+  if (
+    dashboardData.commitments.length === 0
+  ) {
+
+    dashboardData.commitments = [
+      {
+        text: "",
+        start: "",
+        end: ""
+      }
+    ];
+
+  }
+
+
+  dashboardData.commitments
+    .forEach(
+      createCommitmentCard
+    );
+
+
+  const actionList =
+    document.getElementById(
+      "actionList"
+    );
+
+  actionList.innerHTML =
+    "";
+
+
+  if (
+    dashboardData.actions.length === 0
+  ) {
+
+    dashboardData.actions = [
+      {
+        text: "",
+        completed: false,
+        priority: "must",
+        time: "",
+        duration: "30"
+      },
+      {
+        text: "",
+        completed: false,
+        priority: "should",
+        time: "",
+        duration: "30"
+      },
+      {
+        text: "",
+        completed: false,
+        priority: "could",
+        time: "",
+        duration: "30"
+      }
+    ];
+
+  }
+
+
+  dashboardData.actions
+    .forEach(
+      createActionCard
+    );
+
+
+  refreshDashboard();
 
 }
-catch(error){
-
-console.log(
-"Saved dashboard could not be loaded."
-);
-
-}
-
-}
-
-
-document
-.getElementById(
-"outcome"
-)
-.value =
-dashboardData.outcome;
-
-
-document
-.getElementById(
-"purpose"
-)
-.value =
-dashboardData.purpose;
-
-
-const actionList =
-document.getElementById(
-"actionList"
-);
-
-actionList.innerHTML =
-"";
-
-
-if(
-dashboardData.actions.length === 0
-){
-
-dashboardData.actions = [
-{
-text:"",
-completed:false,
-priority:"must",
-time:"",
-duration:"30"
-},
-{
-text:"",
-completed:false,
-priority:"should",
-time:"",
-duration:"30"
-},
-{
-text:"",
-completed:false,
-priority:"could",
-time:"",
-duration:"30"
-}
-];
-
-}
-
-
-dashboardData.actions.forEach(
-createActionCard
-);
-
-
-refreshDashboard();
-
-}
-
 
 
 /* EVENTS */
 
 document
-.getElementById(
-"addActionButton"
-)
-.addEventListener(
-"click",
-addAction
-);
+  .getElementById(
+    "addCommitmentButton"
+  )
+  .addEventListener(
+    "click",
+    addCommitment
+  );
 
 
 document
-.getElementById(
-"saveButton"
-)
-.addEventListener(
-"click",
-saveDashboard
-);
+  .getElementById(
+    "addActionButton"
+  )
+  .addEventListener(
+    "click",
+    addAction
+  );
 
 
 document
-.getElementById(
-"outcome"
-)
-.addEventListener(
-"input",
-refreshDashboard
-);
+  .getElementById(
+    "saveButton"
+  )
+  .addEventListener(
+    "click",
+    saveDashboard
+  );
 
 
 document
-.getElementById(
-"purpose"
-)
-.addEventListener(
-"input",
-refreshDashboard
-);
+  .getElementById(
+    "outcome"
+  )
+  .addEventListener(
+    "input",
+    refreshDashboard
+  );
 
+
+document
+  .getElementById(
+    "purpose"
+  )
+  .addEventListener(
+    "input",
+    refreshDashboard
+  );
 
 
 /* START */
