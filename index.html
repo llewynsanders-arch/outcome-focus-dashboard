@@ -29,7 +29,9 @@ h1{font-size:28px;margin-bottom:6px}
 .card{background:white;border-radius:16px;padding:20px;margin-bottom:18px;box-shadow:0 4px 15px rgba(0,0,0,.06)}
 .card h2{font-size:19px;margin-bottom:14px}
 .section-description{color:var(--gray);font-size:14px;line-height:1.55;margin:-5px 0 15px}
+
 label{display:block;font-weight:bold;margin:15px 0 7px}
+
 textarea,input[type="text"],input[type="time"],input[type="number"],input[type="date"],select{
 width:100%;padding:12px;border:1px solid #d1d5db;border-radius:10px;font-size:16px;font-family:inherit;background:white
 }
@@ -64,90 +66,337 @@ width:100%;border:none;border-radius:10px;padding:14px;font-size:16px;font-weigh
 .commitment-add-button{background:#e0e7ff;color:#3730a3}
 .life-save{margin-top:4px}
 
-.outcome-life-card{border:1px solid var(--border);border-left:5px solid var(--purple);border-radius:14px;padding:15px;margin-bottom:14px;background:#fafafa}
+.outcome-life-card{
+border:1px solid var(--border);
+border-left:5px solid var(--purple);
+border-radius:14px;
+padding:15px;
+margin-bottom:14px;
+background:#fafafa
+}
 .outcome-life-top{display:grid;grid-template-columns:1fr 38px;gap:9px;align-items:center}
 .outcome-life-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:11px}
 .outcome-life-actions{margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
 .life-action-row{display:grid;grid-template-columns:1fr auto 38px;gap:8px;margin-top:8px;align-items:center}
+
 .send-today-button{
 border:none;border-radius:9px;padding:11px 12px;background:#dbeafe;color:#1d4ed8;
 font-size:13px;font-weight:bold;cursor:pointer;white-space:nowrap
 }
 .send-today-button.added{background:#dcfce7;color:#166534}
-.life-outcome-empty{color:var(--gray);text-align:center;padding:12px 4px 18px;line-height:1.5}
 
-/* VERSION 1.7 DAILY PLANNER */
-.planner-card{border:1px solid #bfdbfe;border-left:5px solid var(--blue);border-radius:14px;padding:15px;margin-bottom:14px;background:#f8fbff}
-.planner-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:8px}
+.life-outcome-empty{
+color:var(--gray);text-align:center;padding:12px 4px 18px;line-height:1.5
+}
+
+/* DAILY PLANNER */
+
+.planner-card{
+border:1px solid #bfdbfe;
+border-left:5px solid var(--blue);
+border-radius:14px;
+padding:15px;
+margin-bottom:14px;
+background:#f8fbff
+}
+
+.planner-top{
+display:flex;
+justify-content:space-between;
+gap:10px;
+align-items:flex-start;
+margin-bottom:8px
+}
+
 .planner-title{font-size:16px;font-weight:bold;line-height:1.4}
-.planner-area{font-size:12px;font-weight:bold;color:var(--purple);background:#ede9fe;padding:5px 8px;border-radius:20px;white-space:nowrap}
-.planner-purpose{font-size:13px;color:var(--gray);line-height:1.45;margin-bottom:11px}
+
+.planner-area{
+font-size:12px;
+font-weight:bold;
+color:var(--purple);
+background:#ede9fe;
+padding:5px 8px;
+border-radius:20px;
+white-space:nowrap
+}
+
+.planner-purpose{
+font-size:13px;
+color:var(--gray);
+line-height:1.45;
+margin-bottom:11px
+}
+
 .planner-actions{display:grid;gap:8px}
+
 .planner-action{
-display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;
-border:1px solid var(--border);border-radius:10px;padding:10px;background:white
+display:grid;
+grid-template-columns:1fr auto;
+gap:8px;
+align-items:center;
+border:1px solid var(--border);
+border-radius:10px;
+padding:10px;
+background:white
 }
+
 .planner-action-text{font-size:14px;line-height:1.4}
+
 .planner-add{
-border:none;border-radius:8px;padding:9px 10px;background:#dbeafe;color:#1d4ed8;
-font-size:12px;font-weight:bold;cursor:pointer;white-space:nowrap
+border:none;
+border-radius:8px;
+padding:9px 10px;
+background:#dbeafe;
+color:#1d4ed8;
+font-size:12px;
+font-weight:bold;
+cursor:pointer;
+white-space:nowrap
 }
-.planner-add.in-today{background:#dcfce7;color:#166534}
-.planner-empty{color:var(--gray);text-align:center;padding:16px 5px;line-height:1.5}
+
+.planner-add.in-today{
+background:#dcfce7;
+color:#166534
+}
+
+.planner-empty{
+color:var(--gray);
+text-align:center;
+padding:16px 5px;
+line-height:1.5
+}
+
 .planner-summary{
-display:flex;justify-content:space-between;align-items:center;gap:10px;
-padding:10px 12px;background:#eff6ff;border-radius:10px;margin-bottom:14px;
-font-size:13px;color:#1e40af;font-weight:bold
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+padding:10px 12px;
+background:#eff6ff;
+border-radius:10px;
+margin-bottom:14px;
+font-size:13px;
+color:#1e40af;
+font-weight:bold
 }
 
 .today-transfer-message{
-display:none;background:#ecfdf5;border:1px solid #86efac;border-left:5px solid #16a34a;
-border-radius:12px;padding:14px;margin-bottom:18px;color:#166534;font-weight:bold;line-height:1.5
+display:none;
+background:#ecfdf5;
+border:1px solid #86efac;
+border-left:5px solid #16a34a;
+border-radius:12px;
+padding:14px;
+margin-bottom:18px;
+color:#166534;
+font-weight:bold;
+line-height:1.5
 }
 
-.action-card{border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:14px;background:#fafafa}
-.action-main{display:grid;grid-template-columns:28px 1fr 38px;gap:9px;align-items:center}
-.action-checkbox{width:21px;height:21px;cursor:pointer;accent-color:var(--blue)}
-.action-text.completed{text-decoration:line-through;color:#9ca3af}
-.action-options{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:9px;margin-top:11px}
+.action-card{
+border:1px solid var(--border);
+border-radius:14px;
+padding:14px;
+margin-bottom:14px;
+background:#fafafa
+}
+
+.action-main{
+display:grid;
+grid-template-columns:28px 1fr 38px;
+gap:9px;
+align-items:center
+}
+
+.action-checkbox{
+width:21px;
+height:21px;
+cursor:pointer;
+accent-color:var(--blue)
+}
+
+.action-text.completed{
+text-decoration:line-through;
+color:#9ca3af
+}
+
+.action-options{
+display:grid;
+grid-template-columns:1.2fr 1fr 1fr;
+gap:9px;
+margin-top:11px
+}
+
 .priority-must{border-left:5px solid var(--red)}
 .priority-should{border-left:5px solid var(--yellow)}
 .priority-could{border-left:5px solid var(--green)}
 
-.commitment-card{border:1px solid #c7d2fe;border-left:5px solid #6366f1;background:#f5f7ff;border-radius:14px;padding:14px;margin-bottom:14px}
-.commitment-main{display:grid;grid-template-columns:1fr 38px;gap:9px;align-items:center}
-.commitment-options{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:11px}
-
-.conflict-box{display:none;background:#fff7ed;border:1px solid #fdba74;border-left:5px solid #ea580c;border-radius:12px;padding:14px;margin-bottom:18px}
-.conflict-box h3{color:#c2410c;font-size:16px;margin-bottom:8px}
-.conflict-item{color:#7c2d12;line-height:1.5;font-size:14px;margin-top:7px}
-
-.schedule-empty{color:var(--gray);text-align:center;padding:20px 5px;line-height:1.5}
-.schedule-item{display:grid;grid-template-columns:115px 1fr;gap:12px;padding:14px 0;border-bottom:1px solid var(--border)}
-.schedule-item:last-child{border-bottom:none}
-.schedule-item.conflicted{background:#fff7ed;border-radius:10px;padding:12px;margin:4px 0}
-.schedule-time{font-weight:bold;color:#1d4ed8}
-.schedule-title{font-weight:bold;margin-bottom:5px}
-.schedule-meta{font-size:13px;color:var(--gray)}
-.priority-badge,.commitment-badge,.conflict-badge{
-display:inline-block;padding:4px 7px;border-radius:20px;font-size:11px;font-weight:bold;margin-right:5px;margin-bottom:3px
+.commitment-card{
+border:1px solid #c7d2fe;
+border-left:5px solid #6366f1;
+background:#f5f7ff;
+border-radius:14px;
+padding:14px;
+margin-bottom:14px
 }
+
+.commitment-main{
+display:grid;
+grid-template-columns:1fr 38px;
+gap:9px;
+align-items:center
+}
+
+.commitment-options{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:9px;
+margin-top:11px
+}
+
+.conflict-box{
+display:none;
+background:#fff7ed;
+border:1px solid #fdba74;
+border-left:5px solid #ea580c;
+border-radius:12px;
+padding:14px;
+margin-bottom:18px
+}
+
+.conflict-box h3{
+color:#c2410c;
+font-size:16px;
+margin-bottom:8px
+}
+
+.conflict-item{
+color:#7c2d12;
+line-height:1.5;
+font-size:14px;
+margin-top:7px
+}
+
+.schedule-empty{
+color:var(--gray);
+text-align:center;
+padding:20px 5px;
+line-height:1.5
+}
+
+.schedule-item{
+display:grid;
+grid-template-columns:115px 1fr;
+gap:12px;
+padding:14px 0;
+border-bottom:1px solid var(--border)
+}
+
+.schedule-item:last-child{border-bottom:none}
+
+.schedule-item.conflicted{
+background:#fff7ed;
+border-radius:10px;
+padding:12px;
+margin:4px 0
+}
+
+.schedule-time{
+font-weight:bold;
+color:#1d4ed8
+}
+
+.schedule-title{
+font-weight:bold;
+margin-bottom:5px
+}
+
+.schedule-meta{
+font-size:13px;
+color:var(--gray)
+}
+
+.priority-badge,.commitment-badge,.conflict-badge{
+display:inline-block;
+padding:4px 7px;
+border-radius:20px;
+font-size:11px;
+font-weight:bold;
+margin-right:5px;
+margin-bottom:3px
+}
+
 .badge-must{background:#fee2e2;color:#b91c1c}
 .badge-should{background:#fef3c7;color:#92400e}
 .badge-could{background:#dcfce7;color:#166534}
 .commitment-badge{background:#e0e7ff;color:#3730a3}
 .conflict-badge{background:#ffedd5;color:#c2410c}
 
-.progress-header{display:flex;justify-content:space-between;align-items:center}
-.progress-percent{font-size:25px;font-weight:bold;color:var(--blue)}
-.progress-background{background:#e5e7eb;height:14px;border-radius:20px;overflow:hidden;margin-top:12px}
-.progress-bar{width:0;height:100%;background:var(--blue);transition:width .3s ease}
-.progress-text{margin-top:9px;color:var(--gray);font-size:14px}
-.completion-message{display:none;margin-top:14px;padding:12px;background:#ecfdf5;border-radius:10px;color:#047857;font-weight:bold;text-align:center}
-.tip{background:var(--blue-light);border-left:4px solid var(--blue)}
+.progress-header{
+display:flex;
+justify-content:space-between;
+align-items:center
+}
+
+.progress-percent{
+font-size:25px;
+font-weight:bold;
+color:var(--blue)
+}
+
+.progress-background{
+background:#e5e7eb;
+height:14px;
+border-radius:20px;
+overflow:hidden;
+margin-top:12px
+}
+
+.progress-bar{
+width:0;
+height:100%;
+background:var(--blue);
+transition:width .3s ease
+}
+
+.progress-text{
+margin-top:9px;
+color:var(--gray);
+font-size:14px
+}
+
+.completion-message{
+display:none;
+margin-top:14px;
+padding:12px;
+background:#ecfdf5;
+border-radius:10px;
+color:#047857;
+font-weight:bold;
+text-align:center
+}
+
+.tip{
+background:var(--blue-light);
+border-left:4px solid var(--blue)
+}
+
 .tip p{line-height:1.6}
-.saved-message{display:none;text-align:center;color:#047857;font-weight:bold;margin-top:12px}
-.footer-note{text-align:center;color:#9ca3af;font-size:12px;margin-top:20px}
+
+.saved-message{
+display:none;
+text-align:center;
+color:#047857;
+font-weight:bold;
+margin-top:12px
+}
+
+.footer-note{
+text-align:center;
+color:#9ca3af;
+font-size:12px;
+margin-top:20px
+}
 
 @media(max-width:600px){
 h1{font-size:24px}
@@ -169,15 +418,19 @@ h1{font-size:24px}
 </head>
 
 <body>
+
 <main class="container">
 
 <header>
 <div class="date" id="todayDate"></div>
+
 <h1>Life Management System</h1>
+
 <p class="subtitle">
 Manage the areas of your life that matter, decide what outcomes you want,
 and turn those outcomes into focused daily action.
 </p>
+
 <span class="version">Version 1.7</span>
 </header>
 
@@ -190,6 +443,7 @@ and turn those outcomes into focused daily action.
 
 <div class="card">
 <h2>🧭 Life Assessment</h2>
+
 <p class="section-description">
 Rate where you believe you are today and where you want to be.
 The gap helps you see which areas may deserve more attention.
@@ -197,568 +451,3892 @@ The gap helps you see which areas may deserve more attention.
 </div>
 
 <div class="life-summary">
-<div class="summary-box"><div class="summary-number" id="averageCurrent">0</div><div class="summary-label">CURRENT AVG.</div></div>
-<div class="summary-box"><div class="summary-number" id="averageDesired">0</div><div class="summary-label">DESIRED AVG.</div></div>
-<div class="summary-box"><div class="summary-number" id="largestGap">0</div><div class="summary-label">LARGEST GAP</div></div>
+
+<div class="summary-box">
+<div class="summary-number" id="averageCurrent">0</div>
+<div class="summary-label">CURRENT AVG.</div>
+</div>
+
+<div class="summary-box">
+<div class="summary-number" id="averageDesired">0</div>
+<div class="summary-label">DESIRED AVG.</div>
+</div>
+
+<div class="summary-box">
+<div class="summary-number" id="largestGap">0</div>
+<div class="summary-label">LARGEST GAP</div>
+</div>
+
 </div>
 
 <div class="card">
+
 <h2>🌱 Areas of Life</h2>
+
 <div id="lifeAreaList"></div>
-<button class="add-button" id="addLifeAreaButton" type="button">+ Add Your Own Life Area</button>
+
+<button class="add-button" id="addLifeAreaButton" type="button">
++ Add Your Own Life Area
+</button>
+
 </div>
 
 <div class="card">
+
 <h2>🎯 Life Outcomes</h2>
+
 <p class="section-description">
 Turn an important area of your life into a clear result. Choose the area,
 define the outcome, explain why it matters, and list the actions that will move it forward.
 </p>
+
 <div id="lifeOutcomeList"></div>
-<button class="add-button" id="addLifeOutcomeButton" type="button">+ Add Life Outcome</button>
+
+<button class="add-button" id="addLifeOutcomeButton" type="button">
++ Add Life Outcome
+</button>
+
 </div>
 
-<button class="save-button life-save" id="saveLifeButton" type="button">Save Life Assessment & Outcomes</button>
-<div class="saved-message" id="lifeSavedMessage">✓ Your life assessment and outcomes have been saved.</div>
+<button class="save-button life-save" id="saveLifeButton" type="button">
+Save Life Assessment & Outcomes
+</button>
+
+<div class="saved-message" id="lifeSavedMessage">
+✓ Your life assessment and outcomes have been saved.
+</div>
+
 </section>
 
 <section id="todayPage" class="page">
 
-<div class="today-transfer-message" id="todayTransferMessage">✓ Life Outcome action added to TODAY.</div>
+<div class="today-transfer-message" id="todayTransferMessage">
+✓ Life Outcome action added to TODAY.
+</div>
 
 <section class="card">
+
 <h2>📋 Daily Planning</h2>
+
 <p class="section-description">
 Review your active Life Outcomes and deliberately choose the actions that deserve your attention today.
 </p>
+
 <div class="planner-summary">
 <span>Active Life Outcomes</span>
 <span id="activeOutcomeCount">0</span>
 </div>
+
 <div id="dailyPlannerList"></div>
+
 </section>
 
 <section class="card">
+
 <h2>🎯 Today's Most Important Outcome</h2>
+
 <label for="outcome">What result do I want?</label>
+
 <textarea id="outcome" placeholder="Example: Finish the first version of my website."></textarea>
+
 <label for="purpose">Why does this matter?</label>
+
 <textarea id="purpose" placeholder="Write the reason this outcome is important to you."></textarea>
+
 </section>
 
 <section class="card">
+
 <h2>📅 Fixed Commitments</h2>
-<p class="section-description">Add appointments, meetings, work shifts, pickups, classes, or anything else that already has a fixed time.</p>
+
+<p class="section-description">
+Add appointments, meetings, work shifts, pickups, classes, or anything else that already has a fixed time.
+</p>
+
 <div id="commitmentList"></div>
-<button class="commitment-add-button" id="addCommitmentButton" type="button">+ Add Fixed Commitment</button>
+
+<button class="commitment-add-button" id="addCommitmentButton" type="button">
++ Add Fixed Commitment
+</button>
+
 </section>
 
 <section class="card">
+
 <h2>⚡ Action Plan</h2>
-<p class="section-description">Choose the actions that move your most important outcome forward, then decide when they belong in your day.</p>
+
+<p class="section-description">
+Choose the actions that move your most important outcome forward, then decide when they belong in your day.
+</p>
+
 <div id="actionList"></div>
-<button class="add-button" id="addActionButton" type="button">+ Add Another Action</button>
+
+<button class="add-button" id="addActionButton" type="button">
++ Add Another Action
+</button>
+
 </section>
 
 <section class="conflict-box" id="conflictBox">
+
 <h3>⚠️ Schedule Conflict Detected</h3>
+
 <div id="conflictList"></div>
+
 </section>
 
 <section class="card">
+
 <h2>🗓️ Today's Schedule</h2>
+
 <div id="scheduleList"></div>
+
 </section>
 
 <section class="card">
+
 <div class="progress-header">
+
 <h2>📈 Today's Progress</h2>
+
 <div class="progress-percent" id="progressPercent">0%</div>
+
 </div>
-<div class="progress-background"><div class="progress-bar" id="progressBar"></div></div>
-<div class="progress-text" id="progressText">0 of 0 actions completed</div>
-<div class="completion-message" id="completionMessage">🎉 Outcome action plan completed!</div>
+
+<div class="progress-background">
+<div class="progress-bar" id="progressBar"></div>
+</div>
+
+<div class="progress-text" id="progressText">
+0 of 0 actions completed
+</div>
+
+<div class="completion-message" id="completionMessage">
+🎉 Outcome action plan completed!
+</div>
+
 </section>
 
 <section class="card tip">
+
 <h2>💡 Focus Reminder</h2>
-<p>Your calendar should reflect your priorities. Protect your commitments, then give the actions that move your important outcomes forward a specific place in your day.</p>
+
+<p>
+Your calendar should reflect your priorities. Protect your commitments,
+then give the actions that move your important outcomes forward a specific place in your day.
+</p>
+
 </section>
 
-<button class="save-button" id="saveTodayButton" type="button">Save My Day</button>
-<div class="saved-message" id="todaySavedMessage">✓ Your day has been saved.</div>
+<button class="save-button" id="saveTodayButton" type="button">
+Save My Day
+</button>
+
+<div class="saved-message" id="todaySavedMessage">
+✓ Your day has been saved.
+</div>
 
 </section>
 
-<div class="footer-note">Life Management System</div>
+<div class="footer-note">
+Life Management System
+</div>
+
 </main>
 
 <script>
+
+/* =========================================================
+   VERSION 1.7 STORAGE
+   ========================================================= */
+
 const LIFE_STORAGE_KEY="lifeManagementAreasV17";
 const OLD_LIFE_STORAGE_KEY="lifeManagementAreasV16";
+
 const LIFE_OUTCOMES_STORAGE_KEY="lifeManagementOutcomesV17";
 const OLD_LIFE_OUTCOMES_STORAGE_KEY="lifeManagementOutcomesV16";
+const OLDER_LIFE_OUTCOMES_STORAGE_KEY="lifeManagementOutcomesV15";
+
 const TODAY_STORAGE_KEY="outcomeFocusDashboardV17";
 const OLD_TODAY_STORAGE_KEY="outcomeFocusDashboardV16";
+const OLDER_TODAY_STORAGE_KEY="outcomeFocusDashboardV15";
+
+
+/* =========================================================
+   DATE
+   ========================================================= */
 
 const today=new Date();
-document.getElementById("todayDate").textContent=today.toLocaleDateString("en-US",{weekday:"long",month:"long",day:"numeric",year:"numeric"});
+
+document.getElementById("todayDate").textContent=
+today.toLocaleDateString(
+"en-US",
+{
+weekday:"long",
+month:"long",
+day:"numeric",
+year:"numeric"
+}
+);
 
 function getDateKey(){
+
 const now=new Date();
+
 return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}-${String(now.getDate()).padStart(2,"0")}`;
+
 }
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
 
 const lifeNav=document.getElementById("lifeNav");
 const todayNav=document.getElementById("todayNav");
+
 const lifePage=document.getElementById("lifePage");
 const todayPage=document.getElementById("todayPage");
 
 function showPage(page){
-lifePage.classList.remove("active");todayPage.classList.remove("active");
-lifeNav.classList.remove("active");todayNav.classList.remove("active");
-if(page==="life"){lifePage.classList.add("active");lifeNav.classList.add("active")}
-else{todayPage.classList.add("active");todayNav.classList.add("active");renderDailyPlanner()}
-window.scrollTo({top:0,behavior:"smooth"});
+
+lifePage.classList.remove("active");
+todayPage.classList.remove("active");
+
+lifeNav.classList.remove("active");
+todayNav.classList.remove("active");
+
+if(page==="life"){
+
+lifePage.classList.add("active");
+lifeNav.classList.add("active");
+
+}else{
+
+todayPage.classList.add("active");
+todayNav.classList.add("active");
+
+renderDailyPlanner();
+
 }
-lifeNav.addEventListener("click",()=>showPage("life"));
-todayNav.addEventListener("click",()=>showPage("today"));
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+lifeNav.addEventListener(
+"click",
+()=>showPage("life")
+);
+
+todayNav.addEventListener(
+"click",
+()=>showPage("today")
+);
+
+
+/* =========================================================
+   LIFE ASSESSMENT
+   ========================================================= */
 
 const defaultLifeAreas=[
+
 {name:"💪 Health & Fitness",current:5,desired:8},
+
 {name:"💰 Finances",current:5,desired:8},
+
 {name:"💼 Career / Business",current:5,desired:8},
+
 {name:"❤️ Relationships",current:5,desired:8},
+
 {name:"👨‍👩‍👧 Family",current:5,desired:8},
+
 {name:"🙏 Spiritual Life",current:5,desired:8},
+
 {name:"🧠 Personal Growth",current:5,desired:8},
+
 {name:"🏠 Home / Environment",current:5,desired:8},
+
 {name:"🎉 Fun / Recreation",current:5,desired:8},
+
 {name:"🤝 Contribution / Giving",current:5,desired:8}
+
 ];
 
 let lifeAreas=[];
 
 function createLifeAreaCard(area){
+
 const list=document.getElementById("lifeAreaList");
-const card=document.createElement("div");card.className="life-area";
-const top=document.createElement("div");top.className="life-area-top";
-const name=document.createElement("input");name.type="text";name.className="area-name";name.value=area.name||"";
-const del=document.createElement("button");del.type="button";del.className="delete-button";del.innerHTML="&times;";
-top.append(name,del);
 
-const scores=document.createElement("div");scores.className="area-scores";
-function scoreBox(label,className,value){
-const wrap=document.createElement("div");wrap.innerHTML=`<div class="score-label">${label}</div>`;
-const select=document.createElement("select");select.className=className;
-for(let i=1;i<=10;i++){const o=document.createElement("option");o.value=i;o.textContent=i;select.appendChild(o)}
-select.value=String(value);wrap.appendChild(select);return {wrap,select};
-}
-const c=scoreBox("Current 1–10","current-score",area.current||5);
-const d=scoreBox("Desired 1–10","desired-score",area.desired||8);
-const gapWrap=document.createElement("div");gapWrap.className="gap-wrapper";gapWrap.innerHTML='<div class="score-label">Improvement Gap</div>';
-const gap=document.createElement("div");gap.className="gap-box";gapWrap.appendChild(gap);
-scores.append(c.wrap,d.wrap,gapWrap);
+const card=document.createElement("div");
+card.className="life-area";
 
-const barBg=document.createElement("div");barBg.className="area-bar-background";
-const bar=document.createElement("div");bar.className="area-bar";barBg.appendChild(bar);
-const status=document.createElement("div");status.className="area-status";
-card.append(top,scores,barBg,status);list.appendChild(card);
 
-function update(){
-const cv=parseInt(c.select.value),dv=parseInt(d.select.value),g=Math.max(dv-cv,0);
-gap.textContent=g;gap.classList.remove("gap-low","gap-medium","gap-high");
-gap.classList.add(g<=2?"gap-low":g<=4?"gap-medium":"gap-high");
-bar.style.width=(cv*10)+"%";
-status.textContent=cv>=dv?"At or above your desired level.":g>=5?"High opportunity for improvement.":g>=3?"Meaningful improvement opportunity.":"Relatively close to your desired level.";
+const top=document.createElement("div");
+top.className="life-area-top";
+
+
+const name=document.createElement("input");
+
+name.type="text";
+name.className="area-name";
+name.value=area.name||"";
+
+
+const del=document.createElement("button");
+
+del.type="button";
+del.className="delete-button";
+del.innerHTML="&times;";
+
+
+top.append(
+name,
+del
+);
+
+
+const scores=document.createElement("div");
+scores.className="area-scores";
+
+
+function scoreBox(
+label,
+className,
+value
+){
+
+const wrap=document.createElement("div");
+
+wrap.innerHTML=
+`<div class="score-label">${label}</div>`;
+
+
+const select=document.createElement("select");
+
+select.className=className;
+
+
+for(let i=1;i<=10;i++){
+
+const option=document.createElement("option");
+
+option.value=i;
+option.textContent=i;
+
+select.appendChild(option);
+
 }
-name.addEventListener("input",refreshLifeAssessment);
-c.select.addEventListener("change",()=>{update();refreshLifeAssessment()});
-d.select.addEventListener("change",()=>{update();refreshLifeAssessment()});
-del.addEventListener("click",()=>{card.remove();refreshLifeAssessment()});
-update();
+
+
+select.value=String(value);
+
+wrap.appendChild(select);
+
+
+return {
+wrap,
+select
+};
+
 }
+
+
+const currentScore=
+scoreBox(
+"Current 1–10",
+"current-score",
+area.current||5
+);
+
+
+const desiredScore=
+scoreBox(
+"Desired 1–10",
+"desired-score",
+area.desired||8
+);
+
+
+const gapWrap=document.createElement("div");
+
+gapWrap.className="gap-wrapper";
+
+gapWrap.innerHTML=
+'<div class="score-label">Improvement Gap</div>';
+
+
+const gap=document.createElement("div");
+
+gap.className="gap-box";
+
+gapWrap.appendChild(gap);
+
+
+scores.append(
+currentScore.wrap,
+desiredScore.wrap,
+gapWrap
+);
+
+
+const barBackground=document.createElement("div");
+
+barBackground.className=
+"area-bar-background";
+
+
+const bar=document.createElement("div");
+
+bar.className="area-bar";
+
+barBackground.appendChild(bar);
+
+
+const status=document.createElement("div");
+
+status.className="area-status";
+
+
+card.append(
+top,
+scores,
+barBackground,
+status
+);
+
+
+list.appendChild(card);
+
+
+function updateCard(){
+
+const currentValue=
+parseInt(currentScore.select.value);
+
+const desiredValue=
+parseInt(desiredScore.select.value);
+
+const improvementGap=
+Math.max(
+desiredValue-currentValue,
+0
+);
+
+
+gap.textContent=
+improvementGap;
+
+
+gap.classList.remove(
+"gap-low",
+"gap-medium",
+"gap-high"
+);
+
+
+if(improvementGap<=2){
+
+gap.classList.add("gap-low");
+
+}else if(improvementGap<=4){
+
+gap.classList.add("gap-medium");
+
+}else{
+
+gap.classList.add("gap-high");
+
+}
+
+
+bar.style.width=
+(currentValue*10)+"%";
+
+
+if(currentValue>=desiredValue){
+
+status.textContent=
+"At or above your desired level.";
+
+}else if(improvementGap>=5){
+
+status.textContent=
+"High opportunity for improvement.";
+
+}else if(improvementGap>=3){
+
+status.textContent=
+"Meaningful improvement opportunity.";
+
+}else{
+
+status.textContent=
+"Relatively close to your desired level.";
+
+}
+
+}
+
+
+name.addEventListener(
+"input",
+refreshLifeAssessment
+);
+
+
+currentScore.select.addEventListener(
+"change",
+()=>{
+
+updateCard();
+refreshLifeAssessment();
+
+}
+);
+
+
+desiredScore.select.addEventListener(
+"change",
+()=>{
+
+updateCard();
+refreshLifeAssessment();
+
+}
+);
+
+
+del.addEventListener(
+"click",
+()=>{
+
+card.remove();
+
+refreshLifeAssessment();
+
+}
+);
+
+
+updateCard();
+
+}
+
 
 function collectLifeAreas(){
-lifeAreas=Array.from(document.querySelectorAll(".life-area")).map(card=>({
-name:card.querySelector(".area-name").value,
-current:parseInt(card.querySelector(".current-score").value),
-desired:parseInt(card.querySelector(".desired-score").value)
-}));
+
+lifeAreas=
+Array.from(
+document.querySelectorAll(".life-area")
+)
+.map(
+card=>({
+
+name:
+card.querySelector(".area-name").value,
+
+current:
+parseInt(
+card.querySelector(".current-score").value
+),
+
+desired:
+parseInt(
+card.querySelector(".desired-score").value
+)
+
+})
+);
+
 }
+
+
 function updateLifeSummary(){
-if(!lifeAreas.length){averageCurrent.textContent="0";averageDesired.textContent="0";largestGap.textContent="0";return}
-averageCurrent.textContent=(lifeAreas.reduce((s,a)=>s+a.current,0)/lifeAreas.length).toFixed(1);
-averageDesired.textContent=(lifeAreas.reduce((s,a)=>s+a.desired,0)/lifeAreas.length).toFixed(1);
-largestGap.textContent=Math.max(...lifeAreas.map(a=>Math.max(a.desired-a.current,0)));
+
+if(!lifeAreas.length){
+
+document.getElementById("averageCurrent").textContent="0";
+
+document.getElementById("averageDesired").textContent="0";
+
+document.getElementById("largestGap").textContent="0";
+
+return;
+
 }
-function refreshLifeAssessment(){collectLifeAreas();updateLifeSummary();localStorage.setItem(LIFE_STORAGE_KEY,JSON.stringify(lifeAreas))}
+
+
+const currentAverage=
+(
+lifeAreas.reduce(
+(sum,area)=>sum+area.current,
+0
+)
+/lifeAreas.length
+).toFixed(1);
+
+
+const desiredAverage=
+(
+lifeAreas.reduce(
+(sum,area)=>sum+area.desired,
+0
+)
+/lifeAreas.length
+).toFixed(1);
+
+
+const biggestGap=
+Math.max(
+...lifeAreas.map(
+area=>
+Math.max(
+area.desired-area.current,
+0
+)
+)
+);
+
+
+document.getElementById("averageCurrent").textContent=
+currentAverage;
+
+document.getElementById("averageDesired").textContent=
+desiredAverage;
+
+document.getElementById("largestGap").textContent=
+biggestGap;
+
+}
+
+
+function refreshLifeAssessment(){
+
+collectLifeAreas();
+
+updateLifeSummary();
+
+localStorage.setItem(
+LIFE_STORAGE_KEY,
+JSON.stringify(lifeAreas)
+);
+
+}
+
+
 function loadLifeAssessment(){
-let saved=localStorage.getItem(LIFE_STORAGE_KEY)||localStorage.getItem(OLD_LIFE_STORAGE_KEY);
-try{lifeAreas=saved?JSON.parse(saved):JSON.parse(JSON.stringify(defaultLifeAreas))}catch(e){lifeAreas=JSON.parse(JSON.stringify(defaultLifeAreas))}
-lifeAreaList.innerHTML="";lifeAreas.forEach(createLifeAreaCard);refreshLifeAssessment();
-}
-function addLifeArea(){createLifeAreaCard({name:"New Life Area",current:5,desired:8});refreshLifeAssessment()}
 
-let lifeOutcomes=[];
-function getLifeAreaNames(){collectLifeAreas();return lifeAreas.map(a=>a.name.trim()).filter(Boolean)}
+let saved=
+localStorage.getItem(
+LIFE_STORAGE_KEY
+);
 
-function createLifeOutcomeCard(outcome){
-const list=document.getElementById("lifeOutcomeList");
-const card=document.createElement("div");card.className="outcome-life-card";
-const top=document.createElement("div");top.className="outcome-life-top";
-const title=document.createElement("input");title.type="text";title.className="life-outcome-title";title.placeholder="What result do you want?";title.value=outcome.title||"";
-const del=document.createElement("button");del.type="button";del.className="delete-button";del.innerHTML="&times;";
-top.append(title,del);card.appendChild(top);
+if(!saved){
 
-const grid=document.createElement("div");grid.className="outcome-life-grid";
-const areaWrap=document.createElement("div");areaWrap.innerHTML='<div class="field-label">Area of Life</div>';
-const area=document.createElement("select");area.className="life-outcome-area";
-const names=getLifeAreaNames();
-names.forEach(n=>{const o=document.createElement("option");o.value=n;o.textContent=n;area.appendChild(o)});
-if(outcome.area&&!names.includes(outcome.area)){const o=document.createElement("option");o.value=outcome.area;o.textContent=outcome.area;area.appendChild(o)}
-area.value=outcome.area||names[0]||"";areaWrap.appendChild(area);
+saved=
+localStorage.getItem(
+OLD_LIFE_STORAGE_KEY
+);
 
-const statusWrap=document.createElement("div");statusWrap.innerHTML='<div class="field-label">Status</div>';
-const status=document.createElement("select");status.className="life-outcome-status";
-status.innerHTML='<option value="active">Active</option><option value="completed">Completed</option><option value="paused">Paused</option>';
-status.value=outcome.status||"active";statusWrap.appendChild(status);
-
-const dateWrap=document.createElement("div");dateWrap.innerHTML='<div class="field-label">Target Date</div>';
-const date=document.createElement("input");date.type="date";date.className="life-outcome-date";date.value=outcome.targetDate||"";dateWrap.appendChild(date);
-
-const purposeWrap=document.createElement("div");purposeWrap.innerHTML='<div class="field-label">Purpose / Why</div>';
-const purpose=document.createElement("input");purpose.type="text";purpose.className="life-outcome-purpose";purpose.placeholder="Why does this outcome matter?";purpose.value=outcome.purpose||"";purposeWrap.appendChild(purpose);
-grid.append(areaWrap,statusWrap,dateWrap,purposeWrap);card.appendChild(grid);
-
-const actions=document.createElement("div");actions.className="outcome-life-actions";actions.innerHTML='<div class="field-label">Action Plan</div>';
-const actionList=document.createElement("div");actionList.className="life-outcome-action-list";actions.appendChild(actionList);
-const add=document.createElement("button");add.type="button";add.className="add-button";add.style.marginTop="10px";add.textContent="+ Add Outcome Action";
-actions.appendChild(add);card.appendChild(actions);
-
-function addRow(text=""){
-const row=document.createElement("div");row.className="life-action-row";
-const input=document.createElement("input");input.type="text";input.className="life-outcome-action";input.placeholder="Action that moves this outcome forward";input.value=text;
-const send=document.createElement("button");send.type="button";send.className="send-today-button";send.textContent="→ Add to TODAY";
-const x=document.createElement("button");x.type="button";x.className="delete-button";x.innerHTML="&times;";
-row.append(input,send,x);actionList.appendChild(row);
-input.addEventListener("input",()=>{saveLifeOutcomes();renderDailyPlanner()});
-send.addEventListener("click",()=>{
-if(!input.value.trim()){input.focus();return}
-addLifeActionToToday(input.value.trim(),title.value.trim(),purpose.value.trim(),area.value,true);
-send.textContent="✓ Added to TODAY";send.classList.add("added");
-setTimeout(()=>{send.textContent="→ Add to TODAY";send.classList.remove("added")},1800);
-});
-x.addEventListener("click",()=>{row.remove();saveLifeOutcomes();renderDailyPlanner()});
-}
-(outcome.actions?.length?outcome.actions:[""]).forEach(addRow);
-add.addEventListener("click",()=>{addRow("");saveLifeOutcomes()});
-[title,area,status,date,purpose].forEach(el=>el.addEventListener(el.tagName==="INPUT"?"input":"change",()=>{saveLifeOutcomes();renderDailyPlanner()}));
-del.addEventListener("click",()=>{card.remove();saveLifeOutcomes();renderDailyPlanner()});
-list.appendChild(card);
 }
 
-function collectLifeOutcomes(){
-lifeOutcomes=Array.from(document.querySelectorAll(".outcome-life-card")).map(card=>({
-title:card.querySelector(".life-outcome-title").value,
-area:card.querySelector(".life-outcome-area").value,
-purpose:card.querySelector(".life-outcome-purpose").value,
-targetDate:card.querySelector(".life-outcome-date").value,
-status:card.querySelector(".life-outcome-status").value,
-actions:Array.from(card.querySelectorAll(".life-outcome-action")).map(i=>i.value).filter(v=>v.trim())
-}));
-}
-function saveLifeOutcomes(){collectLifeOutcomes();localStorage.setItem(LIFE_OUTCOMES_STORAGE_KEY,JSON.stringify(lifeOutcomes))}
-function loadLifeOutcomes(){
-let saved=localStorage.getItem(LIFE_OUTCOMES_STORAGE_KEY)||localStorage.getItem(OLD_LIFE_OUTCOMES_STORAGE_KEY);
-try{lifeOutcomes=saved?JSON.parse(saved):[]}catch(e){lifeOutcomes=[]}
-lifeOutcomeList.innerHTML="";
-if(!lifeOutcomes.length)lifeOutcomeList.innerHTML='<div class="life-outcome-empty">No life outcomes yet. Add one when you are ready to turn a life area into a specific result.</div>';
-else lifeOutcomes.forEach(createLifeOutcomeCard);
-}
-function addLifeOutcome(){
-const empty=lifeOutcomeList.querySelector(".life-outcome-empty");if(empty)empty.remove();
-createLifeOutcomeCard({title:"",area:getLifeAreaNames()[0]||"",purpose:"",targetDate:"",status:"active",actions:[""]});saveLifeOutcomes();
-}
-function saveLifeAssessment(){
-refreshLifeAssessment();saveLifeOutcomes();
-lifeSavedMessage.style.display="block";setTimeout(()=>lifeSavedMessage.style.display="none",2500);
+
+if(saved){
+
+try{
+
+lifeAreas=
+JSON.parse(saved);
+
+}catch(error){
+
+lifeAreas=
+JSON.parse(
+JSON.stringify(
+defaultLifeAreas
+)
+);
+
 }
 
-let dashboardData={
-date:getDateKey(),outcome:"",purpose:"",
-commitments:[{text:"",start:"",end:""}],
-actions:[
-{text:"",completed:false,priority:"must",time:"",duration:"30"},
-{text:"",completed:false,priority:"should",time:"",duration:"30"},
-{text:"",completed:false,priority:"could",time:"",duration:"30"}
-]};
+}else{
 
-function todayHasAction(text){
-return dashboardData.actions.some(a=>a.text.trim().toLowerCase()===text.trim().toLowerCase());
+lifeAreas=
+JSON.parse(
+JSON.stringify(
+defaultLifeAreas
+)
+);
+
 }
 
-/* VERSION 1.7 DAILY PLANNER */
-function renderDailyPlanner(){
-const list=document.getElementById("dailyPlannerList");
-if(!list)return;
-collectLifeOutcomes();
-const active=lifeOutcomes.filter(o=>o.status==="active");
-document.getElementById("activeOutcomeCount").textContent=active.length;
+
+const list=
+document.getElementById("lifeAreaList");
+
 list.innerHTML="";
 
-if(!active.length){
-list.innerHTML='<div class="planner-empty">You do not have any Active Life Outcomes yet. Create or activate an outcome in LIFE to plan from it here.</div>';
-return;
+
+lifeAreas.forEach(
+createLifeAreaCard
+);
+
+
+refreshLifeAssessment();
+
 }
 
-active.forEach(outcome=>{
-const card=document.createElement("div");card.className="planner-card";
-const top=document.createElement("div");top.className="planner-top";
-const title=document.createElement("div");title.className="planner-title";title.textContent=outcome.title||"Untitled Life Outcome";
-const area=document.createElement("div");area.className="planner-area";area.textContent=outcome.area||"Life Outcome";
-top.append(title,area);card.appendChild(top);
 
-if(outcome.purpose){
-const p=document.createElement("div");p.className="planner-purpose";p.textContent="Why: "+outcome.purpose;card.appendChild(p);
+function addLifeArea(){
+
+createLifeAreaCard({
+
+name:"New Life Area",
+
+current:5,
+
+desired:8
+
+});
+
+refreshLifeAssessment();
+
 }
 
-const actions=document.createElement("div");actions.className="planner-actions";
-if(!outcome.actions.length){
-actions.innerHTML='<div class="planner-empty">No actions have been added to this outcome yet.</div>';
+
+/* =========================================================
+   LIFE OUTCOMES
+   ========================================================= */
+
+let lifeOutcomes=[];
+
+
+function getLifeAreaNames(){
+
+collectLifeAreas();
+
+return lifeAreas
+.map(
+area=>area.name.trim()
+)
+.filter(Boolean);
+
+}
+
+
+function createLifeOutcomeCard(outcome){
+
+const list=
+document.getElementById(
+"lifeOutcomeList"
+);
+
+
+const card=
+document.createElement("div");
+
+card.className=
+"outcome-life-card";
+
+
+const top=
+document.createElement("div");
+
+top.className=
+"outcome-life-top";
+
+
+const title=
+document.createElement("input");
+
+title.type="text";
+
+title.className=
+"life-outcome-title";
+
+title.placeholder=
+"What result do you want?";
+
+title.value=
+outcome.title||"";
+
+
+const del=
+document.createElement("button");
+
+del.type="button";
+
+del.className=
+"delete-button";
+
+del.innerHTML=
+"&times;";
+
+
+top.append(
+title,
+del
+);
+
+
+card.appendChild(top);
+
+
+/* AREA / STATUS / DATE / PURPOSE */
+
+const grid=
+document.createElement("div");
+
+grid.className=
+"outcome-life-grid";
+
+
+const areaWrap=
+document.createElement("div");
+
+areaWrap.innerHTML=
+'<div class="field-label">Area of Life</div>';
+
+
+const area=
+document.createElement("select");
+
+area.className=
+"life-outcome-area";
+
+
+const names=
+getLifeAreaNames();
+
+
+if(names.length===0){
+
+const option=
+document.createElement("option");
+
+option.value="";
+
+option.textContent=
+"No life areas available";
+
+area.appendChild(option);
+
 }else{
-outcome.actions.forEach(actionText=>{
-const row=document.createElement("div");row.className="planner-action";
-const text=document.createElement("div");text.className="planner-action-text";text.textContent=actionText;
-const button=document.createElement("button");button.type="button";button.className="planner-add";
+
+names.forEach(
+name=>{
+
+const option=
+document.createElement("option");
+
+option.value=name;
+
+option.textContent=name;
+
+area.appendChild(option);
+
+}
+);
+
+}
+
+
+if(
+outcome.area &&
+!names.includes(outcome.area)
+){
+
+const option=
+document.createElement("option");
+
+option.value=
+outcome.area;
+
+option.textContent=
+outcome.area;
+
+area.appendChild(option);
+
+}
+
+
+area.value=
+outcome.area||
+names[0]||
+"";
+
+
+areaWrap.appendChild(area);
+
+
+/* STATUS */
+
+const statusWrap=
+document.createElement("div");
+
+statusWrap.innerHTML=
+'<div class="field-label">Status</div>';
+
+
+const status=
+document.createElement("select");
+
+status.className=
+"life-outcome-status";
+
+
+status.innerHTML=
+`
+<option value="active">Active</option>
+<option value="completed">Completed</option>
+<option value="paused">Paused</option>
+`;
+
+
+status.value=
+outcome.status||
+"active";
+
+
+statusWrap.appendChild(status);
+
+
+/* DATE */
+
+const dateWrap=
+document.createElement("div");
+
+dateWrap.innerHTML=
+'<div class="field-label">Target Date</div>';
+
+
+const date=
+document.createElement("input");
+
+date.type="date";
+
+date.className=
+"life-outcome-date";
+
+date.value=
+outcome.targetDate||
+"";
+
+
+dateWrap.appendChild(date);
+
+
+/* PURPOSE */
+
+const purposeWrap=
+document.createElement("div");
+
+purposeWrap.innerHTML=
+'<div class="field-label">Purpose / Why</div>';
+
+
+const purpose=
+document.createElement("input");
+
+purpose.type="text";
+
+purpose.className=
+"life-outcome-purpose";
+
+purpose.placeholder=
+"Why does this outcome matter?";
+
+purpose.value=
+outcome.purpose||
+"";
+
+
+purposeWrap.appendChild(purpose);
+
+
+grid.append(
+areaWrap,
+statusWrap,
+dateWrap,
+purposeWrap
+);
+
+
+card.appendChild(grid);
+
+
+/* ACTIONS */
+
+const actions=
+document.createElement("div");
+
+actions.className=
+"outcome-life-actions";
+
+
+actions.innerHTML=
+'<div class="field-label">Action Plan</div>';
+
+
+const actionList=
+document.createElement("div");
+
+actionList.className=
+"life-outcome-action-list";
+
+
+actions.appendChild(actionList);
+
+
+const add=
+document.createElement("button");
+
+add.type="button";
+
+add.className=
+"add-button";
+
+add.style.marginTop=
+"10px";
+
+add.textContent=
+"+ Add Outcome Action";
+
+
+actions.appendChild(add);
+
+card.appendChild(actions);
+
+
+function addActionRow(
+text=""
+){
+
+const row=
+document.createElement("div");
+
+row.className=
+"life-action-row";
+
+
+const input=
+document.createElement("input");
+
+input.type="text";
+
+input.className=
+"life-outcome-action";
+
+input.placeholder=
+"Action that moves this outcome forward";
+
+input.value=
+text;
+
+
+const sendButton=
+document.createElement("button");
+
+sendButton.type=
+"button";
+
+sendButton.className=
+"send-today-button";
+
+sendButton.textContent=
+"→ Add to TODAY";
+
+
+const deleteButton=
+document.createElement("button");
+
+deleteButton.type=
+"button";
+
+deleteButton.className=
+"delete-button";
+
+deleteButton.innerHTML=
+"&times;";
+
+
+row.append(
+input,
+sendButton,
+deleteButton
+);
+
+
+actionList.appendChild(row);
+
+
+input.addEventListener(
+"input",
+()=>{
+
+saveLifeOutcomes();
+
+renderDailyPlanner();
+
+}
+);
+
+
+sendButton.addEventListener(
+"click",
+()=>{
+
+const actionText=
+input.value.trim();
+
+
+if(actionText===""){
+
+input.focus();
+
+return;
+
+}
+
+
+addLifeActionToToday(
+
+actionText,
+
+title.value.trim(),
+
+purpose.value.trim(),
+
+area.value,
+
+true
+
+);
+
+
+sendButton.textContent=
+"✓ Added to TODAY";
+
+
+sendButton.classList.add(
+"added"
+);
+
+
+setTimeout(
+()=>{
+
+sendButton.textContent=
+"→ Add to TODAY";
+
+sendButton.classList.remove(
+"added"
+);
+
+},
+1800
+);
+
+}
+);
+
+
+deleteButton.addEventListener(
+"click",
+()=>{
+
+row.remove();
+
+saveLifeOutcomes();
+
+renderDailyPlanner();
+
+}
+);
+
+}
+
+
+(
+Array.isArray(outcome.actions) &&
+outcome.actions.length
+?
+outcome.actions
+:
+[""]
+)
+.forEach(
+addActionRow
+);
+
+
+add.addEventListener(
+"click",
+()=>{
+
+addActionRow("");
+
+saveLifeOutcomes();
+
+}
+);
+
+
+title.addEventListener(
+"input",
+()=>{
+
+saveLifeOutcomes();
+
+renderDailyPlanner();
+
+}
+);
+
+
+area.addEventListener(
+"change",
+()=>{
+
+saveLifeOutcomes();
+
+renderDailyPlanner();
+
+}
+);
+
+
+status.addEventListener(
+"change",
+()=>{
+
+saveLifeOutcomes();
+
+renderDailyPlanner();
+
+}
+);
+
+
+date.addEventListener(
+"change",
+()=>{
+
+saveLifeOutcomes();
+
+renderDailyPlanner();
+
+}
+);
+
+
+purpose.addEventListener(
+"input",
+()=>{
+
+saveLifeOutcomes();
+
+renderDailyPlanner();
+
+}
+);
+
+
+del.addEventListener(
+"click",
+()=>{
+
+card.remove();
+
+saveLifeOutcomes();
+
+renderDailyPlanner();
+
+}
+);
+
+
+list.appendChild(card);
+
+}
+
+
+function collectLifeOutcomes(){
+
+lifeOutcomes=
+Array.from(
+document.querySelectorAll(
+".outcome-life-card"
+)
+)
+.map(
+card=>({
+
+title:
+card.querySelector(
+".life-outcome-title"
+).value,
+
+area:
+card.querySelector(
+".life-outcome-area"
+).value,
+
+purpose:
+card.querySelector(
+".life-outcome-purpose"
+).value,
+
+targetDate:
+card.querySelector(
+".life-outcome-date"
+).value,
+
+status:
+card.querySelector(
+".life-outcome-status"
+).value,
+
+actions:
+Array.from(
+card.querySelectorAll(
+".life-outcome-action"
+)
+)
+.map(
+input=>input.value
+)
+.filter(
+value=>value.trim()!==""
+)
+
+})
+);
+
+}
+
+
+function saveLifeOutcomes(){
+
+collectLifeOutcomes();
+
+localStorage.setItem(
+
+LIFE_OUTCOMES_STORAGE_KEY,
+
+JSON.stringify(
+lifeOutcomes
+)
+
+);
+
+}
+
+
+/* =========================================================
+   FIXED V1.7 MIGRATION
+   ========================================================= */
+
+function parseOutcomeStorage(
+storageValue
+){
+
+if(!storageValue){
+
+return null;
+
+}
+
+
+try{
+
+const parsed=
+JSON.parse(
+storageValue
+);
+
+
+if(
+Array.isArray(parsed)
+){
+
+return parsed;
+
+}
+
+
+}catch(error){
+
+console.log(
+"Life Outcome storage could not be read."
+);
+
+}
+
+
+return null;
+
+}
+
+
+function loadLifeOutcomes(){
+
+const v17=
+parseOutcomeStorage(
+localStorage.getItem(
+LIFE_OUTCOMES_STORAGE_KEY
+)
+);
+
+
+const v16=
+parseOutcomeStorage(
+localStorage.getItem(
+OLD_LIFE_OUTCOMES_STORAGE_KEY
+)
+);
+
+
+const v15=
+parseOutcomeStorage(
+localStorage.getItem(
+OLDER_LIFE_OUTCOMES_STORAGE_KEY
+)
+);
+
+
+/*
+IMPORTANT MIGRATION RULE:
+
+If the first V1.7 build accidentally saved
+an empty [] before the old outcomes were migrated,
+do NOT allow that empty V1.7 array to hide
+good V1.6 or V1.5 data.
+*/
+
+
+if(
+v17 &&
+v17.length>0
+){
+
+lifeOutcomes=
+v17;
+
+}else if(
+v16 &&
+v16.length>0
+){
+
+lifeOutcomes=
+v16;
+
+localStorage.setItem(
+LIFE_OUTCOMES_STORAGE_KEY,
+JSON.stringify(lifeOutcomes)
+);
+
+}else if(
+v15 &&
+v15.length>0
+){
+
+lifeOutcomes=
+v15;
+
+localStorage.setItem(
+LIFE_OUTCOMES_STORAGE_KEY,
+JSON.stringify(lifeOutcomes)
+);
+
+}else{
+
+lifeOutcomes=[];
+
+}
+
+
+const list=
+document.getElementById(
+"lifeOutcomeList"
+);
+
+
+list.innerHTML="";
+
+
+if(
+lifeOutcomes.length===0
+){
+
+list.innerHTML=
+`
+<div class="life-outcome-empty">
+No life outcomes yet. Add one when you are ready to turn a life area into a specific result.
+</div>
+`;
+
+}else{
+
+lifeOutcomes.forEach(
+createLifeOutcomeCard
+);
+
+}
+
+}
+
+
+function addLifeOutcome(){
+
+const list=
+document.getElementById(
+"lifeOutcomeList"
+);
+
+
+const empty=
+list.querySelector(
+".life-outcome-empty"
+);
+
+
+if(empty){
+
+empty.remove();
+
+}
+
+
+createLifeOutcomeCard({
+
+title:"",
+
+area:
+getLifeAreaNames()[0]||
+"",
+
+purpose:"",
+
+targetDate:"",
+
+status:"active",
+
+actions:[""]
+
+});
+
+
+saveLifeOutcomes();
+
+}
+
+
+function saveLifeAssessment(){
+
+refreshLifeAssessment();
+
+saveLifeOutcomes();
+
+
+const message=
+document.getElementById(
+"lifeSavedMessage"
+);
+
+
+message.style.display=
+"block";
+
+
+setTimeout(
+()=>{
+
+message.style.display=
+"none";
+
+},
+2500
+);
+
+}
+
+
+/* =========================================================
+   TODAY
+   ========================================================= */
+
+let dashboardData={
+
+date:
+getDateKey(),
+
+outcome:"",
+
+purpose:"",
+
+commitments:[
+{
+text:"",
+start:"",
+end:""
+}
+],
+
+actions:[
+
+{
+text:"",
+completed:false,
+priority:"must",
+time:"",
+duration:"30"
+},
+
+{
+text:"",
+completed:false,
+priority:"should",
+time:"",
+duration:"30"
+},
+
+{
+text:"",
+completed:false,
+priority:"could",
+time:"",
+duration:"30"
+}
+
+]
+
+};
+
+
+function todayHasAction(
+text
+){
+
+return dashboardData.actions.some(
+
+action=>
+
+action.text
+.trim()
+.toLowerCase()
+
+===
+
+text
+.trim()
+.toLowerCase()
+
+);
+
+}
+
+
+/* =========================================================
+   DAILY PLANNER
+   ========================================================= */
+
+function renderDailyPlanner(){
+
+const list=
+document.getElementById(
+"dailyPlannerList"
+);
+
+
+if(!list){
+
+return;
+
+}
+
+
+/*
+If LIFE cards exist, collect their latest state.
+If they do not exist yet, preserve the loaded array.
+*/
+
+if(
+document.querySelectorAll(
+".outcome-life-card"
+).length>0
+){
+
+collectLifeOutcomes();
+
+}
+
+
+const active=
+lifeOutcomes.filter(
+outcome=>
+(outcome.status||"active")==="active"
+);
+
+
+document.getElementById(
+"activeOutcomeCount"
+).textContent=
+active.length;
+
+
+list.innerHTML="";
+
+
+if(
+active.length===0
+){
+
+list.innerHTML=
+`
+<div class="planner-empty">
+You do not have any Active Life Outcomes yet.
+Create or activate an outcome in LIFE to plan from it here.
+</div>
+`;
+
+return;
+
+}
+
+
+active.forEach(
+outcome=>{
+
+const card=
+document.createElement("div");
+
+card.className=
+"planner-card";
+
+
+const top=
+document.createElement("div");
+
+top.className=
+"planner-top";
+
+
+const title=
+document.createElement("div");
+
+title.className=
+"planner-title";
+
+title.textContent=
+outcome.title||
+"Untitled Life Outcome";
+
+
+const area=
+document.createElement("div");
+
+area.className=
+"planner-area";
+
+area.textContent=
+outcome.area||
+"Life Outcome";
+
+
+top.append(
+title,
+area
+);
+
+
+card.appendChild(top);
+
+
+if(
+outcome.purpose
+){
+
+const purpose=
+document.createElement("div");
+
+purpose.className=
+"planner-purpose";
+
+purpose.textContent=
+"Why: "+
+outcome.purpose;
+
+
+card.appendChild(
+purpose
+);
+
+}
+
+
+const actions=
+document.createElement("div");
+
+actions.className=
+"planner-actions";
+
+
+if(
+!Array.isArray(outcome.actions) ||
+outcome.actions.length===0
+){
+
+actions.innerHTML=
+`
+<div class="planner-empty">
+No actions have been added to this outcome yet.
+</div>
+`;
+
+}else{
+
+outcome.actions.forEach(
+actionText=>{
+
+const row=
+document.createElement("div");
+
+row.className=
+"planner-action";
+
+
+const text=
+document.createElement("div");
+
+text.className=
+"planner-action-text";
+
+text.textContent=
+actionText;
+
+
+const button=
+document.createElement("button");
+
+button.type=
+"button";
+
+button.className=
+"planner-add";
+
 
 function updateButton(){
-if(todayHasAction(actionText)){button.textContent="✓ In TODAY";button.classList.add("in-today")}
-else{button.textContent="+ Choose for TODAY";button.classList.remove("in-today")}
+
+if(
+todayHasAction(
+actionText
+)
+){
+
+button.textContent=
+"✓ In TODAY";
+
+button.classList.add(
+"in-today"
+);
+
+}else{
+
+button.textContent=
+"+ Choose for TODAY";
+
+button.classList.remove(
+"in-today"
+);
+
 }
+
+}
+
+
 updateButton();
 
-button.addEventListener("click",()=>{
-if(todayHasAction(actionText)){
-showTransferMessage("✓ That action is already in TODAY.");
+
+button.addEventListener(
+"click",
+()=>{
+
+if(
+todayHasAction(
+actionText
+)
+){
+
+showTransferMessage(
+"✓ That action is already in TODAY."
+);
+
 return;
+
 }
-addLifeActionToToday(actionText,outcome.title,outcome.purpose,outcome.area,false);
+
+
+addLifeActionToToday(
+
+actionText,
+
+outcome.title,
+
+outcome.purpose,
+
+outcome.area,
+
+false
+
+);
+
+
 renderDailyPlanner();
-});
-row.append(text,button);actions.appendChild(row);
-});
+
 }
-card.appendChild(actions);list.appendChild(card);
-});
+);
+
+
+row.append(
+text,
+button
+);
+
+
+actions.appendChild(
+row
+);
+
+}
+);
+
 }
 
-function showTransferMessage(text){
-todayTransferMessage.textContent=text;
-todayTransferMessage.style.display="block";
-setTimeout(()=>todayTransferMessage.style.display="none",3000);
+
+card.appendChild(
+actions
+);
+
+
+list.appendChild(
+card
+);
+
+}
+);
+
 }
 
-function addLifeActionToToday(actionText,outcomeTitle,outcomePurpose,lifeArea,switchToToday){
+
+function showTransferMessage(
+text
+){
+
+const message=
+document.getElementById(
+"todayTransferMessage"
+);
+
+
+message.textContent=
+text;
+
+
+message.style.display=
+"block";
+
+
+setTimeout(
+()=>{
+
+message.style.display=
+"none";
+
+},
+3000
+);
+
+}
+
+
+function addLifeActionToToday(
+
+actionText,
+
+outcomeTitle,
+
+outcomePurpose,
+
+lifeArea,
+
+switchToToday
+
+){
+
 collectTodayData();
-const duplicate=todayHasAction(actionText);
 
-if(!duplicate){
-dashboardData.actions.push({text:actionText,completed:false,priority:"should",time:"",duration:"30"});
+
+const duplicate=
+todayHasAction(
+actionText
+);
+
+
+if(
+!duplicate
+){
+
+dashboardData.actions.push({
+
+text:
+actionText,
+
+completed:
+false,
+
+priority:
+"should",
+
+time:
+"",
+
+duration:
+"30"
+
+});
+
 }
 
-if(!document.getElementById("outcome").value.trim()&&outcomeTitle){
-document.getElementById("outcome").value=outcomeTitle;dashboardData.outcome=outcomeTitle;
-}
-if(!document.getElementById("purpose").value.trim()&&outcomePurpose){
-document.getElementById("purpose").value=outcomePurpose;dashboardData.purpose=outcomePurpose;
+
+const outcomeField=
+document.getElementById(
+"outcome"
+);
+
+
+const purposeField=
+document.getElementById(
+"purpose"
+);
+
+
+if(
+outcomeField.value.trim()==="" &&
+outcomeTitle
+){
+
+outcomeField.value=
+outcomeTitle;
+
+dashboardData.outcome=
+outcomeTitle;
+
 }
 
-localStorage.setItem(TODAY_STORAGE_KEY,JSON.stringify(dashboardData));
+
+if(
+purposeField.value.trim()==="" &&
+outcomePurpose
+){
+
+purposeField.value=
+outcomePurpose;
+
+dashboardData.purpose=
+outcomePurpose;
+
+}
+
+
+localStorage.setItem(
+
+TODAY_STORAGE_KEY,
+
+JSON.stringify(
+dashboardData
+)
+
+);
+
+
 renderTodayActions();
+
 renderDailyPlanner();
-showTransferMessage(duplicate?"✓ That action is already in TODAY.":"✓ Life Outcome action added to TODAY.");
-if(switchToToday)showPage("today");
+
+
+showTransferMessage(
+
+duplicate
+?
+"✓ That action is already in TODAY."
+:
+"✓ Life Outcome action added to TODAY."
+
+);
+
+
+if(
+switchToToday
+){
+
+showPage(
+"today"
+);
+
 }
 
-function createCommitmentCard(c){
-const card=document.createElement("div");card.className="commitment-card";
-const main=document.createElement("div");main.className="commitment-main";
-const input=document.createElement("input");input.type="text";input.className="commitment-text";input.placeholder="Example: Doctor appointment";input.value=c.text||"";
-const del=document.createElement("button");del.type="button";del.className="delete-button";del.innerHTML="&times;";main.append(input,del);
-const opts=document.createElement("div");opts.className="commitment-options";
-function timeField(label,cls,value){
-const w=document.createElement("div");w.innerHTML=`<div class="field-label">${label}</div>`;
-const i=document.createElement("input");i.type="time";i.className=cls;i.value=value||"";w.appendChild(i);return {w,i};
 }
-const start=timeField("Start Time","commitment-start",c.start),end=timeField("End Time","commitment-end",c.end);
-opts.append(start.w,end.w);card.append(main,opts);commitmentList.appendChild(card);
-input.addEventListener("input",refreshToday);start.i.addEventListener("change",refreshToday);end.i.addEventListener("change",refreshToday);
-del.addEventListener("click",()=>{card.remove();refreshToday()});
+
+
+/* =========================================================
+   FIXED COMMITMENTS
+   ========================================================= */
+
+function createCommitmentCard(
+commitment
+){
+
+const list=
+document.getElementById(
+"commitmentList"
+);
+
+
+const card=
+document.createElement("div");
+
+card.className=
+"commitment-card";
+
+
+const main=
+document.createElement("div");
+
+main.className=
+"commitment-main";
+
+
+const input=
+document.createElement("input");
+
+input.type=
+"text";
+
+input.className=
+"commitment-text";
+
+input.placeholder=
+"Example: Doctor appointment";
+
+input.value=
+commitment.text||
+"";
+
+
+const deleteButton=
+document.createElement("button");
+
+deleteButton.type=
+"button";
+
+deleteButton.className=
+"delete-button";
+
+deleteButton.innerHTML=
+"&times;";
+
+
+main.append(
+input,
+deleteButton
+);
+
+
+const options=
+document.createElement("div");
+
+options.className=
+"commitment-options";
+
+
+const startWrap=
+document.createElement("div");
+
+startWrap.innerHTML=
+'<div class="field-label">Start Time</div>';
+
+
+const start=
+document.createElement("input");
+
+start.type=
+"time";
+
+start.className=
+"commitment-start";
+
+start.value=
+commitment.start||
+"";
+
+
+startWrap.appendChild(
+start
+);
+
+
+const endWrap=
+document.createElement("div");
+
+endWrap.innerHTML=
+'<div class="field-label">End Time</div>';
+
+
+const end=
+document.createElement("input");
+
+end.type=
+"time";
+
+end.className=
+"commitment-end";
+
+end.value=
+commitment.end||
+"";
+
+
+endWrap.appendChild(
+end
+);
+
+
+options.append(
+startWrap,
+endWrap
+);
+
+
+card.append(
+main,
+options
+);
+
+
+list.appendChild(
+card
+);
+
+
+input.addEventListener(
+"input",
+refreshToday
+);
+
+
+start.addEventListener(
+"change",
+refreshToday
+);
+
+
+end.addEventListener(
+"change",
+refreshToday
+);
+
+
+deleteButton.addEventListener(
+"click",
+()=>{
+
+card.remove();
+
+refreshToday();
+
 }
-function addCommitment(){createCommitmentCard({text:"",start:"",end:""});refreshToday()}
+);
 
-function createActionCard(a){
-const card=document.createElement("div");card.className="action-card";
-const main=document.createElement("div");main.className="action-main";
-const check=document.createElement("input");check.type="checkbox";check.className="action-checkbox";check.checked=a.completed||false;
-const input=document.createElement("input");input.type="text";input.className="action-text";input.placeholder="Enter an action step";input.value=a.text||"";
-if(a.completed)input.classList.add("completed");
-const del=document.createElement("button");del.type="button";del.className="delete-button";del.innerHTML="&times;";main.append(check,input,del);
-
-const opts=document.createElement("div");opts.className="action-options";
-const pw=document.createElement("div");pw.innerHTML='<div class="field-label">Priority</div>';
-const priority=document.createElement("select");priority.className="priority-select";
-priority.innerHTML='<option value="must">Must Do</option><option value="should">Should Do</option><option value="could">Could Do</option>';
-priority.value=a.priority||"should";pw.appendChild(priority);
-
-const tw=document.createElement("div");tw.innerHTML='<div class="field-label">Start Time</div>';
-const time=document.createElement("input");time.type="time";time.className="time-input";time.value=a.time||"";tw.appendChild(time);
-
-const dw=document.createElement("div");dw.innerHTML='<div class="field-label">Duration</div>';
-const duration=document.createElement("select");duration.className="duration-select";
-duration.innerHTML='<option value="15">15 min</option><option value="30">30 min</option><option value="45">45 min</option><option value="60">1 hour</option><option value="90">1.5 hours</option><option value="120">2 hours</option>';
-duration.value=a.duration||"30";dw.appendChild(duration);
-opts.append(pw,tw,dw);card.append(main,opts);actionList.appendChild(card);
-applyPriorityStyle(card,priority.value);
-
-check.addEventListener("change",()=>{input.classList.toggle("completed",check.checked);refreshToday()});
-input.addEventListener("input",refreshToday);
-priority.addEventListener("change",()=>{applyPriorityStyle(card,priority.value);refreshToday()});
-time.addEventListener("change",refreshToday);duration.addEventListener("change",refreshToday);
-del.addEventListener("click",()=>{card.remove();refreshToday();renderDailyPlanner()});
 }
-function applyPriorityStyle(card,p){card.classList.remove("priority-must","priority-should","priority-could");card.classList.add("priority-"+p)}
-function addAction(){createActionCard({text:"",completed:false,priority:"should",time:"",duration:"30"});refreshToday()}
+
+
+function addCommitment(){
+
+createCommitmentCard({
+
+text:"",
+
+start:"",
+
+end:""
+
+});
+
+
+refreshToday();
+
+}
+
+
+/* =========================================================
+   TODAY ACTIONS
+   ========================================================= */
+
+function createActionCard(
+action
+){
+
+const list=
+document.getElementById(
+"actionList"
+);
+
+
+const card=
+document.createElement("div");
+
+card.className=
+"action-card";
+
+
+const main=
+document.createElement("div");
+
+main.className=
+"action-main";
+
+
+const checkbox=
+document.createElement("input");
+
+checkbox.type=
+"checkbox";
+
+checkbox.className=
+"action-checkbox";
+
+checkbox.checked=
+action.completed||
+false;
+
+
+const input=
+document.createElement("input");
+
+input.type=
+"text";
+
+input.className=
+"action-text";
+
+input.placeholder=
+"Enter an action step";
+
+input.value=
+action.text||
+"";
+
+
+if(
+action.completed
+){
+
+input.classList.add(
+"completed"
+);
+
+}
+
+
+const deleteButton=
+document.createElement("button");
+
+deleteButton.type=
+"button";
+
+deleteButton.className=
+"delete-button";
+
+deleteButton.innerHTML=
+"&times;";
+
+
+main.append(
+checkbox,
+input,
+deleteButton
+);
+
+
+const options=
+document.createElement("div");
+
+options.className=
+"action-options";
+
+
+/* PRIORITY */
+
+const priorityWrap=
+document.createElement("div");
+
+priorityWrap.innerHTML=
+'<div class="field-label">Priority</div>';
+
+
+const priority=
+document.createElement("select");
+
+priority.className=
+"priority-select";
+
+
+priority.innerHTML=
+`
+<option value="must">Must Do</option>
+<option value="should">Should Do</option>
+<option value="could">Could Do</option>
+`;
+
+
+priority.value=
+action.priority||
+"should";
+
+
+priorityWrap.appendChild(
+priority
+);
+
+
+/* TIME */
+
+const timeWrap=
+document.createElement("div");
+
+timeWrap.innerHTML=
+'<div class="field-label">Start Time</div>';
+
+
+const time=
+document.createElement("input");
+
+time.type=
+"time";
+
+time.className=
+"time-input";
+
+time.value=
+action.time||
+"";
+
+
+timeWrap.appendChild(
+time
+);
+
+
+/* DURATION */
+
+const durationWrap=
+document.createElement("div");
+
+durationWrap.innerHTML=
+'<div class="field-label">Duration</div>';
+
+
+const duration=
+document.createElement("select");
+
+duration.className=
+"duration-select";
+
+
+duration.innerHTML=
+`
+<option value="15">15 min</option>
+<option value="30">30 min</option>
+<option value="45">45 min</option>
+<option value="60">1 hour</option>
+<option value="90">1.5 hours</option>
+<option value="120">2 hours</option>
+`;
+
+
+duration.value=
+action.duration||
+"30";
+
+
+durationWrap.appendChild(
+duration
+);
+
+
+options.append(
+priorityWrap,
+timeWrap,
+durationWrap
+);
+
+
+card.append(
+main,
+options
+);
+
+
+list.appendChild(
+card
+);
+
+
+applyPriorityStyle(
+card,
+priority.value
+);
+
+
+checkbox.addEventListener(
+"change",
+()=>{
+
+input.classList.toggle(
+"completed",
+checkbox.checked
+);
+
+refreshToday();
+
+}
+);
+
+
+input.addEventListener(
+"input",
+refreshToday
+);
+
+
+priority.addEventListener(
+"change",
+()=>{
+
+applyPriorityStyle(
+card,
+priority.value
+);
+
+refreshToday();
+
+}
+);
+
+
+time.addEventListener(
+"change",
+refreshToday
+);
+
+
+duration.addEventListener(
+"change",
+refreshToday
+);
+
+
+deleteButton.addEventListener(
+"click",
+()=>{
+
+card.remove();
+
+refreshToday();
+
+renderDailyPlanner();
+
+}
+);
+
+}
+
+
+function applyPriorityStyle(
+card,
+priority
+){
+
+card.classList.remove(
+
+"priority-must",
+
+"priority-should",
+
+"priority-could"
+
+);
+
+
+card.classList.add(
+
+"priority-"+priority
+
+);
+
+}
+
+
+function addAction(){
+
+createActionCard({
+
+text:"",
+
+completed:false,
+
+priority:"should",
+
+time:"",
+
+duration:"30"
+
+});
+
+
+refreshToday();
+
+}
+
 
 function renderTodayActions(){
+
+const actionList=
+document.getElementById(
+"actionList"
+);
+
+
 actionList.innerHTML="";
-if(!dashboardData.actions.length)dashboardData.actions=[
-{text:"",completed:false,priority:"must",time:"",duration:"30"},
-{text:"",completed:false,priority:"should",time:"",duration:"30"},
-{text:"",completed:false,priority:"could",time:"",duration:"30"}];
-dashboardData.actions.forEach(createActionCard);
-outcome.value=dashboardData.outcome||"";purpose.value=dashboardData.purpose||"";
-updateProgress();buildSchedule();
+
+
+if(
+dashboardData.actions.length===0
+){
+
+dashboardData.actions=[
+
+{
+text:"",
+completed:false,
+priority:"must",
+time:"",
+duration:"30"
+},
+
+{
+text:"",
+completed:false,
+priority:"should",
+time:"",
+duration:"30"
+},
+
+{
+text:"",
+completed:false,
+priority:"could",
+time:"",
+duration:"30"
 }
+
+];
+
+}
+
+
+dashboardData.actions.forEach(
+createActionCard
+);
+
+
+document.getElementById(
+"outcome"
+).value=
+dashboardData.outcome||
+"";
+
+
+document.getElementById(
+"purpose"
+).value=
+dashboardData.purpose||
+"";
+
+
+updateProgress();
+
+buildSchedule();
+
+}
+
+
+/* =========================================================
+   COLLECT TODAY DATA
+   ========================================================= */
 
 function collectTodayData(){
-dashboardData.date=getDateKey();
-dashboardData.outcome=outcome.value;dashboardData.purpose=purpose.value;
-dashboardData.commitments=Array.from(document.querySelectorAll(".commitment-card")).map(c=>({
-text:c.querySelector(".commitment-text").value,start:c.querySelector(".commitment-start").value,end:c.querySelector(".commitment-end").value
-}));
-dashboardData.actions=Array.from(document.querySelectorAll(".action-card")).map(c=>({
-text:c.querySelector(".action-text").value,completed:c.querySelector(".action-checkbox").checked,
-priority:c.querySelector(".priority-select").value,time:c.querySelector(".time-input").value,duration:c.querySelector(".duration-select").value
-}));
+
+dashboardData.date=
+getDateKey();
+
+
+dashboardData.outcome=
+document.getElementById(
+"outcome"
+).value;
+
+
+dashboardData.purpose=
+document.getElementById(
+"purpose"
+).value;
+
+
+dashboardData.commitments=
+Array.from(
+document.querySelectorAll(
+".commitment-card"
+)
+)
+.map(
+card=>({
+
+text:
+card.querySelector(
+".commitment-text"
+).value,
+
+start:
+card.querySelector(
+".commitment-start"
+).value,
+
+end:
+card.querySelector(
+".commitment-end"
+).value
+
+})
+);
+
+
+dashboardData.actions=
+Array.from(
+document.querySelectorAll(
+".action-card"
+)
+)
+.map(
+card=>({
+
+text:
+card.querySelector(
+".action-text"
+).value,
+
+completed:
+card.querySelector(
+".action-checkbox"
+).checked,
+
+priority:
+card.querySelector(
+".priority-select"
+).value,
+
+time:
+card.querySelector(
+".time-input"
+).value,
+
+duration:
+card.querySelector(
+".duration-select"
+).value
+
+})
+);
+
 }
+
+
+/* =========================================================
+   PROGRESS
+   ========================================================= */
 
 function updateProgress(){
-const cards=Array.from(document.querySelectorAll(".action-card"));
-const active=cards.filter(c=>c.querySelector(".action-text").value.trim());
-const done=active.filter(c=>c.querySelector(".action-checkbox").checked).length;
-const pct=!active.length?0:Math.round(done/active.length*100);
-progressPercent.textContent=pct+"%";progressBar.style.width=pct+"%";
-progressText.textContent=`${done} of ${active.length} actions completed`;
-completionMessage.style.display=active.length&&done===active.length?"block":"none";
+
+const cards=
+Array.from(
+document.querySelectorAll(
+".action-card"
+)
+);
+
+
+const active=
+cards.filter(
+card=>
+card.querySelector(
+".action-text"
+).value.trim()!==""
+);
+
+
+const total=
+active.length;
+
+
+const completed=
+active.filter(
+card=>
+card.querySelector(
+".action-checkbox"
+).checked
+).length;
+
+
+const percentage=
+total===0
+?
+0
+:
+Math.round(
+(completed/total)*100
+);
+
+
+document.getElementById(
+"progressPercent"
+).textContent=
+percentage+"%";
+
+
+document.getElementById(
+"progressBar"
+).style.width=
+percentage+"%";
+
+
+document.getElementById(
+"progressText"
+).textContent=
+`${completed} of ${total} actions completed`;
+
+
+document.getElementById(
+"completionMessage"
+).style.display=
+total>0 &&
+completed===total
+?
+"block"
+:
+"none";
+
 }
 
-function timeToMinutes(t){if(!t)return null;const p=t.split(":");return +p[0]*60 + +p[1]}
-function minutesToTime(total){
-total%=1440;const h24=Math.floor(total/60),m=total%60,period=h24>=12?"PM":"AM";let h=h24%12;if(!h)h=12;
-return `${h}:${String(m).padStart(2,"0")} ${period}`;
+
+/* =========================================================
+   SCHEDULE
+   ========================================================= */
+
+function timeToMinutes(
+time
+){
+
+if(!time){
+
+return null;
+
 }
-function priorityLabel(p){return p==="must"?"MUST DO":p==="could"?"COULD DO":"SHOULD DO"}
+
+
+const parts=
+time.split(":");
+
+
+return (
+parseInt(parts[0])*60
+)+
+parseInt(parts[1]);
+
+}
+
+
+function minutesToTime(
+total
+){
+
+total=
+total%(24*60);
+
+
+const hour24=
+Math.floor(
+total/60
+);
+
+
+const minute=
+total%60;
+
+
+const period=
+hour24>=12
+?
+"PM"
+:
+"AM";
+
+
+let hour=
+hour24%12;
+
+
+if(hour===0){
+
+hour=12;
+
+}
+
+
+return (
+hour+
+":"+
+String(minute).padStart(2,"0")+
+" "+
+period
+);
+
+}
+
+
+function calculateActionEnd(
+start,
+duration
+){
+
+const startMinutes=
+timeToMinutes(
+start
+);
+
+
+if(
+startMinutes===null
+){
+
+return null;
+
+}
+
+
+return (
+startMinutes+
+parseInt(duration)
+);
+
+}
+
+
+function priorityLabel(
+priority
+){
+
+if(
+priority==="must"
+){
+
+return "MUST DO";
+
+}
+
+
+if(
+priority==="could"
+){
+
+return "COULD DO";
+
+}
+
+
+return "SHOULD DO";
+
+}
+
 
 function getTimelineItems(){
+
 const items=[];
-dashboardData.commitments.forEach((c,i)=>{
-if(!c.text.trim()||!c.start||!c.end)return;
-const start=timeToMinutes(c.start),end=timeToMinutes(c.end);if(end<=start)return;
-items.push({id:"c"+i,type:"commitment",title:c.text,start,end,conflicted:false});
-});
-dashboardData.actions.forEach((a,i)=>{
-if(!a.text.trim()||!a.time)return;
-const start=timeToMinutes(a.time),end=start+parseInt(a.duration);
-items.push({id:"a"+i,type:"action",title:a.text,start,end,priority:a.priority,duration:a.duration,completed:a.completed,conflicted:false});
-});
-return items.sort((a,b)=>a.start-b.start);
+
+
+dashboardData.commitments.forEach(
+(commitment,index)=>{
+
+if(
+commitment.text.trim()==="" ||
+commitment.start==="" ||
+commitment.end===""
+){
+
+return;
+
 }
 
-function detectConflicts(items){
+
+const start=
+timeToMinutes(
+commitment.start
+);
+
+
+const end=
+timeToMinutes(
+commitment.end
+);
+
+
+if(
+start===null ||
+end===null ||
+end<=start
+){
+
+return;
+
+}
+
+
+items.push({
+
+id:
+"commitment-"+index,
+
+type:
+"commitment",
+
+title:
+commitment.text,
+
+start:
+start,
+
+end:
+end,
+
+conflicted:
+false
+
+});
+
+}
+);
+
+
+dashboardData.actions.forEach(
+(action,index)=>{
+
+if(
+action.text.trim()==="" ||
+action.time===""
+){
+
+return;
+
+}
+
+
+const start=
+timeToMinutes(
+action.time
+);
+
+
+const end=
+calculateActionEnd(
+action.time,
+action.duration
+);
+
+
+items.push({
+
+id:
+"action-"+index,
+
+type:
+"action",
+
+title:
+action.text,
+
+start:
+start,
+
+end:
+end,
+
+priority:
+action.priority,
+
+duration:
+action.duration,
+
+completed:
+action.completed,
+
+conflicted:
+false
+
+});
+
+}
+);
+
+
+return items.sort(
+(a,b)=>a.start-b.start
+);
+
+}
+
+
+function detectConflicts(
+items
+){
+
 const conflicts=[];
-for(let i=0;i<items.length;i++)for(let j=i+1;j<items.length;j++){
-const a=items[i],b=items[j];
-if(a.start<b.end&&b.start<a.end){
-a.conflicted=b.conflicted=true;
-conflicts.push({first:a.title,second:b.title,start:Math.max(a.start,b.start),end:Math.min(a.end,b.end)});
-}}
+
+
+for(
+let i=0;
+i<items.length;
+i++
+){
+
+for(
+let j=i+1;
+j<items.length;
+j++
+){
+
+const first=
+items[i];
+
+
+const second=
+items[j];
+
+
+const overlap=
+first.start<second.end &&
+second.start<first.end;
+
+
+if(
+overlap
+){
+
+first.conflicted=
+true;
+
+
+second.conflicted=
+true;
+
+
+conflicts.push({
+
+first:
+first.title,
+
+second:
+second.title,
+
+start:
+Math.max(
+first.start,
+second.start
+),
+
+end:
+Math.min(
+first.end,
+second.end
+)
+
+});
+
+}
+
+}
+
+}
+
+
 return conflicts;
+
 }
-function showConflicts(conflicts){
-conflictList.innerHTML="";
-if(!conflicts.length){conflictBox.style.display="none";return}
-conflictBox.style.display="block";
-conflicts.forEach(c=>{
-const d=document.createElement("div");d.className="conflict-item";
-d.textContent=`${c.first} overlaps with ${c.second} from ${minutesToTime(c.start)} to ${minutesToTime(c.end)}.`;
-conflictList.appendChild(d);
-});
+
+
+function showConflicts(
+conflicts
+){
+
+const box=
+document.getElementById(
+"conflictBox"
+);
+
+
+const list=
+document.getElementById(
+"conflictList"
+);
+
+
+list.innerHTML="";
+
+
+if(
+conflicts.length===0
+){
+
+box.style.display=
+"none";
+
+return;
+
 }
-function escapeHTML(text){const d=document.createElement("div");d.textContent=text;return d.innerHTML}
+
+
+box.style.display=
+"block";
+
+
+conflicts.forEach(
+conflict=>{
+
+const item=
+document.createElement("div");
+
+item.className=
+"conflict-item";
+
+
+item.textContent=
+`${conflict.first} overlaps with ${conflict.second} from ${minutesToTime(conflict.start)} to ${minutesToTime(conflict.end)}.`;
+
+
+list.appendChild(
+item
+);
+
+}
+);
+
+}
+
+
+function escapeHTML(
+text
+){
+
+const div=
+document.createElement("div");
+
+div.textContent=
+text;
+
+return div.innerHTML;
+
+}
+
+
 function buildSchedule(){
-const items=getTimelineItems(),conflicts=detectConflicts(items);showConflicts(conflicts);scheduleList.innerHTML="";
-if(!items.length){scheduleList.innerHTML='<div class="schedule-empty">Add a fixed commitment or give an action a start time and it will appear here.</div>';return}
-items.forEach(item=>{
-const row=document.createElement("div");row.className="schedule-item"+(item.conflicted?" conflicted":"");
-let details;
-if(item.type==="commitment")details='<span class="commitment-badge">COMMITMENT</span>';
-else{
-const bc=item.priority==="must"?"badge-must":item.priority==="could"?"badge-could":"badge-should";
-details=`<span class="priority-badge ${bc}">${priorityLabel(item.priority)}</span>${item.duration} minutes${item.completed?" • ✓ Completed":""}`;
+
+const schedule=
+document.getElementById(
+"scheduleList"
+);
+
+
+const items=
+getTimelineItems();
+
+
+const conflicts=
+detectConflicts(
+items
+);
+
+
+showConflicts(
+conflicts
+);
+
+
+schedule.innerHTML="";
+
+
+if(
+items.length===0
+){
+
+schedule.innerHTML=
+`
+<div class="schedule-empty">
+Add a fixed commitment or give an action a start time and it will appear here.
+</div>
+`;
+
+return;
+
 }
-if(item.conflicted)details+='<span class="conflict-badge">⚠ CONFLICT</span>';
-row.innerHTML=`<div class="schedule-time">${minutesToTime(item.start)}<br><span style="font-size:12px;color:#6b7280">to ${minutesToTime(item.end)}</span></div><div><div class="schedule-title">${escapeHTML(item.title)}</div><div class="schedule-meta">${details}</div></div>`;
-scheduleList.appendChild(row);
-});
+
+
+items.forEach(
+item=>{
+
+const row=
+document.createElement("div");
+
+row.className=
+"schedule-item";
+
+
+if(
+item.conflicted
+){
+
+row.classList.add(
+"conflicted"
+);
+
 }
+
+
+let details="";
+
+
+if(
+item.type==="commitment"
+){
+
+details=
+'<span class="commitment-badge">COMMITMENT</span>';
+
+}else{
+
+const badgeClass=
+item.priority==="must"
+?
+"badge-must"
+:
+item.priority==="could"
+?
+"badge-could"
+:
+"badge-should";
+
+
+details=
+`
+<span class="priority-badge ${badgeClass}">
+${priorityLabel(item.priority)}
+</span>
+${item.duration} minutes
+${item.completed?" • ✓ Completed":""}
+`;
+
+}
+
+
+if(
+item.conflicted
+){
+
+details+=
+'<span class="conflict-badge">⚠ CONFLICT</span>';
+
+}
+
+
+row.innerHTML=
+`
+<div class="schedule-time">
+
+${minutesToTime(item.start)}
+
+<br>
+
+<span style="font-size:12px;color:#6b7280;">
+to ${minutesToTime(item.end)}
+</span>
+
+</div>
+
+<div>
+
+<div class="schedule-title">
+${escapeHTML(item.title)}
+</div>
+
+<div class="schedule-meta">
+${details}
+</div>
+
+</div>
+`;
+
+
+schedule.appendChild(
+row
+);
+
+}
+);
+
+}
+
+
+/* =========================================================
+   TODAY SAVE / LOAD
+   ========================================================= */
 
 function refreshToday(){
-collectTodayData();updateProgress();buildSchedule();
-localStorage.setItem(TODAY_STORAGE_KEY,JSON.stringify(dashboardData));
+
+collectTodayData();
+
+updateProgress();
+
+buildSchedule();
+
+
+localStorage.setItem(
+
+TODAY_STORAGE_KEY,
+
+JSON.stringify(
+dashboardData
+)
+
+);
+
+
 renderDailyPlanner();
-}
-function saveToday(){
-refreshToday();todaySavedMessage.style.display="block";setTimeout(()=>todaySavedMessage.style.display="none",2500);
-}
-function loadToday(){
-let saved=localStorage.getItem(TODAY_STORAGE_KEY)||localStorage.getItem(OLD_TODAY_STORAGE_KEY);
-if(saved)try{
-const p=JSON.parse(saved);
-dashboardData={date:p.date||getDateKey(),outcome:p.outcome||"",purpose:p.purpose||"",
-commitments:Array.isArray(p.commitments)?p.commitments:[],actions:Array.isArray(p.actions)?p.actions:[]};
-}catch(e){}
-outcome.value=dashboardData.outcome;purpose.value=dashboardData.purpose;
-commitmentList.innerHTML="";
-if(!dashboardData.commitments.length)dashboardData.commitments=[{text:"",start:"",end:""}];
-dashboardData.commitments.forEach(createCommitmentCard);
-renderTodayActions();refreshToday();
+
 }
 
-addLifeAreaButton.addEventListener("click",addLifeArea);
-addLifeOutcomeButton.addEventListener("click",addLifeOutcome);
-saveLifeButton.addEventListener("click",saveLifeAssessment);
-addCommitmentButton.addEventListener("click",addCommitment);
-addActionButton.addEventListener("click",addAction);
-saveTodayButton.addEventListener("click",saveToday);
-outcome.addEventListener("input",refreshToday);
-purpose.addEventListener("input",refreshToday);
+
+function saveToday(){
+
+refreshToday();
+
+
+const message=
+document.getElementById(
+"todaySavedMessage"
+);
+
+
+message.style.display=
+"block";
+
+
+setTimeout(
+()=>{
+
+message.style.display=
+"none";
+
+},
+2500
+);
+
+}
+
+
+/* SAFER TODAY MIGRATION */
+
+function parseTodayStorage(
+storageValue
+){
+
+if(!storageValue){
+
+return null;
+
+}
+
+
+try{
+
+const parsed=
+JSON.parse(
+storageValue
+);
+
+
+if(
+parsed &&
+typeof parsed==="object"
+){
+
+return parsed;
+
+}
+
+
+}catch(error){
+
+console.log(
+"Daily storage could not be read."
+);
+
+}
+
+
+return null;
+
+}
+
+
+function hasUsefulTodayData(
+data
+){
+
+if(!data){
+
+return false;
+
+}
+
+
+if(
+(data.outcome||"").trim()!==""
+){
+
+return true;
+
+}
+
+
+if(
+(data.purpose||"").trim()!==""
+){
+
+return true;
+
+}
+
+
+if(
+Array.isArray(data.actions) &&
+data.actions.some(
+action=>
+(action.text||"").trim()!==""
+)
+){
+
+return true;
+
+}
+
+
+if(
+Array.isArray(data.commitments) &&
+data.commitments.some(
+commitment=>
+(commitment.text||"").trim()!==""
+)
+){
+
+return true;
+
+}
+
+
+return false;
+
+}
+
+
+function loadToday(){
+
+const v17=
+parseTodayStorage(
+localStorage.getItem(
+TODAY_STORAGE_KEY
+)
+);
+
+
+const v16=
+parseTodayStorage(
+localStorage.getItem(
+OLD_TODAY_STORAGE_KEY
+)
+);
+
+
+const v15=
+parseTodayStorage(
+localStorage.getItem(
+OLDER_TODAY_STORAGE_KEY
+)
+);
+
+
+let savedData=null;
+
+
+if(
+hasUsefulTodayData(v17)
+){
+
+savedData=v17;
+
+}else if(
+hasUsefulTodayData(v16)
+){
+
+savedData=v16;
+
+
+localStorage.setItem(
+
+TODAY_STORAGE_KEY,
+
+JSON.stringify(
+savedData
+)
+
+);
+
+}else if(
+hasUsefulTodayData(v15)
+){
+
+savedData=v15;
+
+
+localStorage.setItem(
+
+TODAY_STORAGE_KEY,
+
+JSON.stringify(
+savedData
+)
+
+);
+
+}else if(v17){
+
+savedData=v17;
+
+}else if(v16){
+
+savedData=v16;
+
+}else if(v15){
+
+savedData=v15;
+
+}
+
+
+if(
+savedData
+){
+
+dashboardData={
+
+date:
+savedData.date||
+getDateKey(),
+
+outcome:
+savedData.outcome||
+"",
+
+purpose:
+savedData.purpose||
+"",
+
+commitments:
+Array.isArray(
+savedData.commitments
+)
+?
+savedData.commitments
+:
+[],
+
+actions:
+Array.isArray(
+savedData.actions
+)
+?
+savedData.actions
+:
+[]
+
+};
+
+}
+
+
+document.getElementById(
+"outcome"
+).value=
+dashboardData.outcome;
+
+
+document.getElementById(
+"purpose"
+).value=
+dashboardData.purpose;
+
+
+const commitmentList=
+document.getElementById(
+"commitmentList"
+);
+
+
+commitmentList.innerHTML="";
+
+
+if(
+dashboardData.commitments.length===0
+){
+
+dashboardData.commitments=[
+
+{
+text:"",
+start:"",
+end:""
+}
+
+];
+
+}
+
+
+dashboardData.commitments.forEach(
+createCommitmentCard
+);
+
+
+renderTodayActions();
+
+refreshToday();
+
+}
+
+
+/* =========================================================
+   EVENT LISTENERS
+   ========================================================= */
+
+document.getElementById(
+"addLifeAreaButton"
+).addEventListener(
+"click",
+addLifeArea
+);
+
+
+document.getElementById(
+"addLifeOutcomeButton"
+).addEventListener(
+"click",
+addLifeOutcome
+);
+
+
+document.getElementById(
+"saveLifeButton"
+).addEventListener(
+"click",
+saveLifeAssessment
+);
+
+
+document.getElementById(
+"addCommitmentButton"
+).addEventListener(
+"click",
+addCommitment
+);
+
+
+document.getElementById(
+"addActionButton"
+).addEventListener(
+"click",
+addAction
+);
+
+
+document.getElementById(
+"saveTodayButton"
+).addEventListener(
+"click",
+saveToday
+);
+
+
+document.getElementById(
+"outcome"
+).addEventListener(
+"input",
+refreshToday
+);
+
+
+document.getElementById(
+"purpose"
+).addEventListener(
+"input",
+refreshToday
+);
+
+
+/* =========================================================
+   START APPLICATION
+   ========================================================= */
 
 loadLifeAssessment();
+
 loadLifeOutcomes();
+
 loadToday();
+
 renderDailyPlanner();
+
 </script>
+
 </body>
 </html>
