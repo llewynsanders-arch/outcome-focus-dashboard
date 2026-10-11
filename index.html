@@ -926,7 +926,6 @@ gap:5px
 <main class="container">
 
 <header>
-
 <div class="date" id="todayDate"></div>
 
 <h1>Life Management System</h1>
@@ -937,34 +936,21 @@ and turn those outcomes into focused daily action.
 </p>
 
 <span class="version">Version 1.9</span>
-
 </header>
 
 <nav class="nav">
-
-<button id="lifeNav" class="active" type="button">
-🏠 LIFE
-</button>
-
-<button id="todayNav" type="button">
-☀️ TODAY
-</button>
-
+<button id="lifeNav" class="active" type="button">🏠 LIFE</button>
+<button id="todayNav" type="button">☀️ TODAY</button>
 </nav>
-
-<!-- LIFE -->
 
 <section id="lifePage" class="page active">
 
 <div class="card">
-
 <h2>🧭 Life Assessment</h2>
-
 <p class="section-description">
 Rate where you believe you are today and where you want to be.
 The gap helps you see which areas may deserve more attention.
 </p>
-
 </div>
 
 <div class="life-summary">
@@ -987,15 +973,12 @@ The gap helps you see which areas may deserve more attention.
 </div>
 
 <div class="card">
-
 <h2>🌱 Areas of Life</h2>
-
 <div id="lifeAreaList"></div>
 
 <button class="add-button" id="addLifeAreaButton" type="button">
 + Add Your Own Life Area
 </button>
-
 </div>
 
 <div class="card">
@@ -1025,8 +1008,6 @@ Save Life Assessment & Outcomes
 
 </section>
 
-<!-- TODAY -->
-
 <section id="todayPage" class="page">
 
 <div class="today-transfer-message" id="todayTransferMessage"></div>
@@ -1043,13 +1024,8 @@ or plan ahead without erasing another day's information.
 <div class="daily-date-row">
 
 <div>
-
-<label for="dailyDateSelector">
-Viewing Daily Plan For
-</label>
-
+<label for="dailyDateSelector">Viewing Daily Plan For</label>
 <input type="date" id="dailyDateSelector">
-
 </div>
 
 <button class="today-button" id="jumpToTodayButton" type="button">
@@ -1085,11 +1061,8 @@ Review your active Life Outcomes and deliberately choose the actions that deserv
 </p>
 
 <div class="planner-summary">
-
 <span>Active Life Outcomes</span>
-
 <span id="activeOutcomeCount">0</span>
-
 </div>
 
 <div id="dailyPlannerList"></div>
@@ -1099,13 +1072,8 @@ Review your active Life Outcomes and deliberately choose the actions that deserv
 <section class="card top3-card">
 
 <div class="top3-header">
-
 <h2>⭐ Today's Top 3 Focus</h2>
-
-<div class="top3-count" id="top3Count">
-0 of 3 selected
-</div>
-
+<div class="top3-count" id="top3Count">0 of 3 selected</div>
 </div>
 
 <p class="section-description">
@@ -1121,16 +1089,12 @@ Focus #1 is your most important action.
 
 <h2>🎯 Today's Most Important Outcome</h2>
 
-<label for="outcome">
-What result do I want?
-</label>
+<label for="outcome">What result do I want?</label>
 
 <textarea id="outcome"
 placeholder="Example: Finish the first version of my website."></textarea>
 
-<label for="purpose">
-Why does this matter?
-</label>
+<label for="purpose">Why does this matter?</label>
 
 <textarea id="purpose"
 placeholder="Write the reason this outcome is important to you."></textarea>
@@ -1148,9 +1112,7 @@ or anything else that already has a fixed time.
 
 <div id="commitmentList"></div>
 
-<button class="commitment-add-button"
-id="addCommitmentButton"
-type="button">
+<button class="commitment-add-button" id="addCommitmentButton" type="button">
 + Add Fixed Commitment
 </button>
 
@@ -1167,46 +1129,31 @@ Use the Focus selector to choose Focus #1, #2, or #3.
 
 <div id="actionList"></div>
 
-<button class="add-button"
-id="addActionButton"
-type="button">
+<button class="add-button" id="addActionButton" type="button">
 + Add Another Action
 </button>
 
 </section>
 
 <section class="conflict-box" id="conflictBox">
-
 <h3>⚠️ Schedule Conflict Detected</h3>
-
 <div id="conflictList"></div>
-
 </section>
 
 <section class="card">
-
 <h2>🗓️ Today's Schedule</h2>
-
 <div id="scheduleList"></div>
-
 </section>
 
 <section class="card">
 
 <div class="progress-header">
-
 <h2>📈 Today's Progress</h2>
-
-<div class="progress-percent" id="progressPercent">
-0%
-</div>
-
+<div class="progress-percent" id="progressPercent">0%</div>
 </div>
 
 <div class="progress-background">
-
 <div class="progress-bar" id="progressBar"></div>
-
 </div>
 
 <div class="progress-text" id="progressText">
@@ -1242,17 +1189,13 @@ Save This Day
 
 </section>
 
-<div class="footer-note">
-Life Management System
-</div>
+<div class="footer-note">Life Management System</div>
 
 </main>
 
 <script>
 
-/* =========================================================
-   STORAGE
-   ========================================================= */
+/* STORAGE */
 
 const LIFE_STORAGE_KEY="lifeManagementAreasV19";
 const OLD_LIFE_STORAGE_KEY="lifeManagementAreasV18";
@@ -1266,30 +1209,22 @@ const LEGACY_LIFE_OUTCOMES_STORAGE_KEY="lifeManagementOutcomesV15";
 
 const DAILY_HISTORY_STORAGE_KEY="lifeManagementDailyHistoryV19";
 
+/* NEW: remembers the date the user was viewing */
+const LAST_VIEWED_DATE_STORAGE_KEY="lifeManagementLastViewedDateV19";
+
 const OLD_TODAY_STORAGE_KEY="outcomeFocusDashboardV18";
 const OLDER_TODAY_STORAGE_KEY="outcomeFocusDashboardV17";
 const OLDEST_TODAY_STORAGE_KEY="outcomeFocusDashboardV16";
 
-/* =========================================================
-   DATE
-   ========================================================= */
+/* DATE */
 
 function getDateKey(date=new Date()){
-
 return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}-${String(date.getDate()).padStart(2,"0")}`;
-
 }
 
 function dateFromKey(key){
-
 const parts=key.split("-").map(Number);
-
-return new Date(
-parts[0],
-parts[1]-1,
-parts[2]
-);
-
+return new Date(parts[0],parts[1]-1,parts[2]);
 }
 
 function formatDateKey(key){
@@ -1312,12 +1247,14 @@ function getPreviousDateKey(key){
 
 const date=dateFromKey(key);
 
-date.setDate(
-date.getDate()-1
-);
+date.setDate(date.getDate()-1);
 
 return getDateKey(date);
 
+}
+
+function isValidDateKey(key){
+return /^\d{4}-\d{2}-\d{2}$/.test(key||"");
 }
 
 const actualTodayKey=getDateKey();
@@ -1325,11 +1262,22 @@ const actualTodayKey=getDateKey();
 document.getElementById("todayDate").textContent=
 formatDateKey(actualTodayKey);
 
-let selectedDateKey=actualTodayKey;
+/*
+NEW:
+If the user was viewing another date before refreshing,
+restore that date.
+*/
+const storedViewedDate=
+localStorage.getItem(LAST_VIEWED_DATE_STORAGE_KEY);
 
-/* =========================================================
-   NAVIGATION
-   ========================================================= */
+let selectedDateKey=
+isValidDateKey(storedViewedDate)
+?
+storedViewedDate
+:
+actualTodayKey;
+
+/* NAVIGATION */
 
 const lifeNav=document.getElementById("lifeNav");
 const todayNav=document.getElementById("todayNav");
@@ -1368,19 +1316,10 @@ behavior:"smooth"
 
 }
 
-lifeNav.addEventListener(
-"click",
-()=>showPage("life")
-);
+lifeNav.addEventListener("click",()=>showPage("life"));
+todayNav.addEventListener("click",()=>showPage("today"));
 
-todayNav.addEventListener(
-"click",
-()=>showPage("today")
-);
-
-/* =========================================================
-   LIFE ASSESSMENT
-   ========================================================= */
+/* LIFE ASSESSMENT */
 
 const defaultLifeAreas=[
 
@@ -1474,18 +1413,10 @@ return {wrap,select};
 }
 
 const currentScore=
-scoreBox(
-"Current 1–10",
-"current-score",
-area.current||5
-);
+scoreBox("Current 1–10","current-score",area.current||5);
 
 const desiredScore=
-scoreBox(
-"Desired 1–10",
-"desired-score",
-area.desired||8
-);
+scoreBox("Desired 1–10","desired-score",area.desired||8);
 
 const gapWrap=document.createElement("div");
 gapWrap.className="gap-wrapper";
@@ -1526,17 +1457,11 @@ list.appendChild(card);
 
 function updateCard(){
 
-const currentValue=
-parseInt(currentScore.select.value);
-
-const desiredValue=
-parseInt(desiredScore.select.value);
+const currentValue=parseInt(currentScore.select.value);
+const desiredValue=parseInt(desiredScore.select.value);
 
 const improvementGap=
-Math.max(
-desiredValue-currentValue,
-0
-);
+Math.max(desiredValue-currentValue,0);
 
 gap.textContent=improvementGap;
 
@@ -1547,21 +1472,14 @@ gap.classList.remove(
 );
 
 if(improvementGap<=2){
-
 gap.classList.add("gap-low");
-
 }else if(improvementGap<=4){
-
 gap.classList.add("gap-medium");
-
 }else{
-
 gap.classList.add("gap-high");
-
 }
 
-bar.style.width=
-(currentValue*10)+"%";
+bar.style.width=(currentValue*10)+"%";
 
 if(currentValue>=desiredValue){
 
@@ -1587,38 +1505,29 @@ status.textContent=
 
 }
 
-name.addEventListener(
-"input",
-refreshLifeAssessment
-);
+name.addEventListener("input",refreshLifeAssessment);
 
 currentScore.select.addEventListener(
 "change",
 ()=>{
-
 updateCard();
 refreshLifeAssessment();
-
 }
 );
 
 desiredScore.select.addEventListener(
 "change",
 ()=>{
-
 updateCard();
 refreshLifeAssessment();
-
 }
 );
 
 del.addEventListener(
 "click",
 ()=>{
-
 card.remove();
 refreshLifeAssessment();
-
 }
 );
 
@@ -1639,14 +1548,10 @@ name:
 card.querySelector(".area-name").value,
 
 current:
-parseInt(
-card.querySelector(".current-score").value
-),
+parseInt(card.querySelector(".current-score").value),
 
 desired:
-parseInt(
-card.querySelector(".desired-score").value
-)
+parseInt(card.querySelector(".desired-score").value)
 
 })
 );
@@ -1667,46 +1572,32 @@ return;
 
 const currentAverage=
 (
-lifeAreas.reduce(
-(sum,area)=>sum+area.current,
-0
-)/lifeAreas.length
+lifeAreas.reduce((sum,area)=>sum+area.current,0)
+/lifeAreas.length
 ).toFixed(1);
 
 const desiredAverage=
 (
-lifeAreas.reduce(
-(sum,area)=>sum+area.desired,
-0
-)/lifeAreas.length
+lifeAreas.reduce((sum,area)=>sum+area.desired,0)
+/lifeAreas.length
 ).toFixed(1);
 
 const biggestGap=
 Math.max(
 ...lifeAreas.map(
-area=>
-Math.max(
-area.desired-area.current,
-0
-)
+area=>Math.max(area.desired-area.current,0)
 )
 );
 
-document.getElementById("averageCurrent").textContent=
-currentAverage;
-
-document.getElementById("averageDesired").textContent=
-desiredAverage;
-
-document.getElementById("largestGap").textContent=
-biggestGap;
+document.getElementById("averageCurrent").textContent=currentAverage;
+document.getElementById("averageDesired").textContent=desiredAverage;
+document.getElementById("largestGap").textContent=biggestGap;
 
 }
 
 function refreshLifeAssessment(){
 
 collectLifeAreas();
-
 updateLifeSummary();
 
 localStorage.setItem(
@@ -1719,19 +1610,13 @@ JSON.stringify(lifeAreas)
 function loadLifeAssessment(){
 
 const v19=
-parseArrayStorage(
-localStorage.getItem(LIFE_STORAGE_KEY)
-);
+parseArrayStorage(localStorage.getItem(LIFE_STORAGE_KEY));
 
 const v18=
-parseArrayStorage(
-localStorage.getItem(OLD_LIFE_STORAGE_KEY)
-);
+parseArrayStorage(localStorage.getItem(OLD_LIFE_STORAGE_KEY));
 
 const v17=
-parseArrayStorage(
-localStorage.getItem(OLDER_LIFE_STORAGE_KEY)
-);
+parseArrayStorage(localStorage.getItem(OLDER_LIFE_STORAGE_KEY));
 
 if(v19 && v19.length){
 
@@ -1748,20 +1633,15 @@ lifeAreas=v17;
 }else{
 
 lifeAreas=
-JSON.parse(
-JSON.stringify(defaultLifeAreas)
-);
+JSON.parse(JSON.stringify(defaultLifeAreas));
 
 }
 
-const list=
-document.getElementById("lifeAreaList");
+const list=document.getElementById("lifeAreaList");
 
 list.innerHTML="";
 
-lifeAreas.forEach(
-createLifeAreaCard
-);
+lifeAreas.forEach(createLifeAreaCard);
 
 refreshLifeAssessment();
 
@@ -1770,20 +1650,16 @@ refreshLifeAssessment();
 function addLifeArea(){
 
 createLifeAreaCard({
-
 name:"New Life Area",
 current:5,
 desired:8
-
 });
 
 refreshLifeAssessment();
 
 }
 
-/* =========================================================
-   LIFE OUTCOMES
-   ========================================================= */
+/* LIFE OUTCOMES */
 
 let lifeOutcomes=[];
 
@@ -1799,120 +1675,77 @@ return lifeAreas
 
 function createLifeOutcomeCard(outcome){
 
-const list=
-document.getElementById("lifeOutcomeList");
+const list=document.getElementById("lifeOutcomeList");
 
-const card=
-document.createElement("div");
+const card=document.createElement("div");
+card.className="outcome-life-card";
 
-card.className=
-"outcome-life-card";
+const top=document.createElement("div");
+top.className="outcome-life-top";
 
-const top=
-document.createElement("div");
-
-top.className=
-"outcome-life-top";
-
-const title=
-document.createElement("input");
-
+const title=document.createElement("input");
 title.type="text";
 title.className="life-outcome-title";
 title.placeholder="What result do you want?";
 title.value=outcome.title||"";
 
-const del=
-document.createElement("button");
-
+const del=document.createElement("button");
 del.type="button";
 del.className="delete-button";
 del.innerHTML="&times;";
 
 top.append(title,del);
-
 card.appendChild(top);
 
-const grid=
-document.createElement("div");
+const grid=document.createElement("div");
+grid.className="outcome-life-grid";
 
-grid.className=
-"outcome-life-grid";
+const areaWrap=document.createElement("div");
+areaWrap.innerHTML='<div class="field-label">Area of Life</div>';
 
-const areaWrap=
-document.createElement("div");
+const area=document.createElement("select");
+area.className="life-outcome-area";
 
-areaWrap.innerHTML=
-'<div class="field-label">Area of Life</div>';
-
-const area=
-document.createElement("select");
-
-area.className=
-"life-outcome-area";
-
-const names=
-getLifeAreaNames();
+const names=getLifeAreaNames();
 
 if(names.length===0){
 
-const option=
-document.createElement("option");
-
+const option=document.createElement("option");
 option.value="";
 option.textContent="No life areas available";
-
 area.appendChild(option);
 
 }else{
 
 names.forEach(name=>{
 
-const option=
-document.createElement("option");
-
+const option=document.createElement("option");
 option.value=name;
 option.textContent=name;
-
 area.appendChild(option);
 
 });
 
 }
 
-if(
-outcome.area &&
-!names.includes(outcome.area)
-){
+if(outcome.area && !names.includes(outcome.area)){
 
-const option=
-document.createElement("option");
-
+const option=document.createElement("option");
 option.value=outcome.area;
 option.textContent=outcome.area;
-
 area.appendChild(option);
 
 }
 
-area.value=
-outcome.area||
-names[0]||
-"";
+area.value=outcome.area||names[0]||"";
 
 areaWrap.appendChild(area);
 
-const statusWrap=
-document.createElement("div");
+const statusWrap=document.createElement("div");
+statusWrap.innerHTML='<div class="field-label">Status</div>';
 
-statusWrap.innerHTML=
-'<div class="field-label">Status</div>';
-
-const status=
-document.createElement("select");
-
-status.className=
-"life-outcome-status";
+const status=document.createElement("select");
+status.className="life-outcome-status";
 
 status.innerHTML=
 `
@@ -1921,36 +1754,23 @@ status.innerHTML=
 <option value="paused">Paused</option>
 `;
 
-status.value=
-outcome.status||
-"active";
-
+status.value=outcome.status||"active";
 statusWrap.appendChild(status);
 
-const dateWrap=
-document.createElement("div");
+const dateWrap=document.createElement("div");
+dateWrap.innerHTML='<div class="field-label">Target Date</div>';
 
-dateWrap.innerHTML=
-'<div class="field-label">Target Date</div>';
-
-const date=
-document.createElement("input");
-
+const date=document.createElement("input");
 date.type="date";
 date.className="life-outcome-date";
 date.value=outcome.targetDate||"";
 
 dateWrap.appendChild(date);
 
-const purposeWrap=
-document.createElement("div");
+const purposeWrap=document.createElement("div");
+purposeWrap.innerHTML='<div class="field-label">Purpose / Why</div>';
 
-purposeWrap.innerHTML=
-'<div class="field-label">Purpose / Why</div>';
-
-const purpose=
-document.createElement("input");
-
+const purpose=document.createElement("input");
 purpose.type="text";
 purpose.className="life-outcome-purpose";
 purpose.placeholder="Why does this outcome matter?";
@@ -1967,61 +1787,41 @@ purposeWrap
 
 card.appendChild(grid);
 
-const actions=
-document.createElement("div");
+const actions=document.createElement("div");
+actions.className="outcome-life-actions";
+actions.innerHTML='<div class="field-label">Action Plan</div>';
 
-actions.className=
-"outcome-life-actions";
-
-actions.innerHTML=
-'<div class="field-label">Action Plan</div>';
-
-const actionList=
-document.createElement("div");
-
-actionList.className=
-"life-outcome-action-list";
+const actionList=document.createElement("div");
+actionList.className="life-outcome-action-list";
 
 actions.appendChild(actionList);
 
-const add=
-document.createElement("button");
-
+const add=document.createElement("button");
 add.type="button";
 add.className="add-button";
 add.style.marginTop="10px";
 add.textContent="+ Add Outcome Action";
 
 actions.appendChild(add);
-
 card.appendChild(actions);
 
 function addActionRow(text=""){
 
-const row=
-document.createElement("div");
+const row=document.createElement("div");
+row.className="life-action-row";
 
-row.className=
-"life-action-row";
-
-const input=
-document.createElement("input");
-
+const input=document.createElement("input");
 input.type="text";
 input.className="life-outcome-action";
 input.placeholder="Action that moves this outcome forward";
 input.value=text;
 
-const sendButton=
-document.createElement("button");
-
+const sendButton=document.createElement("button");
 sendButton.type="button";
 sendButton.className="send-today-button";
 sendButton.textContent="→ Add to Selected Day";
 
-const deleteButton=
-document.createElement("button");
-
+const deleteButton=document.createElement("button");
 deleteButton.type="button";
 deleteButton.className="delete-button";
 deleteButton.innerHTML="&times;";
@@ -2037,10 +1837,8 @@ actionList.appendChild(row);
 input.addEventListener(
 "input",
 ()=>{
-
 saveLifeOutcomes();
 renderDailyPlanner();
-
 }
 );
 
@@ -2048,39 +1846,28 @@ sendButton.addEventListener(
 "click",
 ()=>{
 
-const actionText=
-input.value.trim();
+const actionText=input.value.trim();
 
 if(actionText===""){
-
 input.focus();
 return;
-
 }
 
 addLifeActionToToday(
-
 actionText,
 title.value.trim(),
 purpose.value.trim(),
 area.value,
 true
-
 );
 
-sendButton.textContent=
-"✓ Added";
-
+sendButton.textContent="✓ Added";
 sendButton.classList.add("added");
 
 setTimeout(
 ()=>{
-
-sendButton.textContent=
-"→ Add to Selected Day";
-
+sendButton.textContent="→ Add to Selected Day";
 sendButton.classList.remove("added");
-
 },
 1800
 );
@@ -2091,96 +1878,76 @@ sendButton.classList.remove("added");
 deleteButton.addEventListener(
 "click",
 ()=>{
-
 row.remove();
-
 saveLifeOutcomes();
 renderDailyPlanner();
-
 }
 );
 
 }
 
 (
-Array.isArray(outcome.actions) &&
-outcome.actions.length
+Array.isArray(outcome.actions) && outcome.actions.length
 ?
 outcome.actions
 :
 [""]
-)
-.forEach(addActionRow);
+).forEach(addActionRow);
 
 add.addEventListener(
 "click",
 ()=>{
-
 addActionRow("");
 saveLifeOutcomes();
-
 }
 );
 
 title.addEventListener(
 "input",
 ()=>{
-
 saveLifeOutcomes();
 renderDailyPlanner();
-
 }
 );
 
 area.addEventListener(
 "change",
 ()=>{
-
 saveLifeOutcomes();
 renderDailyPlanner();
-
 }
 );
 
 status.addEventListener(
 "change",
 ()=>{
-
 saveLifeOutcomes();
 renderDailyPlanner();
-
 }
 );
 
 date.addEventListener(
 "change",
 ()=>{
-
 saveLifeOutcomes();
 renderDailyPlanner();
-
 }
 );
 
 purpose.addEventListener(
 "input",
 ()=>{
-
 saveLifeOutcomes();
 renderDailyPlanner();
-
 }
 );
 
 del.addEventListener(
 "click",
 ()=>{
-
 card.remove();
-
 saveLifeOutcomes();
 renderDailyPlanner();
-
 }
 );
 
@@ -2192,50 +1959,32 @@ function collectLifeOutcomes(){
 
 lifeOutcomes=
 Array.from(
-document.querySelectorAll(
-".outcome-life-card"
-)
+document.querySelectorAll(".outcome-life-card")
 )
 .map(
 card=>({
 
 title:
-card.querySelector(
-".life-outcome-title"
-).value,
+card.querySelector(".life-outcome-title").value,
 
 area:
-card.querySelector(
-".life-outcome-area"
-).value,
+card.querySelector(".life-outcome-area").value,
 
 purpose:
-card.querySelector(
-".life-outcome-purpose"
-).value,
+card.querySelector(".life-outcome-purpose").value,
 
 targetDate:
-card.querySelector(
-".life-outcome-date"
-).value,
+card.querySelector(".life-outcome-date").value,
 
 status:
-card.querySelector(
-".life-outcome-status"
-).value,
+card.querySelector(".life-outcome-status").value,
 
 actions:
 Array.from(
-card.querySelectorAll(
-".life-outcome-action"
+card.querySelectorAll(".life-outcome-action")
 )
-)
-.map(
-input=>input.value
-)
-.filter(
-value=>value.trim()!==""
-)
+.map(input=>input.value)
+.filter(value=>value.trim()!=="")
 
 })
 );
@@ -2256,39 +2005,19 @@ JSON.stringify(lifeOutcomes)
 function loadLifeOutcomes(){
 
 const v19=
-parseArrayStorage(
-localStorage.getItem(
-LIFE_OUTCOMES_STORAGE_KEY
-)
-);
+parseArrayStorage(localStorage.getItem(LIFE_OUTCOMES_STORAGE_KEY));
 
 const v18=
-parseArrayStorage(
-localStorage.getItem(
-OLD_LIFE_OUTCOMES_STORAGE_KEY
-)
-);
+parseArrayStorage(localStorage.getItem(OLD_LIFE_OUTCOMES_STORAGE_KEY));
 
 const v17=
-parseArrayStorage(
-localStorage.getItem(
-OLDER_LIFE_OUTCOMES_STORAGE_KEY
-)
-);
+parseArrayStorage(localStorage.getItem(OLDER_LIFE_OUTCOMES_STORAGE_KEY));
 
 const v16=
-parseArrayStorage(
-localStorage.getItem(
-OLDEST_LIFE_OUTCOMES_STORAGE_KEY
-)
-);
+parseArrayStorage(localStorage.getItem(OLDEST_LIFE_OUTCOMES_STORAGE_KEY));
 
 const v15=
-parseArrayStorage(
-localStorage.getItem(
-LEGACY_LIFE_OUTCOMES_STORAGE_KEY
-)
-);
+parseArrayStorage(localStorage.getItem(LEGACY_LIFE_OUTCOMES_STORAGE_KEY));
 
 if(v19 && v19.length){
 
@@ -2321,10 +2050,7 @@ LIFE_OUTCOMES_STORAGE_KEY,
 JSON.stringify(lifeOutcomes)
 );
 
-const list=
-document.getElementById(
-"lifeOutcomeList"
-);
+const list=document.getElementById("lifeOutcomeList");
 
 list.innerHTML="";
 
@@ -2339,9 +2065,7 @@ No life outcomes yet. Add one when you are ready to turn a life area into a spec
 
 }else{
 
-lifeOutcomes.forEach(
-createLifeOutcomeCard
-);
+lifeOutcomes.forEach(createLifeOutcomeCard);
 
 }
 
@@ -2349,29 +2073,21 @@ createLifeOutcomeCard
 
 function addLifeOutcome(){
 
-const list=
-document.getElementById(
-"lifeOutcomeList"
-);
+const list=document.getElementById("lifeOutcomeList");
 
-const empty=
-list.querySelector(
-".life-outcome-empty"
-);
+const empty=list.querySelector(".life-outcome-empty");
 
 if(empty){
 empty.remove();
 }
 
 createLifeOutcomeCard({
-
 title:"",
 area:getLifeAreaNames()[0]||"",
 purpose:"",
 targetDate:"",
 status:"active",
 actions:[""]
-
 });
 
 saveLifeOutcomes();
@@ -2383,48 +2099,35 @@ function saveLifeAssessment(){
 refreshLifeAssessment();
 saveLifeOutcomes();
 
-const message=
-document.getElementById(
-"lifeSavedMessage"
-);
+const message=document.getElementById("lifeSavedMessage");
 
 message.style.display="block";
 
 setTimeout(
 ()=>{
-
 message.style.display="none";
-
 },
 2500
 );
 
 }
 
-/* =========================================================
-   DAILY HISTORY
-   ========================================================= */
+/* DAILY HISTORY */
 
 let dailyHistory={};
 
 function loadDailyHistoryObject(){
 
-const raw=
-localStorage.getItem(
-DAILY_HISTORY_STORAGE_KEY
-);
+const raw=localStorage.getItem(DAILY_HISTORY_STORAGE_KEY);
 
 if(!raw){
-
 dailyHistory={};
 return;
-
 }
 
 try{
 
-const parsed=
-JSON.parse(raw);
+const parsed=JSON.parse(raw);
 
 dailyHistory=
 parsed &&
@@ -2506,11 +2209,7 @@ focus:0
 }
 
 function cloneData(data){
-
-return JSON.parse(
-JSON.stringify(data)
-);
-
+return JSON.parse(JSON.stringify(data));
 }
 
 function normalizeActions(actions){
@@ -2523,23 +2222,13 @@ return actions.map(
 action=>({
 
 text:action.text||"",
-
-completed:
-Boolean(action.completed),
-
-priority:
-action.priority||"should",
-
-time:
-action.time||"",
-
-duration:
-String(action.duration||"30"),
+completed:Boolean(action.completed),
+priority:action.priority||"should",
+time:action.time||"",
+duration:String(action.duration||"30"),
 
 focus:
-[1,2,3].includes(
-Number(action.focus)
-)
+[1,2,3].includes(Number(action.focus))
 ?
 Number(action.focus)
 :
@@ -2550,13 +2239,9 @@ Number(action.focus)
 
 }
 
-function normalizeDayData(
-data,
-dateKey
-){
+function normalizeDayData(data,dateKey){
 
-const base=
-emptyDayData(dateKey);
+const base=emptyDayData(dateKey);
 
 if(!data){
 return base;
@@ -2566,22 +2251,18 @@ return {
 
 date:dateKey,
 
-outcome:
-data.outcome||"",
+outcome:data.outcome||"",
 
-purpose:
-data.purpose||"",
+purpose:data.purpose||"",
 
 commitments:
 Array.isArray(data.commitments)
 ?
 data.commitments.map(
 item=>({
-
 text:item.text||"",
 start:item.start||"",
 end:item.end||""
-
 })
 )
 :
@@ -2606,16 +2287,10 @@ return null;
 
 try{
 
-const parsed=
-JSON.parse(value);
+const parsed=JSON.parse(value);
 
-if(
-parsed &&
-typeof parsed==="object"
-){
-
+if(parsed && typeof parsed==="object"){
 return parsed;
-
 }
 
 }catch(error){}
@@ -2630,23 +2305,18 @@ if(!data){
 return false;
 }
 
-if(
-(data.outcome||"").trim()!==""
-){
+if((data.outcome||"").trim()!==""){
 return true;
 }
 
-if(
-(data.purpose||"").trim()!==""
-){
+if((data.purpose||"").trim()!==""){
 return true;
 }
 
 if(
 Array.isArray(data.actions) &&
 data.actions.some(
-action=>
-(action.text||"").trim()!==""
+action=>(action.text||"").trim()!==""
 )
 ){
 return true;
@@ -2655,8 +2325,7 @@ return true;
 if(
 Array.isArray(data.commitments) &&
 data.commitments.some(
-commitment=>
-(commitment.text||"").trim()!==""
+commitment=>(commitment.text||"").trim()!==""
 )
 ){
 return true;
@@ -2668,57 +2337,33 @@ return false;
 
 function migrateV18Today(){
 
-if(
-dailyHistory[actualTodayKey]
-){
-
+if(dailyHistory[actualTodayKey]){
 return;
 }
 
 const v18=
-parseTodayStorage(
-localStorage.getItem(
-OLD_TODAY_STORAGE_KEY
-)
-);
+parseTodayStorage(localStorage.getItem(OLD_TODAY_STORAGE_KEY));
 
 const v17=
-parseTodayStorage(
-localStorage.getItem(
-OLDER_TODAY_STORAGE_KEY
-)
-);
+parseTodayStorage(localStorage.getItem(OLDER_TODAY_STORAGE_KEY));
 
 const v16=
-parseTodayStorage(
-localStorage.getItem(
-OLDEST_TODAY_STORAGE_KEY
-)
-);
+parseTodayStorage(localStorage.getItem(OLDEST_TODAY_STORAGE_KEY));
 
 let oldData=null;
 
 if(hasUsefulTodayData(v18)){
-
 oldData=v18;
-
 }else if(hasUsefulTodayData(v17)){
-
 oldData=v17;
-
 }else if(hasUsefulTodayData(v16)){
-
 oldData=v16;
-
 }
 
 if(oldData){
 
 dailyHistory[actualTodayKey]=
-normalizeDayData(
-oldData,
-actualTodayKey
-);
+normalizeDayData(oldData,actualTodayKey);
 
 saveDailyHistoryObject();
 
@@ -2726,24 +2371,23 @@ saveDailyHistoryObject();
 
 }
 
-/* =========================================================
-   CURRENT DAILY DATA
-   ========================================================= */
+/* CURRENT DAILY DATA */
 
-let dashboardData=
-emptyDayData(
-actualTodayKey
-);
+let dashboardData=emptyDayData(selectedDateKey);
 
 function saveSelectedDay(){
 
-dashboardData.date=
-selectedDateKey;
+dashboardData.date=selectedDateKey;
 
-dailyHistory[selectedDateKey]=
-cloneData(dashboardData);
+dailyHistory[selectedDateKey]=cloneData(dashboardData);
 
 saveDailyHistoryObject();
+
+/* NEW: remember the selected date */
+localStorage.setItem(
+LAST_VIEWED_DATE_STORAGE_KEY,
+selectedDateKey
+);
 
 }
 
@@ -2751,20 +2395,20 @@ function loadSelectedDay(dateKey){
 
 selectedDateKey=dateKey;
 
-const saved=
-dailyHistory[dateKey];
+/* NEW: remember immediately whenever date changes */
+localStorage.setItem(
+LAST_VIEWED_DATE_STORAGE_KEY,
+selectedDateKey
+);
+
+const saved=dailyHistory[dateKey];
 
 dashboardData=
 saved
 ?
-normalizeDayData(
-saved,
-dateKey
-)
+normalizeDayData(saved,dateKey)
 :
-emptyDayData(
-dateKey
-);
+emptyDayData(dateKey);
 
 renderCurrentDay();
 
@@ -2772,47 +2416,33 @@ renderCurrentDay();
 
 function renderCurrentDay(){
 
-document.getElementById(
-"dailyDateSelector"
-).value=
+document.getElementById("dailyDateSelector").value=
 selectedDateKey;
 
-document.getElementById(
-"outcome"
-).value=
+document.getElementById("outcome").value=
 dashboardData.outcome||"";
 
-document.getElementById(
-"purpose"
-).value=
+document.getElementById("purpose").value=
 dashboardData.purpose||"";
 
 const commitmentList=
-document.getElementById(
-"commitmentList"
-);
+document.getElementById("commitmentList");
 
 commitmentList.innerHTML="";
 
-if(
-!dashboardData.commitments.length
-){
+if(!dashboardData.commitments.length){
 
 dashboardData.commitments=[
-
 {
 text:"",
 start:"",
 end:""
 }
-
 ];
 
 }
 
-dashboardData.commitments.forEach(
-createCommitmentCard
-);
+dashboardData.commitments.forEach(createCommitmentCard);
 
 renderTodayActions();
 renderDailyPlanner();
@@ -2823,19 +2453,13 @@ updateHistoryStatus();
 
 function updateHistoryStatus(){
 
-const box=
-document.getElementById(
-"historyStatus"
-);
+const box=document.getElementById("historyStatus");
 
 if(!box){
 return;
 }
 
-const exists=
-Boolean(
-dailyHistory[selectedDateKey]
-);
+const exists=Boolean(dailyHistory[selectedDateKey]);
 
 if(selectedDateKey===actualTodayKey){
 
@@ -2870,13 +2494,9 @@ if(!confirmation){
 return;
 }
 
-dashboardData=
-emptyDayData(
-selectedDateKey
-);
+dashboardData=emptyDayData(selectedDateKey);
 
 saveSelectedDay();
-
 renderCurrentDay();
 
 showTransferMessage(
@@ -2887,13 +2507,9 @@ showTransferMessage(
 
 function copyPreviousDay(){
 
-const previousKey=
-getPreviousDateKey(
-selectedDateKey
-);
+const previousKey=getPreviousDateKey(selectedDateKey);
 
-const previous=
-dailyHistory[previousKey];
+const previous=dailyHistory[previousKey];
 
 if(!previous){
 
@@ -2911,28 +2527,19 @@ cloneData(previous),
 selectedDateKey
 );
 
-copied.date=
-selectedDateKey;
-
-/*
-A copied day starts with completion cleared.
-The plan, priorities, schedule and Top 3 are retained.
-*/
+copied.date=selectedDateKey;
 
 copied.actions=
 copied.actions.map(
 action=>({
-
 ...action,
 completed:false
-
 })
 );
 
 dashboardData=copied;
 
 saveSelectedDay();
-
 renderCurrentDay();
 
 showTransferMessage(
@@ -2941,9 +2548,7 @@ showTransferMessage(
 
 }
 
-/* =========================================================
-   DAILY PLANNER
-   ========================================================= */
+/* DAILY PLANNER */
 
 function todayHasAction(text){
 
@@ -2967,19 +2572,14 @@ text
 
 function renderDailyPlanner(){
 
-const list=
-document.getElementById(
-"dailyPlannerList"
-);
+const list=document.getElementById("dailyPlannerList");
 
 if(!list){
 return;
 }
 
 if(
-document.querySelectorAll(
-".outcome-life-card"
-).length>0
+document.querySelectorAll(".outcome-life-card").length>0
 ){
 
 collectLifeOutcomes();
@@ -2988,13 +2588,10 @@ collectLifeOutcomes();
 
 const active=
 lifeOutcomes.filter(
-outcome=>
-(outcome.status||"active")==="active"
+outcome=>(outcome.status||"active")==="active"
 );
 
-document.getElementById(
-"activeOutcomeCount"
-).textContent=
+document.getElementById("activeOutcomeCount").textContent=
 active.length;
 
 list.innerHTML="";
@@ -3016,62 +2613,34 @@ return;
 active.forEach(
 outcome=>{
 
-const card=
-document.createElement("div");
+const card=document.createElement("div");
+card.className="planner-card";
 
-card.className=
-"planner-card";
+const top=document.createElement("div");
+top.className="planner-top";
 
-const top=
-document.createElement("div");
+const title=document.createElement("div");
+title.className="planner-title";
+title.textContent=outcome.title||"Untitled Life Outcome";
 
-top.className=
-"planner-top";
-
-const title=
-document.createElement("div");
-
-title.className=
-"planner-title";
-
-title.textContent=
-outcome.title||
-"Untitled Life Outcome";
-
-const area=
-document.createElement("div");
-
-area.className=
-"planner-area";
-
-area.textContent=
-outcome.area||
-"Life Outcome";
+const area=document.createElement("div");
+area.className="planner-area";
+area.textContent=outcome.area||"Life Outcome";
 
 top.append(title,area);
-
 card.appendChild(top);
 
 if(outcome.purpose){
 
-const purpose=
-document.createElement("div");
-
-purpose.className=
-"planner-purpose";
-
-purpose.textContent=
-"Why: "+outcome.purpose;
-
+const purpose=document.createElement("div");
+purpose.className="planner-purpose";
+purpose.textContent="Why: "+outcome.purpose;
 card.appendChild(purpose);
 
 }
 
-const actions=
-document.createElement("div");
-
-actions.className=
-"planner-actions";
+const actions=document.createElement("div");
+actions.className="planner-actions";
 
 if(
 !Array.isArray(outcome.actions) ||
@@ -3090,24 +2659,14 @@ No actions have been added to this outcome yet.
 outcome.actions.forEach(
 actionText=>{
 
-const row=
-document.createElement("div");
+const row=document.createElement("div");
+row.className="planner-action";
 
-row.className=
-"planner-action";
+const text=document.createElement("div");
+text.className="planner-action-text";
+text.textContent=actionText;
 
-const text=
-document.createElement("div");
-
-text.className=
-"planner-action-text";
-
-text.textContent=
-actionText;
-
-const button=
-document.createElement("button");
-
+const button=document.createElement("button");
 button.type="button";
 button.className="planner-add";
 
@@ -3115,21 +2674,13 @@ function updateButton(){
 
 if(todayHasAction(actionText)){
 
-button.textContent=
-"✓ In Selected Day";
-
-button.classList.add(
-"in-today"
-);
+button.textContent="✓ In Selected Day";
+button.classList.add("in-today");
 
 }else{
 
-button.textContent=
-"+ Choose for This Day";
-
-button.classList.remove(
-"in-today"
-);
+button.textContent="+ Choose for This Day";
+button.classList.remove("in-today");
 
 }
 
@@ -3152,13 +2703,11 @@ return;
 }
 
 addLifeActionToToday(
-
 actionText,
 outcome.title,
 outcome.purpose,
 outcome.area,
 false
-
 );
 
 renderDailyPlanner();
@@ -3167,7 +2716,6 @@ renderDailyPlanner();
 );
 
 row.append(text,button);
-
 actions.appendChild(row);
 
 }
@@ -3176,7 +2724,6 @@ actions.appendChild(row);
 }
 
 card.appendChild(actions);
-
 list.appendChild(card);
 
 }
@@ -3186,19 +2733,14 @@ list.appendChild(card);
 
 function showTransferMessage(text){
 
-const message=
-document.getElementById(
-"todayTransferMessage"
-);
+const message=document.getElementById("todayTransferMessage");
 
 message.textContent=text;
 message.style.display="block";
 
 setTimeout(
 ()=>{
-
 message.style.display="none";
-
 },
 3000
 );
@@ -3206,51 +2748,40 @@ message.style.display="none";
 }
 
 function addLifeActionToToday(
-
 actionText,
 outcomeTitle,
 outcomePurpose,
 lifeArea,
 switchToToday
-
 ){
 
 collectTodayData();
 
-const duplicate=
-todayHasAction(actionText);
+const duplicate=todayHasAction(actionText);
 
 if(!duplicate){
 
 dashboardData.actions.push({
-
 text:actionText,
 completed:false,
 priority:"should",
 time:"",
 duration:"30",
 focus:0
-
 });
 
 }
 
-const outcomeField=
-document.getElementById("outcome");
-
-const purposeField=
-document.getElementById("purpose");
+const outcomeField=document.getElementById("outcome");
+const purposeField=document.getElementById("purpose");
 
 if(
 outcomeField.value.trim()==="" &&
 outcomeTitle
 ){
 
-outcomeField.value=
-outcomeTitle;
-
-dashboardData.outcome=
-outcomeTitle;
+outcomeField.value=outcomeTitle;
+dashboardData.outcome=outcomeTitle;
 
 }
 
@@ -3259,11 +2790,8 @@ purposeField.value.trim()==="" &&
 outcomePurpose
 ){
 
-purposeField.value=
-outcomePurpose;
-
-dashboardData.purpose=
-outcomePurpose;
+purposeField.value=outcomePurpose;
+dashboardData.purpose=outcomePurpose;
 
 }
 
@@ -3274,26 +2802,20 @@ renderDailyPlanner();
 renderTop3();
 
 showTransferMessage(
-
 duplicate
 ?
 "✓ That action is already in this day's plan."
 :
 "✓ Life Outcome action added to this day's plan."
-
 );
 
 if(switchToToday){
-
 showPage("today");
-
 }
 
 }
 
-/* =========================================================
-   TOP 3
-   ========================================================= */
+/* TOP 3 */
 
 function getFocusAction(rank){
 
@@ -3317,10 +2839,7 @@ return "🥉";
 
 }
 
-function setActionFocus(
-actionIndex,
-rank
-){
+function setActionFocus(actionIndex,rank){
 
 collectTodayData();
 
@@ -3335,9 +2854,7 @@ if(
 index!==actionIndex &&
 Number(action.focus)===rank
 ){
-
 action.focus=0;
-
 }
 
 }
@@ -3345,8 +2862,7 @@ action.focus=0;
 
 }
 
-dashboardData.actions[actionIndex].focus=
-rank;
+dashboardData.actions[actionIndex].focus=rank;
 
 saveSelectedDay();
 
@@ -3364,9 +2880,7 @@ dashboardData.actions.forEach(
 action=>{
 
 if(Number(action.focus)===rank){
-
 action.focus=0;
-
 }
 
 }
@@ -3382,10 +2896,7 @@ buildSchedule();
 
 function renderTop3(){
 
-const list=
-document.getElementById(
-"top3List"
-);
+const list=document.getElementById("top3List");
 
 if(!list){
 return;
@@ -3393,23 +2904,17 @@ return;
 
 const focused=
 dashboardData.actions.filter(
-action=>
-[1,2,3].includes(
-Number(action.focus)
-)
+action=>[1,2,3].includes(Number(action.focus))
 );
 
-document.getElementById(
-"top3Count"
-).textContent=
+document.getElementById("top3Count").textContent=
 `${focused.length} of 3 selected`;
 
 list.innerHTML="";
 
 const meaningfulActions=
 dashboardData.actions.filter(
-action=>
-(action.text||"").trim()!==""
+action=>(action.text||"").trim()!==""
 );
 
 if(meaningfulActions.length===0){
@@ -3428,56 +2933,34 @@ return;
 
 for(let rank=1;rank<=3;rank++){
 
-const action=
-getFocusAction(rank);
+const action=getFocusAction(rank);
 
-const slot=
-document.createElement("div");
+const slot=document.createElement("div");
+slot.className="top3-slot";
 
-slot.className=
-"top3-slot";
+const rankBox=document.createElement("div");
+rankBox.className="top3-rank";
+rankBox.textContent=focusRankLabel(rank);
 
-const rankBox=
-document.createElement("div");
-
-rankBox.className=
-"top3-rank";
-
-rankBox.textContent=
-focusRankLabel(rank);
-
-const text=
-document.createElement("div");
-
-text.className=
-"top3-text";
+const text=document.createElement("div");
+text.className="top3-text";
 
 if(action){
 
-text.textContent=
-action.text;
+text.textContent=action.text;
 
 }else{
 
-text.textContent=
-`Focus #${rank} not selected`;
-
-text.classList.add(
-"top3-empty-text"
-);
+text.textContent=`Focus #${rank} not selected`;
+text.classList.add("top3-empty-text");
 
 }
 
-slot.append(
-rankBox,
-text
-);
+slot.append(rankBox,text);
 
 if(action){
 
-const remove=
-document.createElement("button");
-
+const remove=document.createElement("button");
 remove.type="button";
 remove.className="top3-remove";
 remove.textContent="Remove";
@@ -3497,119 +2980,68 @@ list.appendChild(slot);
 
 }
 
-/* =========================================================
-   COMMITMENTS
-   ========================================================= */
+/* COMMITMENTS */
 
 function createCommitmentCard(commitment){
 
-const list=
-document.getElementById(
-"commitmentList"
-);
+const list=document.getElementById("commitmentList");
 
-const card=
-document.createElement("div");
+const card=document.createElement("div");
+card.className="commitment-card";
 
-card.className=
-"commitment-card";
+const main=document.createElement("div");
+main.className="commitment-main";
 
-const main=
-document.createElement("div");
-
-main.className=
-"commitment-main";
-
-const input=
-document.createElement("input");
-
+const input=document.createElement("input");
 input.type="text";
 input.className="commitment-text";
 input.placeholder="Example: Doctor appointment";
 input.value=commitment.text||"";
 
-const deleteButton=
-document.createElement("button");
-
+const deleteButton=document.createElement("button");
 deleteButton.type="button";
 deleteButton.className="delete-button";
 deleteButton.innerHTML="&times;";
 
-main.append(
-input,
-deleteButton
-);
+main.append(input,deleteButton);
 
-const options=
-document.createElement("div");
+const options=document.createElement("div");
+options.className="commitment-options";
 
-options.className=
-"commitment-options";
+const startWrap=document.createElement("div");
+startWrap.innerHTML='<div class="field-label">Start Time</div>';
 
-const startWrap=
-document.createElement("div");
-
-startWrap.innerHTML=
-'<div class="field-label">Start Time</div>';
-
-const start=
-document.createElement("input");
-
+const start=document.createElement("input");
 start.type="time";
 start.className="commitment-start";
 start.value=commitment.start||"";
 
 startWrap.appendChild(start);
 
-const endWrap=
-document.createElement("div");
+const endWrap=document.createElement("div");
+endWrap.innerHTML='<div class="field-label">End Time</div>';
 
-endWrap.innerHTML=
-'<div class="field-label">End Time</div>';
-
-const end=
-document.createElement("input");
-
+const end=document.createElement("input");
 end.type="time";
 end.className="commitment-end";
 end.value=commitment.end||"";
 
 endWrap.appendChild(end);
 
-options.append(
-startWrap,
-endWrap
-);
+options.append(startWrap,endWrap);
 
-card.append(
-main,
-options
-);
-
+card.append(main,options);
 list.appendChild(card);
 
-input.addEventListener(
-"input",
-refreshToday
-);
-
-start.addEventListener(
-"change",
-refreshToday
-);
-
-end.addEventListener(
-"change",
-refreshToday
-);
+input.addEventListener("input",refreshToday);
+start.addEventListener("change",refreshToday);
+end.addEventListener("change",refreshToday);
 
 deleteButton.addEventListener(
 "click",
 ()=>{
-
 card.remove();
 refreshToday();
-
 }
 );
 
@@ -3618,96 +3050,57 @@ refreshToday();
 function addCommitment(){
 
 createCommitmentCard({
-
 text:"",
 start:"",
 end:""
-
 });
 
 refreshToday();
 
 }
 
-/* =========================================================
-   ACTIONS
-   ========================================================= */
+/* ACTIONS */
 
-function createActionCard(
-action,
-actionIndex
-){
+function createActionCard(action,actionIndex){
 
-const list=
-document.getElementById(
-"actionList"
-);
+const list=document.getElementById("actionList");
 
-const card=
-document.createElement("div");
+const card=document.createElement("div");
+card.className="action-card";
 
-card.className=
-"action-card";
+const main=document.createElement("div");
+main.className="action-main";
 
-const main=
-document.createElement("div");
-
-main.className=
-"action-main";
-
-const checkbox=
-document.createElement("input");
-
+const checkbox=document.createElement("input");
 checkbox.type="checkbox";
 checkbox.className="action-checkbox";
 checkbox.checked=action.completed||false;
 
-const input=
-document.createElement("input");
-
+const input=document.createElement("input");
 input.type="text";
 input.className="action-text";
 input.placeholder="Enter an action step";
 input.value=action.text||"";
 
 if(action.completed){
-
-input.classList.add(
-"completed"
-);
-
+input.classList.add("completed");
 }
 
-const deleteButton=
-document.createElement("button");
-
+const deleteButton=document.createElement("button");
 deleteButton.type="button";
 deleteButton.className="delete-button";
 deleteButton.innerHTML="&times;";
 
-main.append(
-checkbox,
-input,
-deleteButton
-);
+main.append(checkbox,input,deleteButton);
 
-const options=
-document.createElement("div");
+const options=document.createElement("div");
+options.className="action-options";
 
-options.className=
-"action-options";
+const priorityWrap=document.createElement("div");
+priorityWrap.innerHTML='<div class="field-label">Priority</div>';
 
-const priorityWrap=
-document.createElement("div");
-
-priorityWrap.innerHTML=
-'<div class="field-label">Priority</div>';
-
-const priority=
-document.createElement("select");
-
-priority.className=
-"priority-select";
+const priority=document.createElement("select");
+priority.className="priority-select";
 
 priority.innerHTML=
 `
@@ -3716,38 +3109,24 @@ priority.innerHTML=
 <option value="could">Could Do</option>
 `;
 
-priority.value=
-action.priority||
-"should";
-
+priority.value=action.priority||"should";
 priorityWrap.appendChild(priority);
 
-const timeWrap=
-document.createElement("div");
+const timeWrap=document.createElement("div");
+timeWrap.innerHTML='<div class="field-label">Start Time</div>';
 
-timeWrap.innerHTML=
-'<div class="field-label">Start Time</div>';
-
-const time=
-document.createElement("input");
-
+const time=document.createElement("input");
 time.type="time";
 time.className="time-input";
 time.value=action.time||"";
 
 timeWrap.appendChild(time);
 
-const durationWrap=
-document.createElement("div");
+const durationWrap=document.createElement("div");
+durationWrap.innerHTML='<div class="field-label">Duration</div>';
 
-durationWrap.innerHTML=
-'<div class="field-label">Duration</div>';
-
-const duration=
-document.createElement("select");
-
-duration.className=
-"duration-select";
+const duration=document.createElement("select");
+duration.className="duration-select";
 
 duration.innerHTML=
 `
@@ -3759,23 +3138,14 @@ duration.innerHTML=
 <option value="120">2 hours</option>
 `;
 
-duration.value=
-action.duration||
-"30";
-
+duration.value=action.duration||"30";
 durationWrap.appendChild(duration);
 
-const focusWrap=
-document.createElement("div");
+const focusWrap=document.createElement("div");
+focusWrap.innerHTML='<div class="field-label">Top 3 Focus</div>';
 
-focusWrap.innerHTML=
-'<div class="field-label">Top 3 Focus</div>';
-
-const focus=
-document.createElement("select");
-
-focus.className=
-"focus-select";
+const focus=document.createElement("select");
+focus.className="focus-select";
 
 focus.innerHTML=
 `
@@ -3785,15 +3155,10 @@ focus.innerHTML=
 <option value="3">🥉 Focus #3</option>
 `;
 
-focus.value=
-String(action.focus||0);
+focus.value=String(action.focus||0);
 
 if(Number(action.focus)>0){
-
-focus.classList.add(
-"focused"
-);
-
+focus.classList.add("focused");
 }
 
 focusWrap.appendChild(focus);
@@ -3805,92 +3170,52 @@ durationWrap,
 focusWrap
 );
 
-card.append(
-main,
-options
-);
-
+card.append(main,options);
 list.appendChild(card);
 
-applyPriorityStyle(
-card,
-priority.value
-);
+applyPriorityStyle(card,priority.value);
 
 checkbox.addEventListener(
 "change",
 ()=>{
-
-input.classList.toggle(
-"completed",
-checkbox.checked
-);
-
+input.classList.toggle("completed",checkbox.checked);
 refreshToday();
-
 }
 );
 
-input.addEventListener(
-"input",
-refreshToday
-);
+input.addEventListener("input",refreshToday);
 
 priority.addEventListener(
 "change",
 ()=>{
-
-applyPriorityStyle(
-card,
-priority.value
-);
-
+applyPriorityStyle(card,priority.value);
 refreshToday();
-
 }
 );
 
-time.addEventListener(
-"change",
-refreshToday
-);
-
-duration.addEventListener(
-"change",
-refreshToday
-);
+time.addEventListener("change",refreshToday);
+duration.addEventListener("change",refreshToday);
 
 focus.addEventListener(
 "change",
 ()=>{
-
-setActionFocus(
-actionIndex,
-parseInt(focus.value)
-);
-
+setActionFocus(actionIndex,parseInt(focus.value));
 }
 );
 
 deleteButton.addEventListener(
 "click",
 ()=>{
-
 card.remove();
-
 refreshToday();
 renderDailyPlanner();
 renderTop3();
-
 }
 );
 
 }
 
-function applyPriorityStyle(
-card,
-priority
-){
+function applyPriorityStyle(card,priority){
 
 card.classList.remove(
 "priority-must",
@@ -3898,9 +3223,7 @@ card.classList.remove(
 "priority-could"
 );
 
-card.classList.add(
-"priority-"+priority
-);
+card.classList.add("priority-"+priority);
 
 }
 
@@ -3909,14 +3232,12 @@ function addAction(){
 collectTodayData();
 
 dashboardData.actions.push({
-
 text:"",
 completed:false,
 priority:"should",
 time:"",
 duration:"30",
 focus:0
-
 });
 
 saveSelectedDay();
@@ -3926,48 +3247,29 @@ renderTodayActions();
 
 function renderTodayActions(){
 
-const actionList=
-document.getElementById(
-"actionList"
-);
+const actionList=document.getElementById("actionList");
 
 actionList.innerHTML="";
 
-if(
-dashboardData.actions.length===0
-){
+if(dashboardData.actions.length===0){
 
 dashboardData.actions=
-emptyDayData(
-selectedDateKey
-).actions;
+emptyDayData(selectedDateKey).actions;
 
 }
 
 dashboardData.actions=
-normalizeActions(
-dashboardData.actions
-);
+normalizeActions(dashboardData.actions);
 
 dashboardData.actions.forEach(
-(action,index)=>
-createActionCard(
-action,
-index
-)
+(action,index)=>createActionCard(action,index)
 );
 
-document.getElementById(
-"outcome"
-).value=
-dashboardData.outcome||
-"";
+document.getElementById("outcome").value=
+dashboardData.outcome||"";
 
-document.getElementById(
-"purpose"
-).value=
-dashboardData.purpose||
-"";
+document.getElementById("purpose").value=
+dashboardData.purpose||"";
 
 updateProgress();
 buildSchedule();
@@ -3975,128 +3277,84 @@ renderTop3();
 
 }
 
-/* =========================================================
-   COLLECT CURRENT DAY
-   ========================================================= */
+/* COLLECT CURRENT DAY */
 
 function collectTodayData(){
 
-dashboardData.date=
-selectedDateKey;
+dashboardData.date=selectedDateKey;
 
 dashboardData.outcome=
-document.getElementById(
-"outcome"
-).value;
+document.getElementById("outcome").value;
 
 dashboardData.purpose=
-document.getElementById(
-"purpose"
-).value;
+document.getElementById("purpose").value;
 
 dashboardData.commitments=
 Array.from(
-document.querySelectorAll(
-".commitment-card"
-)
+document.querySelectorAll(".commitment-card")
 )
 .map(
 card=>({
 
 text:
-card.querySelector(
-".commitment-text"
-).value,
+card.querySelector(".commitment-text").value,
 
 start:
-card.querySelector(
-".commitment-start"
-).value,
+card.querySelector(".commitment-start").value,
 
 end:
-card.querySelector(
-".commitment-end"
-).value
+card.querySelector(".commitment-end").value
 
 })
 );
 
 dashboardData.actions=
 Array.from(
-document.querySelectorAll(
-".action-card"
-)
+document.querySelectorAll(".action-card")
 )
 .map(
 card=>({
 
 text:
-card.querySelector(
-".action-text"
-).value,
+card.querySelector(".action-text").value,
 
 completed:
-card.querySelector(
-".action-checkbox"
-).checked,
+card.querySelector(".action-checkbox").checked,
 
 priority:
-card.querySelector(
-".priority-select"
-).value,
+card.querySelector(".priority-select").value,
 
 time:
-card.querySelector(
-".time-input"
-).value,
+card.querySelector(".time-input").value,
 
 duration:
-card.querySelector(
-".duration-select"
-).value,
+card.querySelector(".duration-select").value,
 
 focus:
-parseInt(
-card.querySelector(
-".focus-select"
-).value
-)||0
+parseInt(card.querySelector(".focus-select").value)||0
 
 })
 );
 
 }
 
-/* =========================================================
-   PROGRESS
-   ========================================================= */
+/* PROGRESS */
 
 function updateProgress(){
 
 const cards=
-Array.from(
-document.querySelectorAll(
-".action-card"
-)
-);
+Array.from(document.querySelectorAll(".action-card"));
 
 const active=
 cards.filter(
-card=>
-card.querySelector(
-".action-text"
-).value.trim()!==""
+card=>card.querySelector(".action-text").value.trim()!==""
 );
 
-const total=
-active.length;
+const total=active.length;
 
 const completed=
 active.filter(
-card=>
-card.querySelector(
-".action-checkbox"
-).checked
+card=>card.querySelector(".action-checkbox").checked
 ).length;
 
 const percentage=
@@ -4104,30 +3362,19 @@ total===0
 ?
 0
 :
-Math.round(
-(completed/total)*100
-);
+Math.round((completed/total)*100);
 
-document.getElementById(
-"progressPercent"
-).textContent=
+document.getElementById("progressPercent").textContent=
 percentage+"%";
 
-document.getElementById(
-"progressBar"
-).style.width=
+document.getElementById("progressBar").style.width=
 percentage+"%";
 
-document.getElementById(
-"progressText"
-).textContent=
+document.getElementById("progressText").textContent=
 `${completed} of ${total} actions completed`;
 
-document.getElementById(
-"completionMessage"
-).style.display=
-total>0 &&
-completed===total
+document.getElementById("completionMessage").style.display=
+total>0 && completed===total
 ?
 "block"
 :
@@ -4135,9 +3382,7 @@ completed===total
 
 }
 
-/* =========================================================
-   SCHEDULE
-   ========================================================= */
+/* SCHEDULE */
 
 function timeToMinutes(time){
 
@@ -4145,8 +3390,7 @@ if(!time){
 return null;
 }
 
-const parts=
-time.split(":");
+const parts=time.split(":");
 
 return (
 parseInt(parts[0])*60
@@ -4157,24 +3401,14 @@ parseInt(parts[1]);
 
 function minutesToTime(total){
 
-total=
-total%(24*60);
+total=total%(24*60);
 
-const hour24=
-Math.floor(total/60);
+const hour24=Math.floor(total/60);
+const minute=total%60;
 
-const minute=
-total%60;
+const period=hour24>=12?"PM":"AM";
 
-const period=
-hour24>=12
-?
-"PM"
-:
-"AM";
-
-let hour=
-hour24%12;
+let hour=hour24%12;
 
 if(hour===0){
 hour=12;
@@ -4190,22 +3424,15 @@ period
 
 }
 
-function calculateActionEnd(
-start,
-duration
-){
+function calculateActionEnd(start,duration){
 
-const startMinutes=
-timeToMinutes(start);
+const startMinutes=timeToMinutes(start);
 
 if(startMinutes===null){
 return null;
 }
 
-return (
-startMinutes+
-parseInt(duration)
-);
+return startMinutes+parseInt(duration);
 
 }
 
@@ -4238,33 +3465,20 @@ commitment.end===""
 return;
 }
 
-const start=
-timeToMinutes(
-commitment.start
-);
+const start=timeToMinutes(commitment.start);
+const end=timeToMinutes(commitment.end);
 
-const end=
-timeToMinutes(
-commitment.end
-);
-
-if(
-start===null ||
-end===null ||
-end<=start
-){
+if(start===null || end===null || end<=start){
 return;
 }
 
 items.push({
-
 id:"commitment-"+index,
 type:"commitment",
 title:commitment.text,
 start:start,
 end:end,
 conflicted:false
-
 });
 
 }
@@ -4280,10 +3494,7 @@ action.time===""
 return;
 }
 
-const start=
-timeToMinutes(
-action.time
-);
+const start=timeToMinutes(action.time);
 
 const end=
 calculateActionEnd(
@@ -4292,7 +3503,6 @@ action.duration
 );
 
 items.push({
-
 id:"action-"+index,
 type:"action",
 title:action.text,
@@ -4303,15 +3513,12 @@ duration:action.duration,
 completed:action.completed,
 focus:Number(action.focus)||0,
 conflicted:false
-
 });
 
 }
 );
 
-return items.sort(
-(a,b)=>a.start-b.start
-);
+return items.sort((a,b)=>a.start-b.start);
 
 }
 
@@ -4319,23 +3526,12 @@ function detectConflicts(items){
 
 const conflicts=[];
 
-for(
-let i=0;
-i<items.length;
-i++
-){
+for(let i=0;i<items.length;i++){
 
-for(
-let j=i+1;
-j<items.length;
-j++
-){
+for(let j=i+1;j<items.length;j++){
 
-const first=
-items[i];
-
-const second=
-items[j];
+const first=items[i];
+const second=items[j];
 
 const overlap=
 first.start<second.end &&
@@ -4347,18 +3543,10 @@ first.conflicted=true;
 second.conflicted=true;
 
 conflicts.push({
-
 first:first.title,
 second:second.title,
-start:Math.max(
-first.start,
-second.start
-),
-end:Math.min(
-first.end,
-second.end
-)
-
+start:Math.max(first.start,second.start),
+end:Math.min(first.end,second.end)
 });
 
 }
@@ -4373,15 +3561,8 @@ return conflicts;
 
 function showConflicts(conflicts){
 
-const box=
-document.getElementById(
-"conflictBox"
-);
-
-const list=
-document.getElementById(
-"conflictList"
-);
+const box=document.getElementById("conflictBox");
+const list=document.getElementById("conflictList");
 
 list.innerHTML="";
 
@@ -4397,11 +3578,8 @@ box.style.display="block";
 conflicts.forEach(
 conflict=>{
 
-const item=
-document.createElement("div");
-
-item.className=
-"conflict-item";
+const item=document.createElement("div");
+item.className="conflict-item";
 
 item.textContent=
 `${conflict.first} overlaps with ${conflict.second} from ${minutesToTime(conflict.start)} to ${minutesToTime(conflict.end)}.`;
@@ -4415,27 +3593,18 @@ list.appendChild(item);
 
 function escapeHTML(text){
 
-const div=
-document.createElement("div");
-
+const div=document.createElement("div");
 div.textContent=text;
-
 return div.innerHTML;
 
 }
 
 function buildSchedule(){
 
-const schedule=
-document.getElementById(
-"scheduleList"
-);
+const schedule=document.getElementById("scheduleList");
 
-const items=
-getTimelineItems();
-
-const conflicts=
-detectConflicts(items);
+const items=getTimelineItems();
+const conflicts=detectConflicts(items);
 
 showConflicts(conflicts);
 
@@ -4457,18 +3626,11 @@ return;
 items.forEach(
 item=>{
 
-const row=
-document.createElement("div");
-
-row.className=
-"schedule-item";
+const row=document.createElement("div");
+row.className="schedule-item";
 
 if(item.conflicted){
-
-row.classList.add(
-"conflicted"
-);
-
+row.classList.add("conflicted");
 }
 
 let details="";
@@ -4509,13 +3671,10 @@ ${focusRankLabel(item.focus)} FOCUS #${item.focus}
 
 }
 
-details+=
-`${item.duration} minutes`;
+details+=`${item.duration} minutes`;
 
 if(item.completed){
-
 details+=" • ✓ Completed";
-
 }
 
 }
@@ -4561,9 +3720,7 @@ schedule.appendChild(row);
 
 }
 
-/* =========================================================
-   SAVE CURRENT DAY
-   ========================================================= */
+/* SAVE CURRENT DAY */
 
 function refreshToday(){
 
@@ -4584,144 +3741,104 @@ function saveToday(){
 
 refreshToday();
 
-const message=
-document.getElementById(
-"todaySavedMessage"
-);
+const message=document.getElementById("todaySavedMessage");
 
 message.style.display="block";
 
 setTimeout(
 ()=>{
-
 message.style.display="none";
-
 },
 2500
 );
 
 }
 
-/* =========================================================
-   DATE SELECTOR
-   ========================================================= */
+/* DATE SELECTOR */
 
-document.getElementById(
-"dailyDateSelector"
-).addEventListener(
+document.getElementById("dailyDateSelector").addEventListener(
 "change",
 event=>{
 
 collectTodayData();
 saveSelectedDay();
 
-const newDate=
-event.target.value;
+const newDate=event.target.value;
 
 if(!newDate){
 return;
 }
 
-loadSelectedDay(
-newDate
-);
+loadSelectedDay(newDate);
 
 }
 );
 
-document.getElementById(
-"jumpToTodayButton"
-).addEventListener(
+document.getElementById("jumpToTodayButton").addEventListener(
 "click",
 ()=>{
 
 collectTodayData();
 saveSelectedDay();
 
-loadSelectedDay(
-actualTodayKey
-);
+loadSelectedDay(actualTodayKey);
 
 }
 );
 
-document.getElementById(
-"newDayButton"
-).addEventListener(
+document.getElementById("newDayButton").addEventListener(
 "click",
 startSelectedDayFresh
 );
 
-document.getElementById(
-"copyPreviousButton"
-).addEventListener(
+document.getElementById("copyPreviousButton").addEventListener(
 "click",
 copyPreviousDay
 );
 
-/* =========================================================
-   OTHER EVENTS
-   ========================================================= */
+/* OTHER EVENTS */
 
-document.getElementById(
-"addLifeAreaButton"
-).addEventListener(
+document.getElementById("addLifeAreaButton").addEventListener(
 "click",
 addLifeArea
 );
 
-document.getElementById(
-"addLifeOutcomeButton"
-).addEventListener(
+document.getElementById("addLifeOutcomeButton").addEventListener(
 "click",
 addLifeOutcome
 );
 
-document.getElementById(
-"saveLifeButton"
-).addEventListener(
+document.getElementById("saveLifeButton").addEventListener(
 "click",
 saveLifeAssessment
 );
 
-document.getElementById(
-"addCommitmentButton"
-).addEventListener(
+document.getElementById("addCommitmentButton").addEventListener(
 "click",
 addCommitment
 );
 
-document.getElementById(
-"addActionButton"
-).addEventListener(
+document.getElementById("addActionButton").addEventListener(
 "click",
 addAction
 );
 
-document.getElementById(
-"saveTodayButton"
-).addEventListener(
+document.getElementById("saveTodayButton").addEventListener(
 "click",
 saveToday
 );
 
-document.getElementById(
-"outcome"
-).addEventListener(
+document.getElementById("outcome").addEventListener(
 "input",
 refreshToday
 );
 
-document.getElementById(
-"purpose"
-).addEventListener(
+document.getElementById("purpose").addEventListener(
 "input",
 refreshToday
 );
 
-/* =========================================================
-   START
-   ========================================================= */
+/* START */
 
 loadLifeAssessment();
 
@@ -4731,12 +3848,14 @@ loadDailyHistoryObject();
 
 migrateV18Today();
 
-loadSelectedDay(
-actualTodayKey
-);
+/*
+NEW:
+Load the last date the user was viewing rather than
+automatically forcing the app back to today's date.
+*/
+loadSelectedDay(selectedDateKey);
 
 renderDailyPlanner();
-
 renderTop3();
 
 </script>
