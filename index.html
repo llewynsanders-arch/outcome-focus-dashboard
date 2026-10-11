@@ -281,11 +281,14 @@ if(page==="week")renderWeek();
 if(page==="today"){renderDay();renderDailyPlanner()}
 window.scrollTo({top:0,behavior:"smooth"});
 }
-$("lifeNav").onclick=()=>showPage("life");$("weekNav").onclick=()=>showPage("week");$("todayNav").onclick=()=>showPage("today");
+$("lifeNav").onclick=()=>showPage("life");
+$("weekNav").onclick=()=>showPage("week");
+$("todayNav").onclick=()=>showPage("today");
 
 function lifeNames(){return lifeAreas.map(x=>x.name.trim()).filter(Boolean)}
 function saveAreas(){localStorage.setItem(LIFE_STORAGE_KEY,JSON.stringify(lifeAreas))}
 function saveOutcomes(){localStorage.setItem(LIFE_OUTCOMES_STORAGE_KEY,JSON.stringify(lifeOutcomes))}
+
 function renderLife(){
 $("lifeAreaList").innerHTML="";
 lifeAreas.forEach((a,i)=>{
@@ -296,21 +299,42 @@ c.innerHTML=`<div class="life-area-top"><input class="area-name" value="${escAtt
 <div class="gap-wrapper"><div class="score-label">Improvement Gap</div><div class="gap-box"></div></div></div>
 <div class="area-bar-background"><div class="area-bar"></div></div><div class="area-status"></div>`;
 $("lifeAreaList").append(c);
-let refresh=()=>{a.name=c.querySelector(".area-name").value;a.current=+c.querySelector(".cur").value;a.desired=+c.querySelector(".des").value;let g=Math.max(a.desired-a.current,0),gb=c.querySelector(".gap-box");gb.textContent=g;gb.className="gap-box "+(g<=2?"gap-low":g<=4?"gap-medium":"gap-high");c.querySelector(".area-bar").style.width=a.current*10+"%";c.querySelector(".area-status").textContent=a.current>=a.desired?"At or above your desired level.":g>=5?"High opportunity for improvement.":g>=3?"Meaningful improvement opportunity.":"Relatively close to your desired level.";saveAreas();updateLifeSummary()};
-c.querySelector(".area-name").oninput=refresh;c.querySelector(".cur").onchange=refresh;c.querySelector(".des").onchange=refresh;
+let refresh=()=>{
+a.name=c.querySelector(".area-name").value;
+a.current=+c.querySelector(".cur").value;
+a.desired=+c.querySelector(".des").value;
+let g=Math.max(a.desired-a.current,0),gb=c.querySelector(".gap-box");
+gb.textContent=g;
+gb.className="gap-box "+(g<=2?"gap-low":g<=4?"gap-medium":"gap-high");
+c.querySelector(".area-bar").style.width=a.current*10+"%";
+c.querySelector(".area-status").textContent=a.current>=a.desired?"At or above your desired level.":g>=5?"High opportunity for improvement.":g>=3?"Meaningful improvement opportunity.":"Relatively close to your desired level.";
+saveAreas();updateLifeSummary()
+};
+c.querySelector(".area-name").oninput=refresh;
+c.querySelector(".cur").onchange=refresh;
+c.querySelector(".des").onchange=refresh;
 c.querySelector(".delete-button").onclick=()=>{lifeAreas.splice(i,1);saveAreas();renderLife()};
 refresh();
 });
 renderOutcomes();updateLifeSummary();
 }
+
 function scoreOptions(v){return Array.from({length:10},(_,i)=>`<option value="${i+1}" ${i+1==v?"selected":""}>${i+1}</option>`).join("")}
-function updateLifeSummary(){if(!lifeAreas.length){$("averageCurrent").textContent=$("averageDesired").textContent=$("largestGap").textContent="0";return}$("averageCurrent").textContent=(lifeAreas.reduce((s,x)=>s+x.current,0)/lifeAreas.length).toFixed(1);$("averageDesired").textContent=(lifeAreas.reduce((s,x)=>s+x.desired,0)/lifeAreas.length).toFixed(1);$("largestGap").textContent=Math.max(...lifeAreas.map(x=>Math.max(x.desired-x.current,0)))}
+function updateLifeSummary(){
+if(!lifeAreas.length){$("averageCurrent").textContent=$("averageDesired").textContent=$("largestGap").textContent="0";return}
+$("averageCurrent").textContent=(lifeAreas.reduce((s,x)=>s+x.current,0)/lifeAreas.length).toFixed(1);
+$("averageDesired").textContent=(lifeAreas.reduce((s,x)=>s+x.desired,0)/lifeAreas.length).toFixed(1);
+$("largestGap").textContent=Math.max(...lifeAreas.map(x=>Math.max(x.desired-x.current,0)))
+}
 function escAttr(s=""){return s.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;")}
 function esc(s=""){let d=document.createElement("div");d.textContent=s;return d.innerHTML}
 
 function renderOutcomes(){
 $("lifeOutcomeList").innerHTML="";
-if(!lifeOutcomes.length){$("lifeOutcomeList").innerHTML='<div class="life-outcome-empty">No life outcomes yet. Add one when you are ready to turn a life area into a specific result.</div>';return}
+if(!lifeOutcomes.length){
+$("lifeOutcomeList").innerHTML='<div class="life-outcome-empty">No life outcomes yet. Add one when you are ready to turn a life area into a specific result.</div>';
+return
+}
 lifeOutcomes.forEach((o,i)=>{
 o.actions=Array.isArray(o.actions)?o.actions:[];
 let c=document.createElement("div");c.className="outcome-life-card";
@@ -321,12 +345,42 @@ c.innerHTML=`<div class="outcome-life-top"><input class="otitle" placeholder="Wh
 <div><div class="field-label">Target Date</div><input type="date" class="odate" value="${o.targetDate||""}"></div>
 <div><div class="field-label">Purpose / Why</div><input class="opurpose" value="${escAttr(o.purpose||"")}" placeholder="Why does this outcome matter?"></div></div>
 <div class="outcome-life-actions"><div class="field-label">Action Plan</div><div class="oactions"></div><button class="add-button addOA" style="margin-top:10px">+ Add Outcome Action</button></div>`;
-$("lifeOutcomeList").append(c);c.querySelector(".ostatus").value=o.status||"active";
-let save=()=>{o.title=c.querySelector(".otitle").value;o.area=c.querySelector(".oarea").value;o.status=c.querySelector(".ostatus").value;o.targetDate=c.querySelector(".odate").value;o.purpose=c.querySelector(".opurpose").value;saveOutcomes()};
-[".otitle",".opurpose"].forEach(q=>c.querySelector(q).oninput=save);[".oarea",".ostatus",".odate"].forEach(q=>c.querySelector(q).onchange=save);
+$("lifeOutcomeList").append(c);
+c.querySelector(".ostatus").value=o.status||"active";
+let save=()=>{
+o.title=c.querySelector(".otitle").value;
+o.area=c.querySelector(".oarea").value;
+o.status=c.querySelector(".ostatus").value;
+o.targetDate=c.querySelector(".odate").value;
+o.purpose=c.querySelector(".opurpose").value;
+saveOutcomes()
+};
+[".otitle",".opurpose"].forEach(q=>c.querySelector(q).oninput=save);
+[".oarea",".ostatus",".odate"].forEach(q=>c.querySelector(q).onchange=save);
 c.querySelector(".delete-button").onclick=()=>{lifeOutcomes.splice(i,1);saveOutcomes();renderOutcomes()};
-function drawActions(){let box=c.querySelector(".oactions");box.innerHTML="";(o.actions.length?o.actions:[""]).forEach((txt,j)=>{let r=document.createElement("div");r.className="life-action-row";r.innerHTML=`<input value="${escAttr(txt)}" placeholder="Action that moves this outcome forward"><button class="send-today-button">→ Add to Selected Day</button><button class="send-today-button send-week-button">+ Choose for This Week</button><button class="delete-button">×</button>`;box.append(r);let inp=r.querySelector("input"),btns=r.querySelectorAll(".send-today-button");inp.oninput=()=>{if(j<o.actions.length)o.actions[j]=inp.value;else if(inp.value)o.actions.push(inp.value);saveOutcomes()};btns[0].onclick=()=>addToDay(inp.value,o.title,o.purpose,o.area,true);btns[1].onclick=()=>addToWeek(inp.value,o.title,o.area);r.querySelector(".delete-button").onclick=()=>{if(j<o.actions.length)o.actions.splice(j,1);saveOutcomes();drawActions()}})}
-drawActions();c.querySelector(".addOA").onclick=()=>{o.actions.push("");saveOutcomes();drawActions()};
+
+function drawActions(){
+let box=c.querySelector(".oactions");box.innerHTML="";
+(o.actions.length?o.actions:[""]).forEach((txt,j)=>{
+let r=document.createElement("div");r.className="life-action-row";
+r.innerHTML=`<input value="${escAttr(txt)}" placeholder="Action that moves this outcome forward"><button class="send-today-button">→ Add to Selected Day</button><button class="send-today-button send-week-button">+ Choose for This Week</button><button class="delete-button">×</button>`;
+box.append(r);
+let inp=r.querySelector("input"),btns=r.querySelectorAll(".send-today-button");
+inp.oninput=()=>{
+if(j<o.actions.length)o.actions[j]=inp.value;
+else if(inp.value)o.actions.push(inp.value);
+saveOutcomes()
+};
+btns[0].onclick=()=>addToDay(inp.value,o.title,o.purpose,o.area,true);
+btns[1].onclick=()=>addToWeek(inp.value,o.title,o.area);
+r.querySelector(".delete-button").onclick=()=>{
+if(j<o.actions.length)o.actions.splice(j,1);
+saveOutcomes();drawActions()
+}
+})
+}
+drawActions();
+c.querySelector(".addOA").onclick=()=>{o.actions.push("");saveOutcomes();drawActions()};
 });
 }
 
@@ -334,112 +388,611 @@ $("addLifeAreaButton").onclick=()=>{lifeAreas.push({name:"New Life Area",current
 $("addLifeOutcomeButton").onclick=()=>{lifeOutcomes.push({title:"",area:lifeNames()[0]||"",purpose:"",targetDate:"",status:"active",actions:[]});saveOutcomes();renderOutcomes()};
 $("saveLifeButton").onclick=()=>{saveAreas();saveOutcomes();flash("lifeSavedMessage","✓ Your life assessment and outcomes have been saved.")};
 
-function emptyDay(k){return{date:k,outcome:"",purpose:"",commitments:[{text:"",start:"",end:""}],actions:[{text:"",completed:false,priority:"must",time:"",duration:"30",focus:0},{text:"",completed:false,priority:"should",time:"",duration:"30",focus:0},{text:"",completed:false,priority:"could",time:"",duration:"30",focus:0}]}}
-function normalizeDay(x,k){let b=emptyDay(k);if(!x)return b;return{date:k,outcome:x.outcome||"",purpose:x.purpose||"",commitments:Array.isArray(x.commitments)?x.commitments.map(v=>({text:v.text||"",start:v.start||"",end:v.end||""})):b.commitments,actions:Array.isArray(x.actions)?x.actions.map(v=>({text:v.text||"",completed:!!v.completed,priority:v.priority||"should",time:v.time||"",duration:String(v.duration||"30"),focus:[1,2,3].includes(+v.focus)?+v.focus:0})):b.actions}}
-function useful(x){return x&&((x.outcome||"").trim()||(x.purpose||"").trim()||(x.actions||[]).some(a=>(a.text||"").trim())||(x.commitments||[]).some(a=>(a.text||"").trim()))}
-if(!dailyHistory[actualTodayKey]){let old=objectStore(OLD_TODAY_STORAGE_KEY)||objectStore(OLDER_TODAY_STORAGE_KEY)||objectStore(OLDEST_TODAY_STORAGE_KEY);if(useful(old)){dailyHistory[actualTodayKey]=normalizeDay(old,actualTodayKey);localStorage.setItem(DAILY_HISTORY_STORAGE_KEY,JSON.stringify(dailyHistory))}}
+function emptyDay(k){
+return{
+date:k,
+outcome:"",
+purpose:"",
+commitments:[{text:"",start:"",end:""}],
+actions:[
+{text:"",completed:false,priority:"must",time:"",duration:"30",focus:0},
+{text:"",completed:false,priority:"should",time:"",duration:"30",focus:0},
+{text:"",completed:false,priority:"could",time:"",duration:"30",focus:0}
+]
+}
+}
+
+function normalizeDay(x,k){
+let b=emptyDay(k);
+if(!x)return b;
+return{
+date:k,
+outcome:x.outcome||"",
+purpose:x.purpose||"",
+commitments:Array.isArray(x.commitments)?x.commitments.map(v=>({text:v.text||"",start:v.start||"",end:v.end||""})):b.commitments,
+actions:Array.isArray(x.actions)?x.actions.map(v=>({
+text:v.text||"",
+completed:!!v.completed,
+priority:v.priority||"should",
+time:v.time||"",
+duration:String(v.duration||"30"),
+focus:[1,2,3].includes(+v.focus)?+v.focus:0
+})):b.actions
+}
+}
+
+function useful(x){
+return x&&(
+(x.outcome||"").trim()||
+(x.purpose||"").trim()||
+(x.actions||[]).some(a=>(a.text||"").trim())||
+(x.commitments||[]).some(a=>(a.text||"").trim())
+)
+}
+
+if(!dailyHistory[actualTodayKey]){
+let old=objectStore(OLD_TODAY_STORAGE_KEY)||objectStore(OLDER_TODAY_STORAGE_KEY)||objectStore(OLDEST_TODAY_STORAGE_KEY);
+if(useful(old)){
+dailyHistory[actualTodayKey]=normalizeDay(old,actualTodayKey);
+localStorage.setItem(DAILY_HISTORY_STORAGE_KEY,JSON.stringify(dailyHistory))
+}
+}
+
 let dayData=normalizeDay(dailyHistory[selectedDateKey],selectedDateKey);
-function saveDay(){dayData.date=selectedDateKey;dailyHistory[selectedDateKey]=clone(dayData);localStorage.setItem(DAILY_HISTORY_STORAGE_KEY,JSON.stringify(dailyHistory));localStorage.setItem(LAST_VIEWED_DATE_STORAGE_KEY,selectedDateKey)}
-function hasDayAction(t){return dayData.actions.some(a=>(a.text||"").trim().toLowerCase()===(t||"").trim().toLowerCase())}
-function addToDay(t,title="",purpose="",area="",switchPage=false){t=(t||"").trim();if(!t)return;if(!hasDayAction(t))dayData.actions.push({text:t,completed:false,priority:"should",time:"",duration:"30",focus:0});if(!dayData.outcome&&title)dayData.outcome=title;if(!dayData.purpose&&purpose)dayData.purpose=purpose;saveDay();renderDay();flash("todayTransferMessage",hasDayAction(t)?"✓ Action is in this day's plan.":"✓ Action added.");if(switchPage)showPage("today")}
+
+function saveDay(){
+dayData.date=selectedDateKey;
+dailyHistory[selectedDateKey]=clone(dayData);
+localStorage.setItem(DAILY_HISTORY_STORAGE_KEY,JSON.stringify(dailyHistory));
+localStorage.setItem(LAST_VIEWED_DATE_STORAGE_KEY,selectedDateKey)
+}
+
+/* V1.10 FIX:
+   Blank text can never count as an action already in the selected day. */
+function hasDayAction(t){
+t=(t||"").trim();
+if(!t)return false;
+return dayData.actions.some(a=>(a.text||"").trim().toLowerCase()===t.toLowerCase())
+}
+
+function addToDay(t,title="",purpose="",area="",switchPage=false){
+t=(t||"").trim();
+if(!t)return;
+let alreadyThere=hasDayAction(t);
+if(!alreadyThere){
+dayData.actions.push({text:t,completed:false,priority:"should",time:"",duration:"30",focus:0})
+}
+if(!dayData.outcome&&title)dayData.outcome=title;
+if(!dayData.purpose&&purpose)dayData.purpose=purpose;
+saveDay();renderDay();
+flash("todayTransferMessage",alreadyThere?"✓ That action is already in this day's plan.":"✓ Action added to this day's plan.");
+if(switchPage)showPage("today")
+}
+
 function renderDailyPlanner(){
-let active=lifeOutcomes.filter(o=>(o.status||"active")==="active");$("activeOutcomeCount").textContent=active.length;$("dailyPlannerList").innerHTML="";
-if(!active.length){$("dailyPlannerList").innerHTML='<div class="planner-empty">You do not have any Active Life Outcomes yet.</div>';return}
-active.forEach(o=>{let c=document.createElement("div");c.className="planner-card";c.innerHTML=`<div class="planner-top"><div class="planner-title">${esc(o.title||"Untitled Life Outcome")}</div><div class="planner-area">${esc(o.area||"Life Outcome")}</div></div>${o.purpose?`<div class="planner-purpose">Why: ${esc(o.purpose)}</div>`:""}<div class="planner-actions"></div>`;let box=c.querySelector(".planner-actions");(o.actions||[]).forEach(t=>{let r=document.createElement("div");r.className="planner-action";let inDay=hasDayAction(t);r.innerHTML=`<div>${esc(t)}</div><button class="planner-add ${inDay?"in-today":""}">${inDay?"✓ In Selected Day":"+ Choose for This Day"}</button>`;r.querySelector("button").onclick=()=>{if(!hasDayAction(t))addToDay(t,o.title,o.purpose,o.area);else flash("todayTransferMessage","✓ That action is already in this day's plan.");renderDailyPlanner()};box.append(r)});$("dailyPlannerList").append(c)})
+let active=lifeOutcomes.filter(o=>(o.status||"active")==="active");
+$("activeOutcomeCount").textContent=active.length;
+$("dailyPlannerList").innerHTML="";
+if(!active.length){
+$("dailyPlannerList").innerHTML='<div class="planner-empty">You do not have any Active Life Outcomes yet.</div>';
+return
 }
-function renderDay(){
-$("dailyDateSelector").value=selectedDateKey;$("outcome").value=dayData.outcome||"";$("purpose").value=dayData.purpose||"";
-renderCommitments();renderActions();renderTop3();buildSchedule();updateProgress();updateDayStatus();renderDailyPlanner();
-}
-function updateDayStatus(){let e=!!dailyHistory[selectedDateKey];$("historyStatus").textContent=selectedDateKey===actualTodayKey?(e?"Viewing today's saved daily plan.":"Viewing today. This day has not been saved yet."):(e?`Viewing saved plan for ${formatDate(selectedDateKey)}.`:`No saved plan exists yet for ${formatDate(selectedDateKey)}.`)}
-function renderCommitments(){
-$("commitmentList").innerHTML="";if(!dayData.commitments.length)dayData.commitments=[{text:"",start:"",end:""}];
-dayData.commitments.forEach((x,i)=>{let c=document.createElement("div");c.className="commitment-card";c.innerHTML=`<div class="commitment-main"><input class="ctext" value="${escAttr(x.text)}" placeholder="Example: Doctor appointment"><button class="delete-button">×</button></div><div class="commitment-options"><div><div class="field-label">Start Time</div><input type="time" class="cstart" value="${x.start}"></div><div><div class="field-label">End Time</div><input type="time" class="cend" value="${x.end}"></div></div>`;$("commitmentList").append(c);let save=()=>{x.text=c.querySelector(".ctext").value;x.start=c.querySelector(".cstart").value;x.end=c.querySelector(".cend").value;saveDay();buildSchedule()};c.querySelector(".ctext").oninput=save;c.querySelector(".cstart").onchange=save;c.querySelector(".cend").onchange=save;c.querySelector(".delete-button").onclick=()=>{dayData.commitments.splice(i,1);saveDay();renderCommitments();buildSchedule()}})
-}
-function renderActions(){
-$("actionList").innerHTML="";dayData.actions.forEach((a,i)=>{let c=document.createElement("div");c.className=`action-card priority-${a.priority}`;c.innerHTML=`<div class="action-main"><input type="checkbox" class="action-checkbox" ${a.completed?"checked":""}><input class="action-text ${a.completed?"completed":""}" value="${escAttr(a.text)}" placeholder="Enter an action step"><button class="delete-button">×</button></div>
-<div class="action-options"><div><div class="field-label">Priority</div><select class="priority-select"><option value="must">Must Do</option><option value="should">Should Do</option><option value="could">Could Do</option></select></div><div><div class="field-label">Start Time</div><input type="time" class="time-input" value="${a.time}"></div><div><div class="field-label">Duration</div><select class="duration-select"><option value="15">15 min</option><option value="30">30 min</option><option value="45">45 min</option><option value="60">1 hour</option><option value="90">1.5 hours</option><option value="120">2 hours</option></select></div><div><div class="field-label">Top 3 Focus</div><select class="focus-select ${a.focus?"focused":""}"><option value="0">Not Top 3</option><option value="1">🥇 Focus #1</option><option value="2">🥈 Focus #2</option><option value="3">🥉 Focus #3</option></select></div></div>`;
-$("actionList").append(c);c.querySelector(".priority-select").value=a.priority;c.querySelector(".duration-select").value=a.duration;c.querySelector(".focus-select").value=a.focus;
-let save=()=>{a.text=c.querySelector(".action-text").value;a.completed=c.querySelector(".action-checkbox").checked;a.priority=c.querySelector(".priority-select").value;a.time=c.querySelector(".time-input").value;a.duration=c.querySelector(".duration-select").value;c.querySelector(".action-text").classList.toggle("completed",a.completed);saveDay();updateProgress();buildSchedule();renderTop3()};
-c.querySelector(".action-checkbox").onchange=save;c.querySelector(".action-text").oninput=save;c.querySelector(".priority-select").onchange=()=>{save();renderActions()};c.querySelector(".time-input").onchange=save;c.querySelector(".duration-select").onchange=save;
-c.querySelector(".focus-select").onchange=e=>{let r=+e.target.value;if(r)dayData.actions.forEach((x,j)=>{if(j!==i&&x.focus===r)x.focus=0});a.focus=r;saveDay();renderActions();renderTop3();buildSchedule()};
-c.querySelector(".delete-button").onclick=()=>{dayData.actions.splice(i,1);saveDay();renderDay()}
+active.forEach(o=>{
+let c=document.createElement("div");c.className="planner-card";
+c.innerHTML=`<div class="planner-top"><div class="planner-title">${esc(o.title||"Untitled Life Outcome")}</div><div class="planner-area">${esc(o.area||"Life Outcome")}</div></div>${o.purpose?`<div class="planner-purpose">Why: ${esc(o.purpose)}</div>`:""}<div class="planner-actions"></div>`;
+let box=c.querySelector(".planner-actions");
+(o.actions||[]).forEach(t=>{
+let r=document.createElement("div");r.className="planner-action";
+let inDay=hasDayAction(t);
+r.innerHTML=`<div>${esc(t)}</div><button class="planner-add ${inDay?"in-today":""}">${inDay?"✓ In Selected Day":"+ Choose for This Day"}</button>`;
+r.querySelector("button").onclick=()=>{
+if(!hasDayAction(t))addToDay(t,o.title,o.purpose,o.area);
+else flash("todayTransferMessage","✓ That action is already in this day's plan.");
+renderDailyPlanner()
+};
+box.append(r)
+});
+$("dailyPlannerList").append(c)
 })
 }
+
+function renderDay(){
+$("dailyDateSelector").value=selectedDateKey;
+$("outcome").value=dayData.outcome||"";
+$("purpose").value=dayData.purpose||"";
+renderCommitments();
+renderActions();
+renderTop3();
+buildSchedule();
+updateProgress();
+updateDayStatus();
+renderDailyPlanner();
+}
+
+function updateDayStatus(){
+let e=!!dailyHistory[selectedDateKey];
+$("historyStatus").textContent=
+selectedDateKey===actualTodayKey
+?(e?"Viewing today's saved daily plan.":"Viewing today. This day has not been saved yet.")
+:(e?`Viewing saved plan for ${formatDate(selectedDateKey)}.`:`No saved plan exists yet for ${formatDate(selectedDateKey)}.`)
+}
+
+function renderCommitments(){
+$("commitmentList").innerHTML="";
+if(!dayData.commitments.length)dayData.commitments=[{text:"",start:"",end:""}];
+dayData.commitments.forEach((x,i)=>{
+let c=document.createElement("div");c.className="commitment-card";
+c.innerHTML=`<div class="commitment-main"><input class="ctext" value="${escAttr(x.text)}" placeholder="Example: Doctor appointment"><button class="delete-button">×</button></div><div class="commitment-options"><div><div class="field-label">Start Time</div><input type="time" class="cstart" value="${x.start}"></div><div><div class="field-label">End Time</div><input type="time" class="cend" value="${x.end}"></div></div>`;
+$("commitmentList").append(c);
+let save=()=>{
+x.text=c.querySelector(".ctext").value;
+x.start=c.querySelector(".cstart").value;
+x.end=c.querySelector(".cend").value;
+saveDay();buildSchedule()
+};
+c.querySelector(".ctext").oninput=save;
+c.querySelector(".cstart").onchange=save;
+c.querySelector(".cend").onchange=save;
+c.querySelector(".delete-button").onclick=()=>{
+dayData.commitments.splice(i,1);
+saveDay();renderCommitments();buildSchedule()
+}
+})
+}
+
+function renderActions(){
+$("actionList").innerHTML="";
+dayData.actions.forEach((a,i)=>{
+let c=document.createElement("div");c.className=`action-card priority-${a.priority}`;
+c.innerHTML=`<div class="action-main"><input type="checkbox" class="action-checkbox" ${a.completed?"checked":""}><input class="action-text ${a.completed?"completed":""}" value="${escAttr(a.text)}" placeholder="Enter an action step"><button class="delete-button">×</button></div>
+<div class="action-options"><div><div class="field-label">Priority</div><select class="priority-select"><option value="must">Must Do</option><option value="should">Should Do</option><option value="could">Could Do</option></select></div><div><div class="field-label">Start Time</div><input type="time" class="time-input" value="${a.time}"></div><div><div class="field-label">Duration</div><select class="duration-select"><option value="15">15 min</option><option value="30">30 min</option><option value="45">45 min</option><option value="60">1 hour</option><option value="90">1.5 hours</option><option value="120">2 hours</option></select></div><div><div class="field-label">Top 3 Focus</div><select class="focus-select ${a.focus?"focused":""}"><option value="0">Not Top 3</option><option value="1">🥇 Focus #1</option><option value="2">🥈 Focus #2</option><option value="3">🥉 Focus #3</option></select></div></div>`;
+$("actionList").append(c);
+c.querySelector(".priority-select").value=a.priority;
+c.querySelector(".duration-select").value=a.duration;
+c.querySelector(".focus-select").value=a.focus;
+
+let save=()=>{
+a.text=c.querySelector(".action-text").value;
+a.completed=c.querySelector(".action-checkbox").checked;
+a.priority=c.querySelector(".priority-select").value;
+a.time=c.querySelector(".time-input").value;
+a.duration=c.querySelector(".duration-select").value;
+c.querySelector(".action-text").classList.toggle("completed",a.completed);
+saveDay();updateProgress();buildSchedule();renderTop3()
+};
+
+c.querySelector(".action-checkbox").onchange=save;
+c.querySelector(".action-text").oninput=save;
+c.querySelector(".priority-select").onchange=()=>{save();renderActions()};
+c.querySelector(".time-input").onchange=save;
+c.querySelector(".duration-select").onchange=save;
+c.querySelector(".focus-select").onchange=e=>{
+let r=+e.target.value;
+if(r)dayData.actions.forEach((x,j)=>{if(j!==i&&x.focus===r)x.focus=0});
+a.focus=r;
+saveDay();renderActions();renderTop3();buildSchedule()
+};
+c.querySelector(".delete-button").onclick=()=>{
+dayData.actions.splice(i,1);
+saveDay();renderDay()
+}
+})
+}
+
 function rankIcon(r){return r===1?"🥇":r===2?"🥈":"🥉"}
+
 function renderTop3(){
-$("top3List").innerHTML="";let n=dayData.actions.filter(a=>[1,2,3].includes(+a.focus)).length;$("top3Count").textContent=`${n} of 3 selected`;
-if(!dayData.actions.some(a=>a.text.trim())){$("top3List").innerHTML='<div class="top3-empty">Add or choose actions for this day first.</div>';return}
-for(let r=1;r<=3;r++){let a=dayData.actions.find(x=>+x.focus===r),c=document.createElement("div");c.className="top3-slot";c.innerHTML=`<div class="top3-rank">${rankIcon(r)}</div><div class="top3-text ${a?"":"top3-empty-text"}">${esc(a?a.text:`Focus #${r} not selected`)}</div>${a?'<button class="top3-remove">Remove</button>':""}`;if(a)c.querySelector("button").onclick=()=>{a.focus=0;saveDay();renderActions();renderTop3();buildSchedule()};$("top3List").append(c)}
+$("top3List").innerHTML="";
+let n=dayData.actions.filter(a=>[1,2,3].includes(+a.focus)).length;
+$("top3Count").textContent=`${n} of 3 selected`;
+if(!dayData.actions.some(a=>a.text.trim())){
+$("top3List").innerHTML='<div class="top3-empty">Add or choose actions for this day first.</div>';
+return
 }
-function updateProgress(){let a=dayData.actions.filter(x=>x.text.trim()),done=a.filter(x=>x.completed).length,p=a.length?Math.round(done/a.length*100):0;$("progressPercent").textContent=p+"%";$("progressBar").style.width=p+"%";$("progressText").textContent=`${done} of ${a.length} actions completed`;$("completionMessage").style.display=a.length&&done===a.length?"block":"none"}
-function mins(t){if(!t)return null;let p=t.split(":").map(Number);return p[0]*60+p[1]}
-function clock(n){n%=1440;let h=Math.floor(n/60),m=n%60,ap=h>=12?"PM":"AM";h=h%12||12;return `${h}:${String(m).padStart(2,"0")} ${ap}`}
+for(let r=1;r<=3;r++){
+let a=dayData.actions.find(x=>+x.focus===r),c=document.createElement("div");
+c.className="top3-slot";
+c.innerHTML=`<div class="top3-rank">${rankIcon(r)}</div><div class="top3-text ${a?"":"top3-empty-text"}">${esc(a?a.text:`Focus #${r} not selected`)}</div>${a?'<button class="top3-remove">Remove</button>':""}`;
+if(a)c.querySelector("button").onclick=()=>{
+a.focus=0;saveDay();renderActions();renderTop3();buildSchedule()
+};
+$("top3List").append(c)
+}
+}
+
+function updateProgress(){
+let a=dayData.actions.filter(x=>x.text.trim()),
+done=a.filter(x=>x.completed).length,
+p=a.length?Math.round(done/a.length*100):0;
+$("progressPercent").textContent=p+"%";
+$("progressBar").style.width=p+"%";
+$("progressText").textContent=`${done} of ${a.length} actions completed`;
+$("completionMessage").style.display=a.length&&done===a.length?"block":"none"
+}
+
+function mins(t){
+if(!t)return null;
+let p=t.split(":").map(Number);
+return p[0]*60+p[1]
+}
+
+function clock(n){
+n%=1440;
+let h=Math.floor(n/60),m=n%60,ap=h>=12?"PM":"AM";
+h=h%12||12;
+return `${h}:${String(m).padStart(2,"0")} ${ap}`
+}
+
 function buildSchedule(){
-let items=[];dayData.commitments.forEach((x,i)=>{let s=mins(x.start),e=mins(x.end);if(x.text.trim()&&s!==null&&e>s)items.push({title:x.text,start:s,end:e,type:"commitment",conflict:false})});
-dayData.actions.forEach(a=>{let s=mins(a.time);if(a.text.trim()&&s!==null)items.push({title:a.text,start:s,end:s+(+a.duration||30),type:"action",priority:a.priority,duration:a.duration,focus:a.focus,completed:a.completed,conflict:false})});
-items.sort((a,b)=>a.start-b.start);let conflicts=[];for(let i=0;i<items.length;i++)for(let j=i+1;j<items.length;j++)if(items[i].start<items[j].end&&items[j].start<items[i].end){items[i].conflict=items[j].conflict=true;conflicts.push(`${items[i].title} overlaps with ${items[j].title} from ${clock(Math.max(items[i].start,items[j].start))} to ${clock(Math.min(items[i].end,items[j].end))}.`)}
-$("conflictList").innerHTML=conflicts.map(x=>`<div class="conflict-item">${esc(x)}</div>`).join("");$("conflictBox").style.display=conflicts.length?"block":"none";
+let items=[];
+dayData.commitments.forEach(x=>{
+let s=mins(x.start),e=mins(x.end);
+if(x.text.trim()&&s!==null&&e>s)items.push({title:x.text,start:s,end:e,type:"commitment",conflict:false})
+});
+dayData.actions.forEach(a=>{
+let s=mins(a.time);
+if(a.text.trim()&&s!==null)items.push({title:a.text,start:s,end:s+(+a.duration||30),type:"action",priority:a.priority,duration:a.duration,focus:a.focus,completed:a.completed,conflict:false})
+});
+items.sort((a,b)=>a.start-b.start);
+let conflicts=[];
+for(let i=0;i<items.length;i++){
+for(let j=i+1;j<items.length;j++){
+if(items[i].start<items[j].end&&items[j].start<items[i].end){
+items[i].conflict=items[j].conflict=true;
+conflicts.push(`${items[i].title} overlaps with ${items[j].title} from ${clock(Math.max(items[i].start,items[j].start))} to ${clock(Math.min(items[i].end,items[j].end))}.`)
+}
+}
+}
+$("conflictList").innerHTML=conflicts.map(x=>`<div class="conflict-item">${esc(x)}</div>`).join("");
+$("conflictBox").style.display=conflicts.length?"block":"none";
 $("scheduleList").innerHTML=items.length?"":'<div class="schedule-empty">Add a fixed commitment or give an action a start time and it will appear here.</div>';
-items.forEach(x=>{let r=document.createElement("div");r.className="schedule-item"+(x.conflict?" conflicted":"");let meta=x.type==="commitment"?'<span class="commitment-badge">COMMITMENT</span>':`<span class="priority-badge badge-${x.priority}">${x.priority.toUpperCase()}</span>${x.focus?`<span class="focus-badge">${rankIcon(x.focus)} FOCUS #${x.focus}</span>`:""} ${x.duration} minutes${x.completed?" • ✓ Completed":""}`;if(x.conflict)meta+=' <span class="conflict-badge">⚠ CONFLICT</span>';r.innerHTML=`<div class="schedule-time">${clock(x.start)}<br><span style="font-size:12px;color:#6b7280">to ${clock(x.end)}</span></div><div><div class="schedule-title">${esc(x.title)}</div><div class="schedule-meta">${meta}</div></div>`;$("scheduleList").append(r)})
+items.forEach(x=>{
+let r=document.createElement("div");
+r.className="schedule-item"+(x.conflict?" conflicted":"");
+let meta=x.type==="commitment"
+?'<span class="commitment-badge">COMMITMENT</span>'
+:`<span class="priority-badge badge-${x.priority}">${x.priority.toUpperCase()}</span>${x.focus?`<span class="focus-badge">${rankIcon(x.focus)} FOCUS #${x.focus}</span>`:""} ${x.duration} minutes${x.completed?" • ✓ Completed":""}`;
+if(x.conflict)meta+=' <span class="conflict-badge">⚠ CONFLICT</span>';
+r.innerHTML=`<div class="schedule-time">${clock(x.start)}<br><span style="font-size:12px;color:#6b7280">to ${clock(x.end)}</span></div><div><div class="schedule-title">${esc(x.title)}</div><div class="schedule-meta">${meta}</div></div>`;
+$("scheduleList").append(r)
+})
 }
 
-$("addCommitmentButton").onclick=()=>{dayData.commitments.push({text:"",start:"",end:""});saveDay();renderCommitments()};
-$("addActionButton").onclick=()=>{dayData.actions.push({text:"",completed:false,priority:"should",time:"",duration:"30",focus:0});saveDay();renderActions()};
-$("outcome").oninput=e=>{dayData.outcome=e.target.value;saveDay()};$("purpose").oninput=e=>{dayData.purpose=e.target.value;saveDay()};
-$("saveTodayButton").onclick=()=>{saveDay();flash("todaySavedMessage","✓ This day's plan has been saved.")};
-$("dailyDateSelector").onchange=e=>{saveDay();if(e.target.value){selectedDateKey=e.target.value;localStorage.setItem(LAST_VIEWED_DATE_STORAGE_KEY,selectedDateKey);dayData=normalizeDay(dailyHistory[selectedDateKey],selectedDateKey);renderDay()}};
-$("jumpToTodayButton").onclick=()=>{saveDay();selectedDateKey=actualTodayKey;dayData=normalizeDay(dailyHistory[selectedDateKey],selectedDateKey);localStorage.setItem(LAST_VIEWED_DATE_STORAGE_KEY,selectedDateKey);renderDay()};
-$("newDayButton").onclick=()=>{if(confirm(`Start ${formatDate(selectedDateKey)} fresh? This will replace the currently loaded plan for this date with a blank daily plan.`)){dayData=emptyDay(selectedDateKey);saveDay();renderDay();flash("todayTransferMessage","✓ A fresh daily plan has been created for this date.")}};
-$("copyPreviousButton").onclick=()=>{let k=previousDay(selectedDateKey),p=dailyHistory[k];if(!p){flash("todayTransferMessage",`No saved plan was found for ${formatDate(k)}.`);return}dayData=normalizeDay(clone(p),selectedDateKey);dayData.actions.forEach(a=>a.completed=false);saveDay();renderDay();flash("todayTransferMessage",`✓ Copied ${formatDate(k)} into this day.`)};
+$("addCommitmentButton").onclick=()=>{
+dayData.commitments.push({text:"",start:"",end:""});
+saveDay();renderCommitments()
+};
 
-function emptyWeek(k){return{weekStart:k,selectedOutcomes:[],actions:[]}}
-function normalizeWeek(x,k){return{weekStart:k,selectedOutcomes:Array.isArray(x?.selectedOutcomes)?x.selectedOutcomes:[],actions:Array.isArray(x?.actions)?x.actions.map(a=>({text:a.text||"",completed:!!a.completed,focus:[1,2,3].includes(+a.focus)?+a.focus:0,sourceOutcome:a.sourceOutcome||"",sourceArea:a.sourceArea||""})):[]}}
+$("addActionButton").onclick=()=>{
+dayData.actions.push({text:"",completed:false,priority:"should",time:"",duration:"30",focus:0});
+saveDay();renderActions()
+};
+
+$("outcome").oninput=e=>{dayData.outcome=e.target.value;saveDay()};
+$("purpose").oninput=e=>{dayData.purpose=e.target.value;saveDay()};
+
+$("saveTodayButton").onclick=()=>{
+saveDay();
+flash("todaySavedMessage","✓ This day's plan has been saved.")
+};
+
+$("dailyDateSelector").onchange=e=>{
+saveDay();
+if(e.target.value){
+selectedDateKey=e.target.value;
+localStorage.setItem(LAST_VIEWED_DATE_STORAGE_KEY,selectedDateKey);
+dayData=normalizeDay(dailyHistory[selectedDateKey],selectedDateKey);
+renderDay()
+}
+};
+
+$("jumpToTodayButton").onclick=()=>{
+saveDay();
+selectedDateKey=actualTodayKey;
+dayData=normalizeDay(dailyHistory[selectedDateKey],selectedDateKey);
+localStorage.setItem(LAST_VIEWED_DATE_STORAGE_KEY,selectedDateKey);
+renderDay()
+};
+
+$("newDayButton").onclick=()=>{
+if(confirm(`Start ${formatDate(selectedDateKey)} fresh? This will replace the currently loaded plan for this date with a blank daily plan.`)){
+dayData=emptyDay(selectedDateKey);
+saveDay();renderDay();
+flash("todayTransferMessage","✓ A fresh daily plan has been created for this date.")
+}
+};
+
+$("copyPreviousButton").onclick=()=>{
+let k=previousDay(selectedDateKey),p=dailyHistory[k];
+if(!p){
+flash("todayTransferMessage",`No saved plan was found for ${formatDate(k)}.`);
+return
+}
+dayData=normalizeDay(clone(p),selectedDateKey);
+dayData.actions.forEach(a=>a.completed=false);
+saveDay();renderDay();
+flash("todayTransferMessage",`✓ Copied ${formatDate(k)} into this day.`)
+};
+
+function emptyWeek(k){
+return{weekStart:k,selectedOutcomes:[],actions:[]}
+}
+
+function normalizeWeek(x,k){
+return{
+weekStart:k,
+selectedOutcomes:Array.isArray(x?.selectedOutcomes)?x.selectedOutcomes:[],
+actions:Array.isArray(x?.actions)?x.actions.map(a=>({
+text:a.text||"",
+completed:!!a.completed,
+focus:[1,2,3].includes(+a.focus)?+a.focus:0,
+sourceOutcome:a.sourceOutcome||"",
+sourceArea:a.sourceArea||""
+})):[]
+}
+}
+
 let weekData=normalizeWeek(weeklyHistory[selectedWeekKey],selectedWeekKey);
-function saveWeek(){weekData.weekStart=selectedWeekKey;weeklyHistory[selectedWeekKey]=clone(weekData);localStorage.setItem(WEEKLY_HISTORY_STORAGE_KEY,JSON.stringify(weeklyHistory));localStorage.setItem(LAST_VIEWED_WEEK_STORAGE_KEY,selectedWeekKey)}
-function outcomeId(o){return `${o.title||""}||${o.area||""}||${o.purpose||""}`}
-function hasWeekAction(t){return weekData.actions.some(a=>a.text.trim().toLowerCase()===(t||"").trim().toLowerCase())}
-function addToWeek(t,title="",area=""){t=(t||"").trim();if(!t)return;if(!hasWeekAction(t))weekData.actions.push({text:t,completed:false,focus:0,sourceOutcome:title,sourceArea:area});saveWeek();renderWeek();flash("weekMessage","✓ Action is in this week's plan.")}
+
+function saveWeek(){
+weekData.weekStart=selectedWeekKey;
+weeklyHistory[selectedWeekKey]=clone(weekData);
+localStorage.setItem(WEEKLY_HISTORY_STORAGE_KEY,JSON.stringify(weeklyHistory));
+localStorage.setItem(LAST_VIEWED_WEEK_STORAGE_KEY,selectedWeekKey)
+}
+
+function outcomeId(o){
+return `${o.title||""}||${o.area||""}||${o.purpose||""}`
+}
+
+function hasWeekAction(t){
+t=(t||"").trim();
+if(!t)return false;
+return weekData.actions.some(a=>(a.text||"").trim().toLowerCase()===t.toLowerCase())
+}
+
+function addToWeek(t,title="",area=""){
+t=(t||"").trim();
+if(!t)return;
+let alreadyThere=hasWeekAction(t);
+if(!alreadyThere){
+weekData.actions.push({
+text:t,
+completed:false,
+focus:0,
+sourceOutcome:title,
+sourceArea:area
+})
+}
+saveWeek();
+renderWeek();
+flash("weekMessage",alreadyThere?"✓ That action is already in this week's plan.":"✓ Action added to this week's plan.")
+}
 
 function renderWeek(){
-$("weekLabel").textContent=weekRange(selectedWeekKey);let exists=!!weeklyHistory[selectedWeekKey];
-$("weekHistoryStatus").textContent=selectedWeekKey===actualWeekKey?(exists?"Viewing the current saved weekly plan.":"Viewing the current week. This week has not been saved yet."):(exists?`Viewing saved plan for ${weekRange(selectedWeekKey)}.`:`No saved weekly plan exists yet for ${weekRange(selectedWeekKey)}.`);
-renderWeeklyOutcomes();renderWeeklyActions();renderWeeklyTop3();updateWeeklyProgress();
+$("weekLabel").textContent=weekRange(selectedWeekKey);
+let exists=!!weeklyHistory[selectedWeekKey];
+$("weekHistoryStatus").textContent=
+selectedWeekKey===actualWeekKey
+?(exists?"Viewing the current saved weekly plan.":"Viewing the current week. This week has not been saved yet.")
+:(exists?`Viewing saved plan for ${weekRange(selectedWeekKey)}.`:`No saved weekly plan exists yet for ${weekRange(selectedWeekKey)}.`);
+renderWeeklyOutcomes();
+renderWeeklyActions();
+renderWeeklyTop3();
+updateWeeklyProgress();
 }
+
 function renderWeeklyOutcomes(){
-let active=lifeOutcomes.filter(o=>(o.status||"active")==="active");$("weeklyOutcomePlanner").innerHTML="";$("weeklyOutcomeCount").textContent=weekData.selectedOutcomes.length;
-if(!active.length){$("weeklyOutcomePlanner").innerHTML='<div class="week-empty">No active Life Outcomes are available yet.</div>';return}
-active.forEach(o=>{let id=outcomeId(o),chosen=weekData.selectedOutcomes.includes(id),c=document.createElement("div");c.className="week-outcome-card";c.innerHTML=`<div class="week-outcome-header"><input type="checkbox" class="week-outcome-check" ${chosen?"checked":""}><div><div class="week-outcome-title">${esc(o.title||"Untitled Life Outcome")}</div><div class="week-outcome-area">${esc(o.area||"Life Outcome")}</div></div></div><div class="week-outcome-actions"></div>`;c.querySelector("input").onchange=e=>{if(e.target.checked&&!weekData.selectedOutcomes.includes(id))weekData.selectedOutcomes.push(id);if(!e.target.checked)weekData.selectedOutcomes=weekData.selectedOutcomes.filter(x=>x!==id);saveWeek();renderWeeklyOutcomes()};
-if(chosen){let box=c.querySelector(".week-outcome-actions");if(!(o.actions||[]).length)box.innerHTML='<div class="week-empty">No actions have been added to this Life Outcome yet.</div>';else o.actions.forEach(t=>{let r=document.createElement("div");r.className="week-pick-row";let added=hasWeekAction(t);r.innerHTML=`<div>${esc(t)}</div><button class="week-pick-button ${added?"added":""}">${added?"✓ In This Week":"+ Choose for This Week"}</button>`;r.querySelector("button").onclick=()=>{if(!hasWeekAction(t))addToWeek(t,o.title,o.area);else flash("weekMessage","✓ That action is already in this week's plan.")};box.append(r)})}
-$("weeklyOutcomePlanner").append(c)});
+let active=lifeOutcomes.filter(o=>(o.status||"active")==="active");
+$("weeklyOutcomePlanner").innerHTML="";
 $("weeklyOutcomeCount").textContent=weekData.selectedOutcomes.length;
+
+if(!active.length){
+$("weeklyOutcomePlanner").innerHTML='<div class="week-empty">No active Life Outcomes are available yet.</div>';
+return
 }
-function renderWeeklyActions(){
-$("weeklyActionList").innerHTML="";
-if(!weekData.actions.length){$("weeklyActionList").innerHTML='<div class="week-empty">No weekly actions yet. Choose actions from your Life Outcomes above or add one of your own.</div>';return}
-weekData.actions.forEach((a,i)=>{let c=document.createElement("div");c.className="week-action-card";c.innerHTML=`<div class="week-action-main"><input type="checkbox" class="week-action-check" ${a.completed?"checked":""}><input class="week-action-text ${a.completed?"completed":""}" value="${escAttr(a.text)}" placeholder="Weekly action"><button class="delete-button">×</button></div><div class="week-action-options"><select class="week-focus-select"><option value="0">Not Weekly Top 3</option><option value="1">🥇 Weekly Focus #1</option><option value="2">🥈 Weekly Focus #2</option><option value="3">🥉 Weekly Focus #3</option></select><button class="week-send-button">${hasDayAction(a.text)?"✓ In Selected Day":"→ Add to Selected Day"}</button></div>${a.sourceOutcome||a.sourceArea?`<div class="area-status">${esc([a.sourceArea,a.sourceOutcome].filter(Boolean).join(" • "))}</div>`:""}`;
-$("weeklyActionList").append(c);c.querySelector(".week-focus-select").value=a.focus;
-c.querySelector(".week-action-check").onchange=e=>{a.completed=e.target.checked;saveWeek();renderWeeklyActions();updateWeeklyProgress()};
-c.querySelector(".week-action-text").oninput=e=>{a.text=e.target.value;saveWeek();renderWeeklyTop3();updateWeeklyProgress()};
-c.querySelector(".week-focus-select").onchange=e=>{let r=+e.target.value;if(r)weekData.actions.forEach((x,j)=>{if(j!==i&&x.focus===r)x.focus=0});a.focus=r;saveWeek();renderWeeklyActions();renderWeeklyTop3()};
-c.querySelector(".week-send-button").onclick=()=>{if(a.text.trim())addToDay(a.text,a.sourceOutcome,"",a.sourceArea);renderWeeklyActions()};
-c.querySelector(".delete-button").onclick=()=>{weekData.actions.splice(i,1);saveWeek();renderWeek()}
+
+active.forEach(o=>{
+let id=outcomeId(o),
+chosen=weekData.selectedOutcomes.includes(id),
+c=document.createElement("div");
+c.className="week-outcome-card";
+
+c.innerHTML=`<div class="week-outcome-header"><input type="checkbox" class="week-outcome-check" ${chosen?"checked":""}><div><div class="week-outcome-title">${esc(o.title||"Untitled Life Outcome")}</div><div class="week-outcome-area">${esc(o.area||"Life Outcome")}</div></div></div><div class="week-outcome-actions"></div>`;
+
+c.querySelector("input").onchange=e=>{
+if(e.target.checked&&!weekData.selectedOutcomes.includes(id))weekData.selectedOutcomes.push(id);
+if(!e.target.checked)weekData.selectedOutcomes=weekData.selectedOutcomes.filter(x=>x!==id);
+saveWeek();
+renderWeeklyOutcomes()
+};
+
+if(chosen){
+let box=c.querySelector(".week-outcome-actions");
+if(!(o.actions||[]).length){
+box.innerHTML='<div class="week-empty">No actions have been added to this Life Outcome yet.</div>'
+}else{
+o.actions.forEach(t=>{
+let r=document.createElement("div");
+r.className="week-pick-row";
+let added=hasWeekAction(t);
+r.innerHTML=`<div>${esc(t)}</div><button class="week-pick-button ${added?"added":""}">${added?"✓ In This Week":"+ Choose for This Week"}</button>`;
+r.querySelector("button").onclick=()=>{
+if(!hasWeekAction(t))addToWeek(t,o.title,o.area);
+else flash("weekMessage","✓ That action is already in this week's plan.")
+};
+box.append(r)
 })
 }
-function renderWeeklyTop3(){
-$("weeklyTop3List").innerHTML="";let n=weekData.actions.filter(a=>[1,2,3].includes(+a.focus)).length;$("weeklyTop3Count").textContent=`${n} of 3 selected`;
-if(!weekData.actions.length){$("weeklyTop3List").innerHTML='<div class="top3-empty">Choose or add weekly actions first, then select your Weekly Top 3.</div>';return}
-for(let r=1;r<=3;r++){let a=weekData.actions.find(x=>+x.focus===r),c=document.createElement("div");c.className="top3-slot";c.innerHTML=`<div class="top3-rank">${rankIcon(r)}</div><div class="top3-text ${a?"":"top3-empty-text"}">${esc(a?a.text:`Weekly Focus #${r} not selected`)}</div>${a?'<button class="top3-remove">Remove</button>':""}`;if(a)c.querySelector("button").onclick=()=>{a.focus=0;saveWeek();renderWeeklyActions();renderWeeklyTop3()};$("weeklyTop3List").append(c)}
 }
-function updateWeeklyProgress(){let a=weekData.actions.filter(x=>x.text.trim()),done=a.filter(x=>x.completed).length,p=a.length?Math.round(done/a.length*100):0;$("weeklyProgressPercent").textContent=p+"%";$("weeklyProgressBar").style.width=p+"%";$("weeklyProgressText").textContent=`${done} of ${a.length} weekly actions completed`;$("weeklyCompletionMessage").style.display=a.length&&done===a.length?"block":"none"}
-function loadWeek(k){selectedWeekKey=k;localStorage.setItem(LAST_VIEWED_WEEK_STORAGE_KEY,k);weekData=normalizeWeek(weeklyHistory[k],k);renderWeek()}
+$("weeklyOutcomePlanner").append(c)
+});
+
+$("weeklyOutcomeCount").textContent=weekData.selectedOutcomes.length;
+}
+
+function renderWeeklyActions(){
+$("weeklyActionList").innerHTML="";
+
+if(!weekData.actions.length){
+$("weeklyActionList").innerHTML='<div class="week-empty">No weekly actions yet. Choose actions from your Life Outcomes above or add one of your own.</div>';
+return
+}
+
+weekData.actions.forEach((a,i)=>{
+let c=document.createElement("div");
+c.className="week-action-card";
+
+let actionText=(a.text||"").trim();
+let inSelectedDay=actionText!==""&&hasDayAction(actionText);
+
+c.innerHTML=`<div class="week-action-main">
+<input type="checkbox" class="week-action-check" ${a.completed?"checked":""}>
+<input class="week-action-text ${a.completed?"completed":""}" value="${escAttr(a.text)}" placeholder="Weekly action">
+<button class="delete-button">×</button>
+</div>
+<div class="week-action-options">
+<select class="week-focus-select">
+<option value="0">Not Weekly Top 3</option>
+<option value="1">🥇 Weekly Focus #1</option>
+<option value="2">🥈 Weekly Focus #2</option>
+<option value="3">🥉 Weekly Focus #3</option>
+</select>
+<button class="week-send-button">${inSelectedDay?"✓ In Selected Day":"→ Add to Selected Day"}</button>
+</div>
+${a.sourceOutcome||a.sourceArea?`<div class="area-status">${esc([a.sourceArea,a.sourceOutcome].filter(Boolean).join(" • "))}</div>`:""}`;
+
+$("weeklyActionList").append(c);
+
+c.querySelector(".week-focus-select").value=a.focus;
+
+c.querySelector(".week-action-check").onchange=e=>{
+a.completed=e.target.checked;
+saveWeek();
+renderWeeklyActions();
+updateWeeklyProgress()
+};
+
+c.querySelector(".week-action-text").oninput=e=>{
+a.text=e.target.value;
+saveWeek();
+renderWeeklyTop3();
+updateWeeklyProgress();
+
+let button=c.querySelector(".week-send-button");
+let text=a.text.trim();
+button.textContent=text&&hasDayAction(text)?"✓ In Selected Day":"→ Add to Selected Day"
+};
+
+c.querySelector(".week-focus-select").onchange=e=>{
+let r=+e.target.value;
+if(r){
+weekData.actions.forEach((x,j)=>{
+if(j!==i&&x.focus===r)x.focus=0
+})
+}
+a.focus=r;
+saveWeek();
+renderWeeklyActions();
+renderWeeklyTop3()
+};
+
+c.querySelector(".week-send-button").onclick=()=>{
+let text=(a.text||"").trim();
+
+if(!text){
+flash("weekMessage","Enter a weekly action before adding it to a day.");
+return
+}
+
+if(hasDayAction(text)){
+flash("weekMessage","✓ That weekly action is already in the selected day.");
+return
+}
+
+addToDay(text,a.sourceOutcome,"",a.sourceArea);
+renderWeeklyActions();
+flash("weekMessage","✓ Weekly action added to the selected day.")
+};
+
+c.querySelector(".delete-button").onclick=()=>{
+weekData.actions.splice(i,1);
+saveWeek();
+renderWeek()
+}
+})
+}
+
+function renderWeeklyTop3(){
+$("weeklyTop3List").innerHTML="";
+let n=weekData.actions.filter(a=>[1,2,3].includes(+a.focus)).length;
+$("weeklyTop3Count").textContent=`${n} of 3 selected`;
+
+if(!weekData.actions.some(a=>(a.text||"").trim())){
+$("weeklyTop3List").innerHTML='<div class="top3-empty">Choose or add weekly actions first, then select your Weekly Top 3.</div>';
+return
+}
+
+for(let r=1;r<=3;r++){
+let a=weekData.actions.find(x=>+x.focus===r&&(x.text||"").trim()),
+c=document.createElement("div");
+c.className="top3-slot";
+c.innerHTML=`<div class="top3-rank">${rankIcon(r)}</div><div class="top3-text ${a?"":"top3-empty-text"}">${esc(a?a.text:`Weekly Focus #${r} not selected`)}</div>${a?'<button class="top3-remove">Remove</button>':""}`;
+
+if(a){
+c.querySelector("button").onclick=()=>{
+a.focus=0;
+saveWeek();
+renderWeeklyActions();
+renderWeeklyTop3()
+}
+}
+$("weeklyTop3List").append(c)
+}
+}
+
+function updateWeeklyProgress(){
+let a=weekData.actions.filter(x=>(x.text||"").trim()),
+done=a.filter(x=>x.completed).length,
+p=a.length?Math.round(done/a.length*100):0;
+
+$("weeklyProgressPercent").textContent=p+"%";
+$("weeklyProgressBar").style.width=p+"%";
+$("weeklyProgressText").textContent=`${done} of ${a.length} weekly actions completed`;
+$("weeklyCompletionMessage").style.display=a.length&&done===a.length?"block":"none"
+}
+
+function loadWeek(k){
+selectedWeekKey=k;
+localStorage.setItem(LAST_VIEWED_WEEK_STORAGE_KEY,k);
+weekData=normalizeWeek(weeklyHistory[k],k);
+renderWeek()
+}
+
 $("previousWeekButton").onclick=()=>loadWeek(shiftWeek(selectedWeekKey,-1));
 $("nextWeekButton").onclick=()=>loadWeek(shiftWeek(selectedWeekKey,1));
 $("currentWeekButton").onclick=()=>loadWeek(actualWeekKey);
-$("addWeeklyActionButton").onclick=()=>{weekData.actions.push({text:"",completed:false,focus:0,sourceOutcome:"",sourceArea:""});saveWeek();renderWeeklyActions()};
-$("saveWeekButton").onclick=()=>{saveWeek();renderWeek();flash("weekSavedMessage","✓ This week's plan has been saved.")};
 
-saveAreas();saveOutcomes();
+$("addWeeklyActionButton").onclick=()=>{
+weekData.actions.push({
+text:"",
+completed:false,
+focus:0,
+sourceOutcome:"",
+sourceArea:""
+});
+saveWeek();
+renderWeeklyActions()
+};
+
+$("saveWeekButton").onclick=()=>{
+saveWeek();
+renderWeek();
+flash("weekSavedMessage","✓ This week's plan has been saved.")
+};
+
+saveAreas();
+saveOutcomes();
 renderLife();
 renderDay();
 renderWeek();
