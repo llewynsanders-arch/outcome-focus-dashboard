@@ -385,6 +385,128 @@ width:100%;
 margin-top:10px
 }
 
+/* V1.13 START MY WEEK */
+
+.start-week-card{
+border:2px solid #bfdbfe;
+background:#f8fbff
+}
+
+.start-week-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:12px
+}
+
+.start-week-button{
+border:none;
+border-radius:10px;
+padding:12px 16px;
+background:var(--blue);
+color:white;
+font-weight:bold;
+font-size:14px;
+cursor:pointer
+}
+
+.start-week-panel{
+display:none;
+margin-top:16px
+}
+
+.start-week-panel.open{
+display:block
+}
+
+.start-week-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:14px
+}
+
+.start-week-section{
+border:1px solid #dbeafe;
+border-radius:12px;
+padding:14px;
+background:white
+}
+
+.start-week-section h3{
+font-size:16px;
+margin-bottom:10px
+}
+
+.start-week-item{
+border:1px solid var(--border);
+border-radius:10px;
+padding:10px;
+margin-top:8px;
+background:#fafafa
+}
+
+.start-week-item-title{
+font-weight:bold;
+line-height:1.4
+}
+
+.start-week-meta{
+font-size:12px;
+color:var(--gray);
+margin-top:5px;
+line-height:1.4
+}
+
+.start-week-add{
+width:100%;
+margin-top:8px;
+border:none;
+border-radius:8px;
+padding:9px;
+background:#dbeafe;
+color:#1d4ed8;
+font-size:12px;
+font-weight:bold;
+cursor:pointer
+}
+
+.start-week-add.added{
+background:#dcfce7;
+color:#166534
+}
+
+.start-week-review{
+margin-top:10px;
+padding:10px;
+border-radius:10px;
+background:#f9fafb;
+border:1px solid var(--border);
+font-size:13px;
+line-height:1.5
+}
+
+.start-week-review strong{
+display:block;
+margin-bottom:3px
+}
+
+.start-week-new-action{
+display:grid;
+grid-template-columns:1fr auto;
+gap:8px;
+margin-top:10px
+}
+
+.start-week-new-action button{
+border:none;
+border-radius:9px;
+padding:10px 14px;
+background:var(--purple);
+color:white;
+font-weight:bold;
+cursor:pointer
+}
+
 .week-outcome-header{
 display:grid;
 grid-template-columns:28px 1fr;
@@ -871,8 +993,26 @@ h1{font-size:24px}
 .outcome-life-grid,
 .week-action-options,
 .week-selector-row,
-.review-grid{
+.review-grid,
+.start-week-grid{
 grid-template-columns:1fr
+}
+
+.start-week-header{
+display:block
+}
+
+.start-week-button{
+width:100%;
+margin-top:10px
+}
+
+.start-week-new-action{
+grid-template-columns:1fr
+}
+
+.start-week-new-action button{
+width:100%
 }
 
 .life-action-row{
@@ -935,7 +1075,7 @@ grid-template-columns:1fr
 <p class="subtitle">
 Manage the areas of your life that matter, decide what outcomes you want, and turn those outcomes into focused weekly and daily action.
 </p>
-<span class="version">Version 1.12</span>
+<span class="version">Version 1.13</span>
 </header>
 
 <nav class="nav">
@@ -1016,6 +1156,51 @@ Go to Current Week
 </button>
 
 <div class="history-status" id="weekHistoryStatus"></div>
+</section>
+
+<!-- V1.13 START MY WEEK -->
+
+<section class="card start-week-card">
+<div class="start-week-header">
+<div>
+<h2>📋 Start My Week</h2>
+<p class="section-description" style="margin-bottom:0">
+Review where you left off, then deliberately choose what deserves your attention this week.
+</p>
+</div>
+
+<button class="start-week-button" id="buildWeekButton">
+Build This Week's Plan
+</button>
+</div>
+
+<div class="start-week-panel" id="startWeekPanel">
+
+<div class="start-week-grid">
+
+<div class="start-week-section">
+<h3>← Last Week</h3>
+<div id="lastWeekPlanner"></div>
+</div>
+
+<div class="start-week-section">
+<h3>→ This Week</h3>
+<div id="thisWeekPlanner"></div>
+
+<div class="start-week-new-action">
+<input
+type="text"
+id="startWeekNewAction"
+placeholder="Add a brand-new weekly action"
+>
+<button id="startWeekAddAction">
++ Add
+</button>
+</div>
+</div>
+
+</div>
+</div>
 </section>
 
 <section class="card">
@@ -1125,9 +1310,7 @@ Save This Week
 ✓ This week's plan has been saved.
 </div>
 
-</section>
-
-<section id="todayPage" class="page">
+</section> <section id="todayPage" class="page">
 
 <div class="today-transfer-message" id="todayTransferMessage"></div>
 
@@ -2278,9 +2461,8 @@ e
 ?`Viewing saved plan for ${formatDate(selectedDateKey)}.`
 :`No saved plan exists yet for ${formatDate(selectedDateKey)}.`
 )
-}
-
-function renderCommitments(){
+)
+} function renderCommitments(){
 
 $("commitmentList").innerHTML="";
 
@@ -2977,7 +3159,7 @@ flash(
 };
 
 
-/* WEEK V1.12 */
+/* WEEK V1.13 */
 
 function emptyWeek(k){
 
@@ -3181,7 +3363,7 @@ area=""
 t=(t||"").trim();
 
 if(!t){
-return
+return false
 }
 
 let duplicate=
@@ -3199,45 +3381,620 @@ sourceArea:area
 }
 
 saveWeekData();
-renderWeek();
+
+return !duplicate
+}
+
+
+/* V1.13 START MY WEEK */
+
+function plannerActionButton(
+action,
+label="+ Add to This Week"
+){
+
+let t=
+(action.text||"").trim(),
+
+added=
+t!==""&&
+hasWeekAction(t),
+
+button=
+document.createElement("button");
+
+button.className=
+"start-week-add"+
+(added?" added":"");
+
+button.textContent=
+added
+?"✓ In This Week"
+:label;
+
+button.disabled=
+added;
+
+button.onclick=()=>{
+
+if(!t){
+return
+}
+
+if(
+addToWeek(
+t,
+action.sourceOutcome||"",
+action.sourceArea||""
+)
+){
 
 flash(
 "weekMessage",
-duplicate
-?"✓ That action is already in this week's plan."
-:"✓ Action added to this week's plan."
+`✓ "${t}" added to this week's plan.`
+)
+
+}else{
+
+flash(
+"weekMessage",
+"✓ That action is already in this week's plan."
 )
 }
 
-function renderWeek(){
+renderWeek();
+renderStartWeekPlanner()
+};
 
-$("weekLabel").textContent=
-weekRange(selectedWeekKey);
+return button
+}
 
-let exists=
-!!weeklyHistory[selectedWeekKey];
+function renderStartWeekPlanner(){
 
-$("weekHistoryStatus").textContent=
-selectedWeekKey===actualWeekKey
-?(
-exists
-?"Viewing the current saved weekly plan."
-:"Viewing the current week. This week has not been saved yet."
+let panel=
+$("startWeekPanel");
+
+if(
+!panel.classList.contains("open")
+){
+return
+}
+
+let lastKey=
+shiftWeek(
+selectedWeekKey,
+-1
+),
+
+last=
+normalizeWeek(
+weeklyHistory[lastKey],
+lastKey
+),
+
+lastBox=
+$("lastWeekPlanner"),
+
+thisBox=
+$("thisWeekPlanner");
+
+lastBox.innerHTML="";
+thisBox.innerHTML="";
+
+let heading=
+document.createElement("div");
+
+heading.className="start-week-meta";
+
+heading.textContent=
+weekRange(lastKey);
+
+lastBox.append(heading);
+
+
+/* LAST WEEK TOP 3 */
+
+let top3=
+last.actions
+.filter(
+a=>
+[1,2,3].includes(+a.focus)&&
+(a.text||"").trim()
 )
-:(
-exists
-?`Viewing saved plan for ${weekRange(selectedWeekKey)}.`
-:`No saved weekly plan exists yet for ${weekRange(selectedWeekKey)}.`
+.sort(
+(a,b)=>a.focus-b.focus
 );
 
-renderWeeklyOutcomes();
-renderWeeklyActions();
-renderWeeklyTop3();
-updateWeeklyProgress();
-renderWeeklyReview()
+let topTitle=
+document.createElement("div");
+
+topTitle.className="field-label";
+topTitle.style.marginTop="12px";
+topTitle.textContent="Last Week's Top 3";
+
+lastBox.append(topTitle);
+
+if(!top3.length){
+
+let e=
+document.createElement("div");
+
+e.className="start-week-meta";
+e.textContent="No Weekly Top 3 were selected.";
+
+lastBox.append(e)
+
+}else{
+
+top3.forEach(
+a=>{
+
+let item=
+document.createElement("div");
+
+item.className="start-week-item";
+
+item.innerHTML=`
+<div class="start-week-item-title">
+${rankIcon(a.focus)} ${esc(a.text)}
+</div>
+
+<div class="start-week-meta">
+${a.completed
+?"✓ Completed"
+:"Not completed"
+}
+</div>
+`;
+
+lastBox.append(item)
+}
+)
 }
 
-function renderWeeklyOutcomes(){
+
+/* LAST WEEK UNFINISHED */
+
+let unfinished=
+last.actions.filter(
+a=>
+(a.text||"").trim()&&
+!a.completed
+);
+
+let unfinishedTitle=
+document.createElement("div");
+
+unfinishedTitle.className="field-label";
+unfinishedTitle.style.marginTop="16px";
+unfinishedTitle.textContent="Unfinished Actions";
+
+lastBox.append(unfinishedTitle);
+
+if(!unfinished.length){
+
+let e=
+document.createElement("div");
+
+e.className="start-week-meta";
+e.textContent="No unfinished actions from last week.";
+
+lastBox.append(e)
+
+}else{
+
+unfinished.forEach(
+a=>{
+
+let item=
+document.createElement("div");
+
+item.className="start-week-item";
+
+item.innerHTML=`
+<div class="start-week-item-title">
+${esc(a.text)}
+</div>
+
+${a.sourceOutcome||a.sourceArea
+?`<div class="start-week-meta">${esc(
+[
+a.sourceArea,
+a.sourceOutcome
+]
+.filter(Boolean)
+.join(" • ")
+)}</div>`
+:""
+}
+`;
+
+item.append(
+plannerActionButton(a)
+);
+
+lastBox.append(item)
+}
+)
+}
+
+
+/* LAST WEEK COMPLETED */
+
+let completed=
+last.actions.filter(
+a=>
+(a.text||"").trim()&&
+a.completed
+);
+
+let completedTitle=
+document.createElement("div");
+
+completedTitle.className="field-label";
+completedTitle.style.marginTop="16px";
+completedTitle.textContent="Completed Actions";
+
+lastBox.append(completedTitle);
+
+if(!completed.length){
+
+let e=
+document.createElement("div");
+
+e.className="start-week-meta";
+e.textContent="No completed actions were recorded.";
+
+lastBox.append(e)
+
+}else{
+
+completed.forEach(
+a=>{
+
+let item=
+document.createElement("div");
+
+item.className="start-week-item";
+
+item.innerHTML=`
+<div class="start-week-item-title">
+✓ ${esc(a.text)}
+</div>
+
+<div class="start-week-meta">
+Completed last week — shown for reference.
+</div>
+`;
+
+lastBox.append(item)
+}
+)
+}
+
+
+/* LAST WEEK REVIEW */
+
+let reviewTitle=
+document.createElement("div");
+
+reviewTitle.className="field-label";
+reviewTitle.style.marginTop="16px";
+reviewTitle.textContent="Last Week's Review";
+
+lastBox.append(reviewTitle);
+
+let review=
+document.createElement("div");
+
+review.className="start-week-review";
+
+let reviewHasText=
+[
+last.review.wins,
+last.review.incomplete,
+last.review.lessons,
+last.review.carryForward
+].some(
+x=>(x||"").trim()
+);
+
+if(!reviewHasText){
+
+review.innerHTML=
+'<div class="start-week-meta">No Weekly Review was saved for last week.</div>'
+
+}else{
+
+review.innerHTML=`
+${last.review.wins
+?`<strong>🏆 Wins</strong><div>${esc(last.review.wins)}</div><br>`
+:""
+}
+
+${last.review.incomplete
+?`<strong>⏳ Didn't Get Done</strong><div>${esc(last.review.incomplete)}</div><br>`
+:""
+}
+
+${last.review.lessons
+?`<strong>💡 Lessons Learned</strong><div>${esc(last.review.lessons)}</div><br>`
+:""
+}
+
+${last.review.carryForward
+?`<strong>➡️ Carry Forward / Improve</strong><div>${esc(last.review.carryForward)}</div>`
+:""
+}
+`
+}
+
+lastBox.append(review);
+
+
+/* THIS WEEK */
+
+let thisHeading=
+document.createElement("div");
+
+thisHeading.className="start-week-meta";
+
+thisHeading.textContent=
+weekRange(selectedWeekKey);
+
+thisBox.append(thisHeading);
+
+let existingTitle=
+document.createElement("div");
+
+existingTitle.className="field-label";
+existingTitle.style.marginTop="12px";
+existingTitle.textContent="Actions Already in This Week";
+
+thisBox.append(existingTitle);
+
+let currentActions=
+weekData.actions.filter(
+a=>(a.text||"").trim()
+);
+
+if(!currentActions.length){
+
+let e=
+document.createElement("div");
+
+e.className="start-week-meta";
+
+e.textContent=
+"No weekly actions have been chosen yet.";
+
+thisBox.append(e)
+
+}else{
+
+currentActions.forEach(
+a=>{
+
+let item=
+document.createElement("div");
+
+item.className="start-week-item";
+
+item.innerHTML=`
+<div class="start-week-item-title">
+${a.focus?rankIcon(a.focus)+" ":""}${esc(a.text)}
+</div>
+
+<div class="start-week-meta">
+${a.completed
+?"✓ Completed"
+:"Ready for this week"
+}
+${a.sourceOutcome||a.sourceArea
+?" • "+esc(
+[
+a.sourceArea,
+a.sourceOutcome
+]
+.filter(Boolean)
+.join(" • ")
+)
+:""
+}
+</div>
+`;
+
+thisBox.append(item)
+}
+)
+}
+
+
+/* ACTIVE LIFE OUTCOMES */
+
+let activeTitle=
+document.createElement("div");
+
+activeTitle.className="field-label";
+activeTitle.style.marginTop="16px";
+activeTitle.textContent="Active Life Outcomes";
+
+thisBox.append(activeTitle);
+
+let active=
+lifeOutcomes.filter(
+o=>(o.status||"active")==="active"
+);
+
+if(!active.length){
+
+let e=
+document.createElement("div");
+
+e.className="start-week-meta";
+
+e.textContent=
+"No active Life Outcomes are available.";
+
+thisBox.append(e)
+
+}else{
+
+active.forEach(
+o=>{
+
+let item=
+document.createElement("div");
+
+item.className="start-week-item";
+
+item.innerHTML=`
+<div class="start-week-item-title">
+${esc(o.title||"Untitled Life Outcome")}
+</div>
+
+<div class="start-week-meta">
+${esc(o.area||"Life Outcome")}
+</div>
+`;
+
+let actions=
+(o.actions||[])
+.filter(
+t=>(t||"").trim()
+);
+
+if(actions.length){
+
+actions.forEach(
+t=>{
+
+let row=
+document.createElement("div");
+
+row.style.marginTop="8px";
+
+let action={
+text:t,
+sourceOutcome:o.title||"",
+sourceArea:o.area||""
+};
+
+let txt=
+document.createElement("div");
+
+txt.className="start-week-meta";
+txt.textContent=t;
+
+row.append(txt);
+row.append(
+plannerActionButton(
+action,
+"+ Choose for This Week"
+)
+);
+
+item.append(row)
+}
+)
+
+}else{
+
+let none=
+document.createElement("div");
+
+none.className="start-week-meta";
+none.style.marginTop="7px";
+
+none.textContent=
+"No actions have been added to this outcome yet.";
+
+item.append(none)
+}
+
+thisBox.append(item)
+}
+)
+}
+}
+
+$("buildWeekButton").onclick=()=>{
+
+let panel=
+$("startWeekPanel");
+
+let opening=
+!panel.classList.contains("open");
+
+panel.classList.toggle(
+"open",
+opening
+);
+
+$("buildWeekButton").textContent=
+opening
+?"Close Weekly Planner"
+:"Build This Week's Plan";
+
+if(opening){
+renderStartWeekPlanner()
+}
+};
+
+$("startWeekAddAction").onclick=()=>{
+
+let input=
+$("startWeekNewAction"),
+
+t=
+input.value.trim();
+
+if(!t){
+
+flash(
+"weekMessage",
+"Enter a weekly action first."
+);
+
+return
+}
+
+if(
+addToWeek(
+t,
+"",
+""
+)
+){
+
+input.value="";
+
+flash(
+"weekMessage",
+`✓ "${t}" added to this week's plan.`
+)
+
+}else{
+
+flash(
+"weekMessage",
+"✓ That action is already in this week's plan."
+)
+}
+
+renderWeek();
+renderStartWeekPlanner()
+};
+
+$("startWeekNewAction").onkeydown=e=>{
+
+if(e.key==="Enter"){
+
+e.preventDefault();
+
+$("startWeekAddAction").click()
+}
+}; function renderWeeklyOutcomes(){
 
 let active=
 lifeOutcomes.filter(
@@ -3316,7 +4073,13 @@ x=>x!==id
 }
 
 saveWeekData();
-renderWeeklyOutcomes()
+renderWeeklyOutcomes();
+
+if(
+$("startWeekPanel").classList.contains("open")
+){
+renderStartWeekPlanner()
+}
 };
 
 if(chosen){
@@ -3363,6 +4126,13 @@ addToWeek(
 t,
 o.title,
 o.area
+);
+
+renderWeek();
+
+flash(
+"weekMessage",
+"✓ Action added to this week's plan."
 )
 
 }else{
@@ -3371,6 +4141,12 @@ flash(
 "weekMessage",
 "✓ That action is already in this week's plan."
 )
+}
+
+if(
+$("startWeekPanel").classList.contains("open")
+){
+renderStartWeekPlanner()
 }
 };
 
@@ -3519,7 +4295,13 @@ e.target.checked;
 
 saveWeekData();
 renderWeeklyActions();
-updateWeeklyProgress()
+updateWeeklyProgress();
+
+if(
+$("startWeekPanel").classList.contains("open")
+){
+renderStartWeekPlanner()
+}
 };
 
 c.querySelector(".week-action-text").oninput=e=>{
@@ -3542,18 +4324,16 @@ t&&hasDayAction(t)
 ?"✓ In Selected Day"
 :"→ Add to Selected Day";
 
-let next=
+let nextWeekKey=
+shiftWeek(
+selectedWeekKey,
+1
+),
+
+next=
 normalizeWeek(
-weeklyHistory[
-shiftWeek(
-selectedWeekKey,
-1
-)
-],
-shiftWeek(
-selectedWeekKey,
-1
-)
+weeklyHistory[nextWeekKey],
+nextWeekKey
 );
 
 let alreadyNext=
@@ -3601,7 +4381,13 @@ a.focus=r;
 
 saveWeekData();
 renderWeeklyActions();
-renderWeeklyTop3()
+renderWeeklyTop3();
+
+if(
+$("startWeekPanel").classList.contains("open")
+){
+renderStartWeekPlanner()
+}
 };
 
 c.querySelector(".week-send-button").onclick=()=>{
@@ -3654,7 +4440,13 @@ c.querySelector(".delete-button").onclick=()=>{
 weekData.actions.splice(i,1);
 
 saveWeekData();
-renderWeek()
+renderWeek();
+
+if(
+$("startWeekPanel").classList.contains("open")
+){
+renderStartWeekPlanner()
+}
 }
 }
 )
@@ -3725,7 +4517,13 @@ a.focus=0;
 
 saveWeekData();
 renderWeeklyActions();
-renderWeeklyTop3()
+renderWeeklyTop3();
+
+if(
+$("startWeekPanel").classList.contains("open")
+){
+renderStartWeekPlanner()
+}
 }
 }
 
@@ -3766,7 +4564,7 @@ a.length&&done===a.length
 }
 
 
-/* WEEKLY REVIEW V1.11 */
+/* WEEKLY REVIEW */
 
 function renderWeeklyReview(){
 
@@ -3812,7 +4610,13 @@ id=>
 $(id).oninput=()=>{
 
 collectWeeklyReview();
-saveWeekData()
+saveWeekData();
+
+if(
+$("startWeekPanel").classList.contains("open")
+){
+renderStartWeekPlanner()
+}
 }
 );
 
@@ -3826,6 +4630,40 @@ flash(
 "✓ This week's review has been saved."
 )
 };
+
+function renderWeek(){
+
+$("weekLabel").textContent=
+weekRange(selectedWeekKey);
+
+let exists=
+!!weeklyHistory[selectedWeekKey];
+
+$("weekHistoryStatus").textContent=
+selectedWeekKey===actualWeekKey
+?(
+exists
+?"Viewing the current saved weekly plan."
+:"Viewing the current week. This week has not been saved yet."
+)
+:(
+exists
+?`Viewing saved plan for ${weekRange(selectedWeekKey)}.`
+:`No saved weekly plan exists yet for ${weekRange(selectedWeekKey)}.`
+);
+
+renderWeeklyOutcomes();
+renderWeeklyActions();
+renderWeeklyTop3();
+updateWeeklyProgress();
+renderWeeklyReview();
+
+if(
+$("startWeekPanel").classList.contains("open")
+){
+renderStartWeekPlanner()
+}
+}
 
 function loadWeek(k){
 
@@ -3844,6 +4682,13 @@ normalizeWeek(
 weeklyHistory[k],
 k
 );
+
+$("startWeekPanel").classList.remove("open");
+
+$("buildWeekButton").textContent=
+"Build This Week's Plan";
+
+$("startWeekNewAction").value="";
 
 renderWeek()
 }
@@ -3884,7 +4729,13 @@ sourceArea:""
 });
 
 saveWeekData();
-renderWeeklyActions()
+renderWeeklyActions();
+
+if(
+$("startWeekPanel").classList.contains("open")
+){
+renderStartWeekPlanner()
+}
 };
 
 $("saveWeekButton").onclick=()=>{
