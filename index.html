@@ -7,6 +7,7 @@
 
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
+
 :root{
 --blue:#2563eb;
 --blue-light:#eff6ff;
@@ -36,9 +37,22 @@ padding:20px 0
 }
 
 header{margin-bottom:18px}
-.date{color:var(--gray);font-size:14px;margin-bottom:5px}
-h1{font-size:28px;margin-bottom:6px}
-.subtitle{color:var(--gray);line-height:1.5}
+
+.date{
+color:var(--gray);
+font-size:14px;
+margin-bottom:5px
+}
+
+h1{
+font-size:28px;
+margin-bottom:6px
+}
+
+.subtitle{
+color:var(--gray);
+line-height:1.5
+}
 
 .version{
 display:inline-block;
@@ -340,6 +354,69 @@ padding:12px 4px 18px;
 line-height:1.5
 }
 
+/* DAILY HISTORY */
+
+.daily-history-card{
+border:2px solid #bfdbfe;
+background:#f8fbff
+}
+
+.daily-date-row{
+display:grid;
+grid-template-columns:1fr auto;
+gap:10px;
+align-items:end
+}
+
+.daily-date-row label{
+margin-top:0
+}
+
+.today-button{
+border:none;
+border-radius:10px;
+padding:12px 15px;
+background:#dbeafe;
+color:#1d4ed8;
+font-weight:bold;
+cursor:pointer;
+white-space:nowrap
+}
+
+.history-status{
+margin-top:12px;
+padding:10px 12px;
+border-radius:10px;
+background:white;
+border:1px solid #dbeafe;
+font-size:13px;
+color:#1e40af;
+font-weight:bold;
+line-height:1.45
+}
+
+.history-actions{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:9px;
+margin-top:12px
+}
+
+.history-button{
+border:none;
+border-radius:10px;
+padding:12px;
+font-weight:bold;
+cursor:pointer;
+background:#e5e7eb;
+color:#374151
+}
+
+.history-button.primary{
+background:var(--blue);
+color:white
+}
+
 /* DAILY PLANNER */
 
 .planner-card{
@@ -441,7 +518,7 @@ color:#1e40af;
 font-weight:bold
 }
 
-/* TOP 3 FOCUS */
+/* TOP 3 */
 
 .top3-card{
 border:2px solid #fde68a;
@@ -823,13 +900,24 @@ grid-column:1/-1;
 width:100%
 }
 
+.daily-date-row{
+grid-template-columns:1fr
+}
+
+.today-button{
+width:100%
+}
+
+.history-actions{
+grid-template-columns:1fr
+}
+
 .schedule-item{
 grid-template-columns:1fr;
 gap:5px
 }
 
 }
-
 </style>
 </head>
 
@@ -848,7 +936,7 @@ Manage the areas of your life that matter, decide what outcomes you want,
 and turn those outcomes into focused daily action.
 </p>
 
-<span class="version">Version 1.8</span>
+<span class="version">Version 1.9</span>
 
 </header>
 
@@ -864,9 +952,7 @@ and turn those outcomes into focused daily action.
 
 </nav>
 
-<!-- ======================================================
-     LIFE PAGE
-     ====================================================== -->
+<!-- LIFE -->
 
 <section id="lifePage" class="page active">
 
@@ -939,22 +1025,63 @@ Save Life Assessment & Outcomes
 
 </section>
 
-<!-- ======================================================
-     TODAY PAGE
-     ====================================================== -->
+<!-- TODAY -->
 
 <section id="todayPage" class="page">
 
-<div class="today-transfer-message" id="todayTransferMessage">
-✓ Life Outcome action added to TODAY.
+<div class="today-transfer-message" id="todayTransferMessage"></div>
+
+<section class="card daily-history-card">
+
+<h2>📅 Daily History</h2>
+
+<p class="section-description">
+Each date has its own daily plan. Choose a date to review a previous day
+or plan ahead without erasing another day's information.
+</p>
+
+<div class="daily-date-row">
+
+<div>
+
+<label for="dailyDateSelector">
+Viewing Daily Plan For
+</label>
+
+<input type="date" id="dailyDateSelector">
+
 </div>
+
+<button class="today-button" id="jumpToTodayButton" type="button">
+Go to Today
+</button>
+
+</div>
+
+<div class="history-status" id="historyStatus">
+Viewing today's plan.
+</div>
+
+<div class="history-actions">
+
+<button class="history-button primary" id="newDayButton" type="button">
+Start This Day Fresh
+</button>
+
+<button class="history-button" id="copyPreviousButton" type="button">
+Copy Previous Day
+</button>
+
+</div>
+
+</section>
 
 <section class="card">
 
 <h2>📋 Daily Planning</h2>
 
 <p class="section-description">
-Review your active Life Outcomes and deliberately choose the actions that deserve your attention today.
+Review your active Life Outcomes and deliberately choose the actions that deserve your attention on this day.
 </p>
 
 <div class="planner-summary">
@@ -969,8 +1096,6 @@ Review your active Life Outcomes and deliberately choose the actions that deserv
 
 </section>
 
-<!-- TOP 3 -->
-
 <section class="card top3-card">
 
 <div class="top3-header">
@@ -984,7 +1109,7 @@ Review your active Life Outcomes and deliberately choose the actions that deserv
 </div>
 
 <p class="section-description">
-Choose up to three TODAY actions that deserve your strongest focus.
+Choose up to three actions that deserve your strongest focus for the selected day.
 Focus #1 is your most important action.
 </p>
 
@@ -1072,8 +1197,7 @@ type="button">
 
 <h2>📈 Today's Progress</h2>
 
-<div class="progress-percent"
-id="progressPercent">
+<div class="progress-percent" id="progressPercent">
 0%
 </div>
 
@@ -1081,18 +1205,15 @@ id="progressPercent">
 
 <div class="progress-background">
 
-<div class="progress-bar"
-id="progressBar"></div>
+<div class="progress-bar" id="progressBar"></div>
 
 </div>
 
-<div class="progress-text"
-id="progressText">
+<div class="progress-text" id="progressText">
 0 of 0 actions completed
 </div>
 
-<div class="completion-message"
-id="completionMessage">
+<div class="completion-message" id="completionMessage">
 🎉 Outcome action plan completed!
 </div>
 
@@ -1111,15 +1232,12 @@ forward a specific place in your day.
 
 </section>
 
-<button class="save-button"
-id="saveTodayButton"
-type="button">
-Save My Day
+<button class="save-button" id="saveTodayButton" type="button">
+Save This Day
 </button>
 
-<div class="saved-message"
-id="todaySavedMessage">
-✓ Your day has been saved.
+<div class="saved-message" id="todaySavedMessage">
+✓ This day's plan has been saved.
 </div>
 
 </section>
@@ -1136,27 +1254,49 @@ Life Management System
    STORAGE
    ========================================================= */
 
-const LIFE_STORAGE_KEY="lifeManagementAreasV18";
-const OLD_LIFE_STORAGE_KEY="lifeManagementAreasV17";
-const OLDER_LIFE_STORAGE_KEY="lifeManagementAreasV16";
+const LIFE_STORAGE_KEY="lifeManagementAreasV19";
+const OLD_LIFE_STORAGE_KEY="lifeManagementAreasV18";
+const OLDER_LIFE_STORAGE_KEY="lifeManagementAreasV17";
 
-const LIFE_OUTCOMES_STORAGE_KEY="lifeManagementOutcomesV18";
-const OLD_LIFE_OUTCOMES_STORAGE_KEY="lifeManagementOutcomesV17";
-const OLDER_LIFE_OUTCOMES_STORAGE_KEY="lifeManagementOutcomesV16";
-const OLDEST_LIFE_OUTCOMES_STORAGE_KEY="lifeManagementOutcomesV15";
+const LIFE_OUTCOMES_STORAGE_KEY="lifeManagementOutcomesV19";
+const OLD_LIFE_OUTCOMES_STORAGE_KEY="lifeManagementOutcomesV18";
+const OLDER_LIFE_OUTCOMES_STORAGE_KEY="lifeManagementOutcomesV17";
+const OLDEST_LIFE_OUTCOMES_STORAGE_KEY="lifeManagementOutcomesV16";
+const LEGACY_LIFE_OUTCOMES_STORAGE_KEY="lifeManagementOutcomesV15";
 
-const TODAY_STORAGE_KEY="outcomeFocusDashboardV18";
-const OLD_TODAY_STORAGE_KEY="outcomeFocusDashboardV17";
-const OLDER_TODAY_STORAGE_KEY="outcomeFocusDashboardV16";
+const DAILY_HISTORY_STORAGE_KEY="lifeManagementDailyHistoryV19";
+
+const OLD_TODAY_STORAGE_KEY="outcomeFocusDashboardV18";
+const OLDER_TODAY_STORAGE_KEY="outcomeFocusDashboardV17";
+const OLDEST_TODAY_STORAGE_KEY="outcomeFocusDashboardV16";
 
 /* =========================================================
    DATE
    ========================================================= */
 
-const today=new Date();
+function getDateKey(date=new Date()){
 
-document.getElementById("todayDate").textContent=
-today.toLocaleDateString(
+return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}-${String(date.getDate()).padStart(2,"0")}`;
+
+}
+
+function dateFromKey(key){
+
+const parts=key.split("-").map(Number);
+
+return new Date(
+parts[0],
+parts[1]-1,
+parts[2]
+);
+
+}
+
+function formatDateKey(key){
+
+const date=dateFromKey(key);
+
+return date.toLocaleDateString(
 "en-US",
 {
 weekday:"long",
@@ -1166,13 +1306,26 @@ year:"numeric"
 }
 );
 
-function getDateKey(){
+}
 
-const now=new Date();
+function getPreviousDateKey(key){
 
-return `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}-${String(now.getDate()).padStart(2,"0")}`;
+const date=dateFromKey(key);
+
+date.setDate(
+date.getDate()-1
+);
+
+return getDateKey(date);
 
 }
+
+const actualTodayKey=getDateKey();
+
+document.getElementById("todayDate").textContent=
+formatDateKey(actualTodayKey);
+
+let selectedDateKey=actualTodayKey;
 
 /* =========================================================
    NAVIGATION
@@ -1204,6 +1357,7 @@ todayNav.classList.add("active");
 
 renderDailyPlanner();
 renderTop3();
+updateHistoryStatus();
 
 }
 
@@ -1231,28 +1385,39 @@ todayNav.addEventListener(
 const defaultLifeAreas=[
 
 {name:"💪 Health & Fitness",current:5,desired:8},
-
 {name:"💰 Finances",current:5,desired:8},
-
 {name:"💼 Career / Business",current:5,desired:8},
-
 {name:"❤️ Relationships",current:5,desired:8},
-
 {name:"👨‍👩‍👧 Family",current:5,desired:8},
-
 {name:"🙏 Spiritual Life",current:5,desired:8},
-
 {name:"🧠 Personal Growth",current:5,desired:8},
-
 {name:"🏠 Home / Environment",current:5,desired:8},
-
 {name:"🎉 Fun / Recreation",current:5,desired:8},
-
 {name:"🤝 Contribution / Giving",current:5,desired:8}
 
 ];
 
 let lifeAreas=[];
+
+function parseArrayStorage(value){
+
+if(!value){
+return null;
+}
+
+try{
+
+const parsed=JSON.parse(value);
+
+if(Array.isArray(parsed)){
+return parsed;
+}
+
+}catch(error){}
+
+return null;
+
+}
 
 function createLifeAreaCard(area){
 
@@ -1373,8 +1538,7 @@ desiredValue-currentValue,
 0
 );
 
-gap.textContent=
-improvementGap;
+gap.textContent=improvementGap;
 
 gap.classList.remove(
 "gap-low",
@@ -1552,54 +1716,34 @@ JSON.stringify(lifeAreas)
 
 }
 
-function parseArrayStorage(value){
-
-if(!value){
-return null;
-}
-
-try{
-
-const parsed=JSON.parse(value);
-
-if(Array.isArray(parsed)){
-return parsed;
-}
-
-}catch(error){}
-
-return null;
-
-}
-
 function loadLifeAssessment(){
 
-const v18=
+const v19=
 parseArrayStorage(
 localStorage.getItem(LIFE_STORAGE_KEY)
 );
 
-const v17=
+const v18=
 parseArrayStorage(
 localStorage.getItem(OLD_LIFE_STORAGE_KEY)
 );
 
-const v16=
+const v17=
 parseArrayStorage(
 localStorage.getItem(OLDER_LIFE_STORAGE_KEY)
 );
 
-if(v18 && v18.length){
+if(v19 && v19.length){
+
+lifeAreas=v19;
+
+}else if(v18 && v18.length){
 
 lifeAreas=v18;
 
 }else if(v17 && v17.length){
 
 lifeAreas=v17;
-
-}else if(v16 && v16.length){
-
-lifeAreas=v16;
 
 }else{
 
@@ -1674,15 +1818,9 @@ const title=
 document.createElement("input");
 
 title.type="text";
-
-title.className=
-"life-outcome-title";
-
-title.placeholder=
-"What result do you want?";
-
-title.value=
-outcome.title||"";
+title.className="life-outcome-title";
+title.placeholder="What result do you want?";
+title.value=outcome.title||"";
 
 const del=
 document.createElement("button");
@@ -1700,8 +1838,6 @@ document.createElement("div");
 
 grid.className=
 "outcome-life-grid";
-
-/* AREA */
 
 const areaWrap=
 document.createElement("div");
@@ -1766,8 +1902,6 @@ names[0]||
 
 areaWrap.appendChild(area);
 
-/* STATUS */
-
 const statusWrap=
 document.createElement("div");
 
@@ -1793,8 +1927,6 @@ outcome.status||
 
 statusWrap.appendChild(status);
 
-/* TARGET DATE */
-
 const dateWrap=
 document.createElement("div");
 
@@ -1810,8 +1942,6 @@ date.value=outcome.targetDate||"";
 
 dateWrap.appendChild(date);
 
-/* PURPOSE */
-
 const purposeWrap=
 document.createElement("div");
 
@@ -1822,16 +1952,9 @@ const purpose=
 document.createElement("input");
 
 purpose.type="text";
-
-purpose.className=
-"life-outcome-purpose";
-
-purpose.placeholder=
-"Why does this outcome matter?";
-
-purpose.value=
-outcome.purpose||
-"";
+purpose.className="life-outcome-purpose";
+purpose.placeholder="Why does this outcome matter?";
+purpose.value=outcome.purpose||"";
 
 purposeWrap.appendChild(purpose);
 
@@ -1843,8 +1966,6 @@ purposeWrap
 );
 
 card.appendChild(grid);
-
-/* ACTIONS */
 
 const actions=
 document.createElement("div");
@@ -1887,13 +2008,8 @@ const input=
 document.createElement("input");
 
 input.type="text";
-
-input.className=
-"life-outcome-action";
-
-input.placeholder=
-"Action that moves this outcome forward";
-
+input.className="life-outcome-action";
+input.placeholder="Action that moves this outcome forward";
 input.value=text;
 
 const sendButton=
@@ -1901,7 +2017,7 @@ document.createElement("button");
 
 sendButton.type="button";
 sendButton.className="send-today-button";
-sendButton.textContent="→ Add to TODAY";
+sendButton.textContent="→ Add to Selected Day";
 
 const deleteButton=
 document.createElement("button");
@@ -1953,7 +2069,7 @@ true
 );
 
 sendButton.textContent=
-"✓ Added to TODAY";
+"✓ Added";
 
 sendButton.classList.add("added");
 
@@ -1961,7 +2077,7 @@ setTimeout(
 ()=>{
 
 sendButton.textContent=
-"→ Add to TODAY";
+"→ Add to Selected Day";
 
 sendButton.classList.remove("added");
 
@@ -2139,35 +2255,46 @@ JSON.stringify(lifeOutcomes)
 
 function loadLifeOutcomes(){
 
-const v18=
+const v19=
 parseArrayStorage(
 localStorage.getItem(
 LIFE_OUTCOMES_STORAGE_KEY
 )
 );
 
-const v17=
+const v18=
 parseArrayStorage(
 localStorage.getItem(
 OLD_LIFE_OUTCOMES_STORAGE_KEY
 )
 );
 
-const v16=
+const v17=
 parseArrayStorage(
 localStorage.getItem(
 OLDER_LIFE_OUTCOMES_STORAGE_KEY
 )
 );
 
-const v15=
+const v16=
 parseArrayStorage(
 localStorage.getItem(
 OLDEST_LIFE_OUTCOMES_STORAGE_KEY
 )
 );
 
-if(v18 && v18.length){
+const v15=
+parseArrayStorage(
+localStorage.getItem(
+LEGACY_LIFE_OUTCOMES_STORAGE_KEY
+)
+);
+
+if(v19 && v19.length){
+
+lifeOutcomes=v19;
+
+}else if(v18 && v18.length){
 
 lifeOutcomes=v18;
 
@@ -2175,34 +2302,24 @@ lifeOutcomes=v18;
 
 lifeOutcomes=v17;
 
-localStorage.setItem(
-LIFE_OUTCOMES_STORAGE_KEY,
-JSON.stringify(lifeOutcomes)
-);
-
 }else if(v16 && v16.length){
 
 lifeOutcomes=v16;
 
-localStorage.setItem(
-LIFE_OUTCOMES_STORAGE_KEY,
-JSON.stringify(lifeOutcomes)
-);
-
 }else if(v15 && v15.length){
 
 lifeOutcomes=v15;
-
-localStorage.setItem(
-LIFE_OUTCOMES_STORAGE_KEY,
-JSON.stringify(lifeOutcomes)
-);
 
 }else{
 
 lifeOutcomes=[];
 
 }
+
+localStorage.setItem(
+LIFE_OUTCOMES_STORAGE_KEY,
+JSON.stringify(lifeOutcomes)
+);
 
 const list=
 document.getElementById(
@@ -2285,12 +2402,61 @@ message.style.display="none";
 }
 
 /* =========================================================
-   TODAY DATA
+   DAILY HISTORY
    ========================================================= */
 
-let dashboardData={
+let dailyHistory={};
 
-date:getDateKey(),
+function loadDailyHistoryObject(){
+
+const raw=
+localStorage.getItem(
+DAILY_HISTORY_STORAGE_KEY
+);
+
+if(!raw){
+
+dailyHistory={};
+return;
+
+}
+
+try{
+
+const parsed=
+JSON.parse(raw);
+
+dailyHistory=
+parsed &&
+typeof parsed==="object" &&
+!Array.isArray(parsed)
+?
+parsed
+:
+{};
+
+}catch(error){
+
+dailyHistory={};
+
+}
+
+}
+
+function saveDailyHistoryObject(){
+
+localStorage.setItem(
+DAILY_HISTORY_STORAGE_KEY,
+JSON.stringify(dailyHistory)
+);
+
+}
+
+function emptyDayData(dateKey){
+
+return {
+
+date:dateKey,
 
 outcome:"",
 
@@ -2337,6 +2503,16 @@ focus:0
 
 };
 
+}
+
+function cloneData(data){
+
+return JSON.parse(
+JSON.stringify(data)
+);
+
+}
+
 function normalizeActions(actions){
 
 if(!Array.isArray(actions)){
@@ -2374,6 +2550,401 @@ Number(action.focus)
 
 }
 
+function normalizeDayData(
+data,
+dateKey
+){
+
+const base=
+emptyDayData(dateKey);
+
+if(!data){
+return base;
+}
+
+return {
+
+date:dateKey,
+
+outcome:
+data.outcome||"",
+
+purpose:
+data.purpose||"",
+
+commitments:
+Array.isArray(data.commitments)
+?
+data.commitments.map(
+item=>({
+
+text:item.text||"",
+start:item.start||"",
+end:item.end||""
+
+})
+)
+:
+base.commitments,
+
+actions:
+Array.isArray(data.actions)
+?
+normalizeActions(data.actions)
+:
+base.actions
+
+};
+
+}
+
+function parseTodayStorage(value){
+
+if(!value){
+return null;
+}
+
+try{
+
+const parsed=
+JSON.parse(value);
+
+if(
+parsed &&
+typeof parsed==="object"
+){
+
+return parsed;
+
+}
+
+}catch(error){}
+
+return null;
+
+}
+
+function hasUsefulTodayData(data){
+
+if(!data){
+return false;
+}
+
+if(
+(data.outcome||"").trim()!==""
+){
+return true;
+}
+
+if(
+(data.purpose||"").trim()!==""
+){
+return true;
+}
+
+if(
+Array.isArray(data.actions) &&
+data.actions.some(
+action=>
+(action.text||"").trim()!==""
+)
+){
+return true;
+}
+
+if(
+Array.isArray(data.commitments) &&
+data.commitments.some(
+commitment=>
+(commitment.text||"").trim()!==""
+)
+){
+return true;
+}
+
+return false;
+
+}
+
+function migrateV18Today(){
+
+if(
+dailyHistory[actualTodayKey]
+){
+
+return;
+}
+
+const v18=
+parseTodayStorage(
+localStorage.getItem(
+OLD_TODAY_STORAGE_KEY
+)
+);
+
+const v17=
+parseTodayStorage(
+localStorage.getItem(
+OLDER_TODAY_STORAGE_KEY
+)
+);
+
+const v16=
+parseTodayStorage(
+localStorage.getItem(
+OLDEST_TODAY_STORAGE_KEY
+)
+);
+
+let oldData=null;
+
+if(hasUsefulTodayData(v18)){
+
+oldData=v18;
+
+}else if(hasUsefulTodayData(v17)){
+
+oldData=v17;
+
+}else if(hasUsefulTodayData(v16)){
+
+oldData=v16;
+
+}
+
+if(oldData){
+
+dailyHistory[actualTodayKey]=
+normalizeDayData(
+oldData,
+actualTodayKey
+);
+
+saveDailyHistoryObject();
+
+}
+
+}
+
+/* =========================================================
+   CURRENT DAILY DATA
+   ========================================================= */
+
+let dashboardData=
+emptyDayData(
+actualTodayKey
+);
+
+function saveSelectedDay(){
+
+dashboardData.date=
+selectedDateKey;
+
+dailyHistory[selectedDateKey]=
+cloneData(dashboardData);
+
+saveDailyHistoryObject();
+
+}
+
+function loadSelectedDay(dateKey){
+
+selectedDateKey=dateKey;
+
+const saved=
+dailyHistory[dateKey];
+
+dashboardData=
+saved
+?
+normalizeDayData(
+saved,
+dateKey
+)
+:
+emptyDayData(
+dateKey
+);
+
+renderCurrentDay();
+
+}
+
+function renderCurrentDay(){
+
+document.getElementById(
+"dailyDateSelector"
+).value=
+selectedDateKey;
+
+document.getElementById(
+"outcome"
+).value=
+dashboardData.outcome||"";
+
+document.getElementById(
+"purpose"
+).value=
+dashboardData.purpose||"";
+
+const commitmentList=
+document.getElementById(
+"commitmentList"
+);
+
+commitmentList.innerHTML="";
+
+if(
+!dashboardData.commitments.length
+){
+
+dashboardData.commitments=[
+
+{
+text:"",
+start:"",
+end:""
+}
+
+];
+
+}
+
+dashboardData.commitments.forEach(
+createCommitmentCard
+);
+
+renderTodayActions();
+renderDailyPlanner();
+renderTop3();
+updateHistoryStatus();
+
+}
+
+function updateHistoryStatus(){
+
+const box=
+document.getElementById(
+"historyStatus"
+);
+
+if(!box){
+return;
+}
+
+const exists=
+Boolean(
+dailyHistory[selectedDateKey]
+);
+
+if(selectedDateKey===actualTodayKey){
+
+box.textContent=
+exists
+?
+"Viewing today's saved daily plan."
+:
+"Viewing today. This day has not been saved yet.";
+
+}else{
+
+box.textContent=
+exists
+?
+`Viewing saved plan for ${formatDateKey(selectedDateKey)}.`
+:
+`No saved plan exists yet for ${formatDateKey(selectedDateKey)}.`;
+
+}
+
+}
+
+function startSelectedDayFresh(){
+
+const confirmation=
+window.confirm(
+`Start ${formatDateKey(selectedDateKey)} fresh? This will replace the currently loaded plan for this date with a blank daily plan.`
+);
+
+if(!confirmation){
+return;
+}
+
+dashboardData=
+emptyDayData(
+selectedDateKey
+);
+
+saveSelectedDay();
+
+renderCurrentDay();
+
+showTransferMessage(
+"✓ A fresh daily plan has been created for this date."
+);
+
+}
+
+function copyPreviousDay(){
+
+const previousKey=
+getPreviousDateKey(
+selectedDateKey
+);
+
+const previous=
+dailyHistory[previousKey];
+
+if(!previous){
+
+showTransferMessage(
+`No saved plan was found for ${formatDateKey(previousKey)}.`
+);
+
+return;
+
+}
+
+const copied=
+normalizeDayData(
+cloneData(previous),
+selectedDateKey
+);
+
+copied.date=
+selectedDateKey;
+
+/*
+A copied day starts with completion cleared.
+The plan, priorities, schedule and Top 3 are retained.
+*/
+
+copied.actions=
+copied.actions.map(
+action=>({
+
+...action,
+completed:false
+
+})
+);
+
+dashboardData=copied;
+
+saveSelectedDay();
+
+renderCurrentDay();
+
+showTransferMessage(
+`✓ Copied ${formatDateKey(previousKey)} into this day.`
+);
+
+}
+
+/* =========================================================
+   DAILY PLANNER
+   ========================================================= */
+
 function todayHasAction(text){
 
 return dashboardData.actions.some(
@@ -2393,10 +2964,6 @@ text
 );
 
 }
-
-/* =========================================================
-   DAILY PLANNER
-   ========================================================= */
 
 function renderDailyPlanner(){
 
@@ -2549,7 +3116,7 @@ function updateButton(){
 if(todayHasAction(actionText)){
 
 button.textContent=
-"✓ In TODAY";
+"✓ In Selected Day";
 
 button.classList.add(
 "in-today"
@@ -2558,7 +3125,7 @@ button.classList.add(
 }else{
 
 button.textContent=
-"+ Choose for TODAY";
+"+ Choose for This Day";
 
 button.classList.remove(
 "in-today"
@@ -2577,7 +3144,7 @@ button.addEventListener(
 if(todayHasAction(actionText)){
 
 showTransferMessage(
-"✓ That action is already in TODAY."
+"✓ That action is already in this day's plan."
 );
 
 return;
@@ -2625,7 +3192,6 @@ document.getElementById(
 );
 
 message.textContent=text;
-
 message.style.display="block";
 
 setTimeout(
@@ -2701,7 +3267,7 @@ outcomePurpose;
 
 }
 
-saveTodayDataOnly();
+saveSelectedDay();
 
 renderTodayActions();
 renderDailyPlanner();
@@ -2711,9 +3277,9 @@ showTransferMessage(
 
 duplicate
 ?
-"✓ That action is already in TODAY."
+"✓ That action is already in this day's plan."
 :
-"✓ Life Outcome action added to TODAY."
+"✓ Life Outcome action added to this day's plan."
 
 );
 
@@ -2726,7 +3292,7 @@ showPage("today");
 }
 
 /* =========================================================
-   TOP 3 FOCUS
+   TOP 3
    ========================================================= */
 
 function getFocusAction(rank){
@@ -2758,8 +3324,7 @@ rank
 
 collectTodayData();
 
-rank=
-Number(rank);
+rank=Number(rank);
 
 if(rank>0){
 
@@ -2783,7 +3348,7 @@ action.focus=0;
 dashboardData.actions[actionIndex].focus=
 rank;
 
-saveTodayDataOnly();
+saveSelectedDay();
 
 renderTodayActions();
 renderTop3();
@@ -2807,7 +3372,7 @@ action.focus=0;
 }
 );
 
-saveTodayDataOnly();
+saveSelectedDay();
 
 renderTodayActions();
 renderTop3();
@@ -2852,8 +3417,8 @@ if(meaningfulActions.length===0){
 list.innerHTML=
 `
 <div class="top3-empty">
-Add or choose TODAY actions first.
-Then you can select your three strongest priorities for the day.
+Add or choose actions for this day first.
+Then you can select your three strongest priorities.
 </div>
 `;
 
@@ -2914,12 +3479,8 @@ const remove=
 document.createElement("button");
 
 remove.type="button";
-
-remove.className=
-"top3-remove";
-
-remove.textContent=
-"Remove";
+remove.className="top3-remove";
+remove.textContent="Remove";
 
 remove.addEventListener(
 "click",
@@ -2963,15 +3524,9 @@ const input=
 document.createElement("input");
 
 input.type="text";
-
-input.className=
-"commitment-text";
-
-input.placeholder=
-"Example: Doctor appointment";
-
-input.value=
-commitment.text||"";
+input.className="commitment-text";
+input.placeholder="Example: Doctor appointment";
+input.value=commitment.text||"";
 
 const deleteButton=
 document.createElement("button");
@@ -3142,8 +3697,6 @@ document.createElement("div");
 options.className=
 "action-options";
 
-/* PRIORITY */
-
 const priorityWrap=
 document.createElement("div");
 
@@ -3169,8 +3722,6 @@ action.priority||
 
 priorityWrap.appendChild(priority);
 
-/* TIME */
-
 const timeWrap=
 document.createElement("div");
 
@@ -3185,8 +3736,6 @@ time.className="time-input";
 time.value=action.time||"";
 
 timeWrap.appendChild(time);
-
-/* DURATION */
 
 const durationWrap=
 document.createElement("div");
@@ -3215,8 +3764,6 @@ action.duration||
 "30";
 
 durationWrap.appendChild(duration);
-
-/* FOCUS */
 
 const focusWrap=
 document.createElement("div");
@@ -3372,7 +3919,7 @@ focus:0
 
 });
 
-saveTodayDataOnly();
+saveSelectedDay();
 renderTodayActions();
 
 }
@@ -3390,36 +3937,10 @@ if(
 dashboardData.actions.length===0
 ){
 
-dashboardData.actions=[
-
-{
-text:"",
-completed:false,
-priority:"must",
-time:"",
-duration:"30",
-focus:0
-},
-
-{
-text:"",
-completed:false,
-priority:"should",
-time:"",
-duration:"30",
-focus:0
-},
-
-{
-text:"",
-completed:false,
-priority:"could",
-time:"",
-duration:"30",
-focus:0
-}
-
-];
+dashboardData.actions=
+emptyDayData(
+selectedDateKey
+).actions;
 
 }
 
@@ -3455,13 +3976,13 @@ renderTop3();
 }
 
 /* =========================================================
-   COLLECT TODAY
+   COLLECT CURRENT DAY
    ========================================================= */
 
 function collectTodayData(){
 
 dashboardData.date=
-getDateKey();
+selectedDateKey;
 
 dashboardData.outcome=
 document.getElementById(
@@ -3507,7 +4028,7 @@ document.querySelectorAll(
 )
 )
 .map(
-(card,index)=>({
+card=>({
 
 text:
 card.querySelector(
@@ -4041,17 +4562,8 @@ schedule.appendChild(row);
 }
 
 /* =========================================================
-   SAVE / LOAD TODAY
+   SAVE CURRENT DAY
    ========================================================= */
-
-function saveTodayDataOnly(){
-
-localStorage.setItem(
-TODAY_STORAGE_KEY,
-JSON.stringify(dashboardData)
-);
-
-}
 
 function refreshToday(){
 
@@ -4061,9 +4573,10 @@ updateProgress();
 buildSchedule();
 renderTop3();
 
-saveTodayDataOnly();
+saveSelectedDay();
 
 renderDailyPlanner();
+updateHistoryStatus();
 
 }
 
@@ -4089,204 +4602,65 @@ message.style.display="none";
 
 }
 
-function parseTodayStorage(value){
-
-if(!value){
-return null;
-}
-
-try{
-
-const parsed=
-JSON.parse(value);
-
-if(
-parsed &&
-typeof parsed==="object"
-){
-
-return parsed;
-
-}
-
-}catch(error){}
-
-return null;
-
-}
-
-function hasUsefulTodayData(data){
-
-if(!data){
-return false;
-}
-
-if(
-(data.outcome||"").trim()!==""
-){
-return true;
-}
-
-if(
-(data.purpose||"").trim()!==""
-){
-return true;
-}
-
-if(
-Array.isArray(data.actions) &&
-data.actions.some(
-action=>
-(action.text||"").trim()!==""
-)
-){
-return true;
-}
-
-if(
-Array.isArray(data.commitments) &&
-data.commitments.some(
-commitment=>
-(commitment.text||"").trim()!==""
-)
-){
-return true;
-}
-
-return false;
-
-}
-
-function loadToday(){
-
-const v18=
-parseTodayStorage(
-localStorage.getItem(
-TODAY_STORAGE_KEY
-)
-);
-
-const v17=
-parseTodayStorage(
-localStorage.getItem(
-OLD_TODAY_STORAGE_KEY
-)
-);
-
-const v16=
-parseTodayStorage(
-localStorage.getItem(
-OLDER_TODAY_STORAGE_KEY
-)
-);
-
-let savedData=null;
-
-if(hasUsefulTodayData(v18)){
-
-savedData=v18;
-
-}else if(hasUsefulTodayData(v17)){
-
-savedData=v17;
-
-}else if(hasUsefulTodayData(v16)){
-
-savedData=v16;
-
-}else if(v18){
-
-savedData=v18;
-
-}else if(v17){
-
-savedData=v17;
-
-}else if(v16){
-
-savedData=v16;
-
-}
-
-if(savedData){
-
-dashboardData={
-
-date:
-savedData.date||
-getDateKey(),
-
-outcome:
-savedData.outcome||
-"",
-
-purpose:
-savedData.purpose||
-"",
-
-commitments:
-Array.isArray(
-savedData.commitments
-)
-?
-savedData.commitments
-:
-[],
-
-actions:
-normalizeActions(
-savedData.actions
-)
-
-};
-
-}
+/* =========================================================
+   DATE SELECTOR
+   ========================================================= */
 
 document.getElementById(
-"outcome"
-).value=
-dashboardData.outcome;
+"dailyDateSelector"
+).addEventListener(
+"change",
+event=>{
 
-document.getElementById(
-"purpose"
-).value=
-dashboardData.purpose;
+collectTodayData();
+saveSelectedDay();
 
-const commitmentList=
-document.getElementById(
-"commitmentList"
+const newDate=
+event.target.value;
+
+if(!newDate){
+return;
+}
+
+loadSelectedDay(
+newDate
 );
 
-commitmentList.innerHTML="";
-
-if(
-dashboardData.commitments.length===0
-){
-
-dashboardData.commitments=[
-
-{
-text:"",
-start:"",
-end:""
 }
-
-];
-
-}
-
-dashboardData.commitments.forEach(
-createCommitmentCard
 );
 
-renderTodayActions();
+document.getElementById(
+"jumpToTodayButton"
+).addEventListener(
+"click",
+()=>{
 
-saveTodayDataOnly();
+collectTodayData();
+saveSelectedDay();
+
+loadSelectedDay(
+actualTodayKey
+);
 
 }
+);
+
+document.getElementById(
+"newDayButton"
+).addEventListener(
+"click",
+startSelectedDayFresh
+);
+
+document.getElementById(
+"copyPreviousButton"
+).addEventListener(
+"click",
+copyPreviousDay
+);
 
 /* =========================================================
-   EVENTS
+   OTHER EVENTS
    ========================================================= */
 
 document.getElementById(
@@ -4353,7 +4727,13 @@ loadLifeAssessment();
 
 loadLifeOutcomes();
 
-loadToday();
+loadDailyHistoryObject();
+
+migrateV18Today();
+
+loadSelectedDay(
+actualTodayKey
+);
 
 renderDailyPlanner();
 
