@@ -983,6 +983,19 @@ font-size:12px;
 margin-top:20px
 }
 
+/* V1.14 DAILY TIME BLOCKING */
+.time-block-card{border:2px solid #bfdbfe;background:#f8fbff}
+.time-block-section{margin-top:16px}
+.time-block-heading{font-size:14px;font-weight:bold;color:#1e40af;margin-bottom:8px;text-transform:uppercase}
+.schedule-action-button{border:none;border-radius:9px;padding:10px;background:#dbeafe;color:#1d4ed8;font-size:12px;font-weight:bold;cursor:pointer}
+.schedule-action-button.remove{background:#fee2e2;color:#b91c1c}
+.schedule-controls{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end;margin-top:10px;padding:10px;background:white;border:1px solid #dbeafe;border-radius:10px}
+.schedule-item.completed .schedule-title{text-decoration:line-through;color:#9ca3af}
+.schedule-item-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+.unscheduled-item{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid var(--border)}
+.unscheduled-title{font-weight:bold}
+.unscheduled-meta{font-size:12px;color:var(--gray);margin-top:3px}
+.all-scheduled{padding:14px;border-radius:10px;background:#ecfdf5;color:#047857;font-weight:bold;text-align:center}
 @media(max-width:700px){
 h1{font-size:24px}
 .card{padding:16px}
@@ -1058,7 +1071,9 @@ width:100%
 
 .daily-date-row,
 .history-actions,
-.schedule-item{
+.schedule-item,
+.schedule-controls,
+.unscheduled-item{
 grid-template-columns:1fr
 }
 }
@@ -1075,7 +1090,7 @@ grid-template-columns:1fr
 <p class="subtitle">
 Manage the areas of your life that matter, decide what outcomes you want, and turn those outcomes into focused weekly and daily action.
 </p>
-<span class="version">Version 1.13</span>
+<span class="version">Version 1.14</span>
 </header>
 
 <nav class="nav">
@@ -1416,9 +1431,17 @@ Choose the actions that move your most important outcome forward. Use the Focus 
 <div id="conflictList"></div>
 </section>
 
-<section class="card">
-<h2>🗓️ Today's Schedule</h2>
+<section class="card time-block-card">
+<h2>⏰ Plan My Day</h2>
+<p class="section-description">Give today's actions a start and end time. Fixed commitments appear alongside them, and overlaps will warn you without blocking your plan.</p>
+<div class="time-block-section">
+<div class="time-block-heading">⏰ Scheduled Today</div>
 <div id="scheduleList"></div>
+</div>
+<div class="time-block-section">
+<div class="time-block-heading">📋 Still Unscheduled</div>
+<div id="unscheduledList"></div>
+</div>
 </section>
 
 <section class="card">
@@ -2127,6 +2150,7 @@ text:"",
 completed:false,
 priority:"must",
 time:"",
+endTime:"",
 duration:"30",
 focus:0
 },
@@ -2135,6 +2159,7 @@ text:"",
 completed:false,
 priority:"should",
 time:"",
+endTime:"",
 duration:"30",
 focus:0
 },
@@ -2143,6 +2168,7 @@ text:"",
 completed:false,
 priority:"could",
 time:"",
+endTime:"",
 duration:"30",
 focus:0
 }
@@ -2182,6 +2208,7 @@ text:v.text||"",
 completed:!!v.completed,
 priority:v.priority||"should",
 time:v.time||"",
+endTime:v.endTime||"",
 duration:String(v.duration||"30"),
 focus:[1,2,3].includes(+v.focus)
 ?+v.focus
@@ -2294,6 +2321,7 @@ text:t,
 completed:false,
 priority:"should",
 time:"",
+endTime:"",
 duration:"30",
 focus:0
 })
@@ -2557,172 +2585,48 @@ buildSchedule()
 )
 }
 
+function actionEndValue(a){
+if(a.endTime){return a.endTime}
+let s=mins(a.time);
+if(s===null){return ""}
+let e=s+(+a.duration||30);
+return `${String(Math.floor(e/60)%24).padStart(2,"0")}:${String(e%60).padStart(2,"0")}`
+}
+
 function renderActions(){
-
 $("actionList").innerHTML="";
-
-dayData.actions.forEach(
-(a,i)=>{
-
+dayData.actions.forEach((a,i)=>{
 let c=document.createElement("div");
-
-c.className=
-`action-card priority-${a.priority}`;
-
+c.className=`action-card priority-${a.priority}`;
+let scheduled=!!(a.time&&actionEndValue(a));
 c.innerHTML=`
 <div class="action-main">
-
-<input
-type="checkbox"
-class="action-checkbox"
-${a.completed?"checked":""}
->
-
-<input
-class="action-text ${a.completed?"completed":""}"
-value="${escAttr(a.text)}"
-placeholder="Enter an action step"
->
-
-<button class="delete-button">
-×
-</button>
-
+<input type="checkbox" class="action-checkbox" ${a.completed?"checked":""}>
+<input class="action-text ${a.completed?"completed":""}" value="${escAttr(a.text)}" placeholder="Enter an action step">
+<button class="delete-button">×</button>
 </div>
-
 <div class="action-options">
-
-<div>
-<div class="field-label">Priority</div>
-
-<select class="priority-select">
-<option value="must">Must Do</option>
-<option value="should">Should Do</option>
-<option value="could">Could Do</option>
-</select>
+<div><div class="field-label">Priority</div><select class="priority-select"><option value="must">Must Do</option><option value="should">Should Do</option><option value="could">Could Do</option></select></div>
+<div><div class="field-label">Top 3 Focus</div><select class="focus-select ${a.focus?"focused":""}"><option value="0">Not Top 3</option><option value="1">🥇 Focus #1</option><option value="2">🥈 Focus #2</option><option value="3">🥉 Focus #3</option></select></div>
+<div style="grid-column:span 2"><div class="field-label">Time Blocking</div><button class="schedule-action-button schedule-toggle">${scheduled?"✏️ Edit Time":"⏰ Schedule"}</button></div>
 </div>
-
-<div>
-<div class="field-label">Start Time</div>
-
-<input
-type="time"
-class="time-input"
-value="${a.time}"
->
-</div>
-
-<div>
-<div class="field-label">Duration</div>
-
-<select class="duration-select">
-<option value="15">15 min</option>
-<option value="30">30 min</option>
-<option value="45">45 min</option>
-<option value="60">1 hour</option>
-<option value="90">1.5 hours</option>
-<option value="120">2 hours</option>
-</select>
-</div>
-
-<div>
-<div class="field-label">Top 3 Focus</div>
-
-<select class="focus-select ${a.focus?"focused":""}">
-<option value="0">Not Top 3</option>
-<option value="1">🥇 Focus #1</option>
-<option value="2">🥈 Focus #2</option>
-<option value="3">🥉 Focus #3</option>
-</select>
-</div>
-
-</div>
-`;
-
+<div class="schedule-controls" style="display:none">
+<div><div class="field-label">Start Time</div><input type="time" class="time-input" value="${a.time||""}"></div>
+<div><div class="field-label">End Time</div><input type="time" class="end-time-input" value="${actionEndValue(a)}"></div>
+<button class="schedule-action-button apply-time">Add to Schedule</button>
+</div>`;
 $("actionList").append(c);
-
-c.querySelector(".priority-select").value=
-a.priority;
-
-c.querySelector(".duration-select").value=
-a.duration;
-
-c.querySelector(".focus-select").value=
-a.focus;
-
-let save=()=>{
-
-a.text=
-c.querySelector(".action-text").value;
-
-a.completed=
-c.querySelector(".action-checkbox").checked;
-
-a.priority=
-c.querySelector(".priority-select").value;
-
-a.time=
-c.querySelector(".time-input").value;
-
-a.duration=
-c.querySelector(".duration-select").value;
-
-c.querySelector(".action-text")
-.classList.toggle(
-"completed",
-a.completed
-);
-
-saveDay();
-updateProgress();
-buildSchedule();
-renderTop3()
-};
-
-c.querySelector(".action-checkbox").onchange=save;
-c.querySelector(".action-text").oninput=save;
-
-c.querySelector(".priority-select").onchange=()=>{
-save();
-renderActions()
-};
-
-c.querySelector(".time-input").onchange=save;
-c.querySelector(".duration-select").onchange=save;
-
-c.querySelector(".focus-select").onchange=e=>{
-
-let r=+e.target.value;
-
-if(r){
-
-dayData.actions.forEach(
-(x,j)=>{
-
-if(j!==i&&x.focus===r){
-x.focus=0
-}
-}
-)
-}
-
-a.focus=r;
-
-saveDay();
-renderActions();
-renderTop3();
-buildSchedule()
-};
-
-c.querySelector(".delete-button").onclick=()=>{
-
-dayData.actions.splice(i,1);
-
-saveDay();
-renderDay()
-}
-}
-)
+c.querySelector(".priority-select").value=a.priority;
+c.querySelector(".focus-select").value=a.focus;
+let baseSave=()=>{a.text=c.querySelector(".action-text").value;a.completed=c.querySelector(".action-checkbox").checked;a.priority=c.querySelector(".priority-select").value;c.querySelector(".action-text").classList.toggle("completed",a.completed);saveDay();updateProgress();buildSchedule();renderTop3()};
+c.querySelector(".action-checkbox").onchange=baseSave;
+c.querySelector(".action-text").oninput=baseSave;
+c.querySelector(".priority-select").onchange=()=>{baseSave();renderActions()};
+c.querySelector(".schedule-toggle").onclick=()=>{let box=c.querySelector(".schedule-controls");box.style.display=box.style.display==="grid"?"none":"grid"};
+c.querySelector(".apply-time").onclick=()=>{let st=c.querySelector(".time-input").value,en=c.querySelector(".end-time-input").value;if(!st||!en){flash("todayTransferMessage","Choose both a start time and an end time.");return}if(mins(en)<=mins(st)){flash("todayTransferMessage","End time must be later than start time.");return}a.time=st;a.endTime=en;a.duration=String(mins(en)-mins(st));saveDay();renderActions();buildSchedule();flash("todayTransferMessage",`✓ ${a.text.trim()||"Action"} added to Plan My Day.`)};
+c.querySelector(".focus-select").onchange=e=>{let r=+e.target.value;if(r){dayData.actions.forEach((x,j)=>{if(j!==i&&x.focus===r)x.focus=0})}a.focus=r;saveDay();renderActions();renderTop3();buildSchedule()};
+c.querySelector(".delete-button").onclick=()=>{dayData.actions.splice(i,1);saveDay();renderDay()};
+})
 }
 
 function rankIcon(r){
@@ -2863,147 +2767,21 @@ return `${h}:${String(m).padStart(2,"0")} ${ap}`
 }
 
 function buildSchedule(){
-
 let items=[];
-
-dayData.commitments.forEach(
-x=>{
-
-let s=mins(x.start),
-e=mins(x.end);
-
-if(
-x.text.trim()&&
-s!==null&&
-e>s
-){
-
-items.push({
-title:x.text,
-start:s,
-end:e,
-type:"commitment",
-conflict:false
-})
-}
-}
-);
-
-dayData.actions.forEach(
-a=>{
-
-let s=mins(a.time);
-
-if(
-a.text.trim()&&
-s!==null
-){
-
-items.push({
-title:a.text,
-start:s,
-end:s+(+a.duration||30),
-type:"action",
-priority:a.priority,
-duration:a.duration,
-focus:a.focus,
-completed:a.completed,
-conflict:false
-})
-}
-}
-);
-
-items.sort(
-(a,b)=>a.start-b.start
-);
-
+dayData.commitments.forEach((x,i)=>{let st=mins(x.start),en=mins(x.end);if(x.text.trim()&&st!==null&&en>st)items.push({title:x.text,start:st,end:en,type:"commitment",conflict:false,index:i})});
+dayData.actions.forEach((a,i)=>{let st=mins(a.time),endValue=actionEndValue(a),en=mins(endValue);if(a.text.trim()&&st!==null&&en!==null&&en>st)items.push({title:a.text,start:st,end:en,type:"action",priority:a.priority,focus:a.focus,completed:a.completed,conflict:false,index:i})});
+items.sort((a,b)=>a.start-b.start);
 let conflicts=[];
-
-for(let i=0;i<items.length;i++){
-
-for(let j=i+1;j<items.length;j++){
-
-if(
-items[i].start<items[j].end&&
-items[j].start<items[i].end
-){
-
-items[i].conflict=true;
-items[j].conflict=true;
-
-conflicts.push(
-`${items[i].title} overlaps with ${items[j].title} from ${clock(Math.max(items[i].start,items[j].start))} to ${clock(Math.min(items[i].end,items[j].end))}.`
-)
-}
-}
-}
-
-$("conflictList").innerHTML=
-conflicts.map(
-x=>`<div class="conflict-item">${esc(x)}</div>`
-).join("");
-
-$("conflictBox").style.display=
-conflicts.length
-?"block"
-:"none";
-
-$("scheduleList").innerHTML=
-items.length
-?""
-:'<div class="schedule-empty">Add a fixed commitment or give an action a start time and it will appear here.</div>';
-
-items.forEach(
-x=>{
-
-let r=
-document.createElement("div");
-
-r.className=
-"schedule-item"+
-(x.conflict?" conflicted":"");
-
-let meta=
-x.type==="commitment"
-?'<span class="commitment-badge">COMMITMENT</span>'
-:`<span class="priority-badge badge-${x.priority}">${x.priority.toUpperCase()}</span>${x.focus?`<span class="focus-badge">${rankIcon(x.focus)} FOCUS #${x.focus}</span>`:""} ${x.duration} minutes${x.completed?" • ✓ Completed":""}`;
-
-if(x.conflict){
-
-meta+=
-' <span class="conflict-badge">⚠ CONFLICT</span>'
-}
-
-r.innerHTML=`
-<div class="schedule-time">
-
-${clock(x.start)}
-
-<br>
-
-<span style="font-size:12px;color:#6b7280">
-to ${clock(x.end)}
-</span>
-
-</div>
-
-<div>
-
-<div class="schedule-title">
-${esc(x.title)}
-</div>
-
-<div class="schedule-meta">
-${meta}
-</div>
-
-</div>
-`;
-
-$("scheduleList").append(r)
-}
-)
+for(let i=0;i<items.length;i++)for(let j=i+1;j<items.length;j++){if(items[i].start<items[j].end&&items[j].start<items[i].end){items[i].conflict=true;items[j].conflict=true;conflicts.push(`${items[i].title} overlaps with ${items[j].title} from ${clock(Math.max(items[i].start,items[j].start))} to ${clock(Math.min(items[i].end,items[j].end))}.`)}}
+$("conflictList").innerHTML=conflicts.map(x=>`<div class="conflict-item">${esc(x)}</div>`).join("");
+$("conflictBox").style.display=conflicts.length?"block":"none";
+$("scheduleList").innerHTML=items.length?"":'<div class="schedule-empty">Nothing is scheduled yet. Use ⏰ Schedule beside an action or add a fixed commitment.</div>';
+items.forEach(x=>{let r=document.createElement("div");r.className="schedule-item"+(x.conflict?" conflicted":"")+(x.completed?" completed":"");let meta=x.type==="commitment"?'<span class="commitment-badge">📌 FIXED COMMITMENT</span>':`${x.focus?`<span class="focus-badge">${rankIcon(x.focus)} FOCUS #${x.focus}</span>`:""}<span class="priority-badge badge-${x.priority}">${x.priority.toUpperCase()}</span>${x.completed?" ✓ Completed":""}`;if(x.conflict)meta+=' <span class="conflict-badge">⚠ CONFLICT</span>';r.innerHTML=`<div class="schedule-time">${clock(x.start)}<br><span style="font-size:12px;color:#6b7280">to ${clock(x.end)}</span></div><div><div class="schedule-title">${esc(x.title)}</div><div class="schedule-meta">${meta}</div>${x.type==="action"?'<div class="schedule-item-actions"><button class="schedule-action-button complete-block"></button><button class="schedule-action-button edit-block">✏️ Edit Time</button><button class="schedule-action-button remove remove-block">Remove from Schedule</button></div>':""}</div>`;
+if(x.type==="action"){let a=dayData.actions[x.index],complete=r.querySelector(".complete-block");complete.textContent=a.completed?"↩ Mark Incomplete":"✓ Mark Complete";complete.onclick=()=>{a.completed=!a.completed;saveDay();renderActions();renderTop3();updateProgress();buildSchedule()};r.querySelector(".edit-block").onclick=()=>{let cards=[...document.querySelectorAll("#actionList .action-card")],card=cards[x.index];if(card){card.querySelector(".schedule-controls").style.display="grid";card.scrollIntoView({behavior:"smooth",block:"center"})}};r.querySelector(".remove-block").onclick=()=>{a.time="";a.endTime="";saveDay();renderActions();buildSchedule();flash("todayTransferMessage",`✓ ${a.text.trim()||"Action"} removed from the schedule.`)}}
+$("scheduleList").append(r)});
+let unscheduled=dayData.actions.map((a,i)=>({a,i})).filter(x=>x.a.text.trim()&&!(x.a.time&&actionEndValue(x.a)));
+$("unscheduledList").innerHTML=unscheduled.length?"":"<div class=\"all-scheduled\">✓ All of today\'s actions have been scheduled.</div>";
+unscheduled.forEach(({a,i})=>{let r=document.createElement("div");r.className="unscheduled-item";r.innerHTML=`<div><div class="unscheduled-title">${a.focus?rankIcon(a.focus)+" ":""}${esc(a.text)}</div><div class="unscheduled-meta">${a.focus?`Focus #${a.focus} • `:""}${esc(a.priority.toUpperCase())}</div></div><button class="schedule-action-button">⏰ Schedule</button>`;r.querySelector("button").onclick=()=>{let cards=[...document.querySelectorAll("#actionList .action-card")],card=cards[i];if(card){card.querySelector(".schedule-controls").style.display="grid";card.scrollIntoView({behavior:"smooth",block:"center"})}};$("unscheduledList").append(r)})
 }
 
 $("addCommitmentButton").onclick=()=>{
@@ -3025,6 +2803,7 @@ text:"",
 completed:false,
 priority:"should",
 time:"",
+endTime:"",
 duration:"30",
 focus:0
 });
