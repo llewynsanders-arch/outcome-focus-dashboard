@@ -5371,5 +5371,57 @@ renderReview();
 </script>
 <!-- END VERSION 1.15 UPGRADE -->
 
+<!-- VERSION 1.16 - START MY DAY -->
+<script>
+(function(){
+const card=document.createElement('section');
+card.className='card start-week-card'; card.id='startMyDayCard';
+card.innerHTML=`<h2>☀️ Start My Day</h2><p class="section-description">Review yesterday, choose actions from this week's plan, and set your priorities for the selected day.</p><button class="save-button" id="startDayToggle" type="button">Build This Day's Plan</button><div id="startDayPanel" hidden style="margin-top:16px"><div id="startDayDate" class="history-status"></div><div class="start-week-grid" style="margin-top:14px"><div class="start-week-section"><h3>← Yesterday</h3><div id="startDayYesterday"></div></div><div class="start-week-section"><h3>📆 This Week's Actions</h3><div id="startDayWeek"></div></div></div><div class="start-week-section" style="margin-top:14px"><h3>🎯 Active Life Outcomes</h3><div id="startDayLife"></div></div><div class="start-week-section" style="margin-top:14px"><h3>⭐ Today's Plan & Top 3</h3><div id="startDayActions"></div><div class="start-week-new-action"><input type="text" id="startDayNew" placeholder="Add a new daily action"><button type="button" id="startDayAdd">+ Add</button></div><p id="startDayMessage" role="status" style="margin-top:10px;color:#166534"></p><button type="button" class="save-button" id="startDayFinish" style="margin-top:12px">Save Plan & Go to Time Blocking</button></div></div>`;
+$('dailyDateSelector').closest('section').after(card);
+const panel=$('startDayPanel');
+function addItem(parent,text,meta,handler,added=false){
+ const row=document.createElement('div'); row.className='start-week-item';
+ const title=document.createElement('div'); title.className='start-week-item-title'; title.textContent=text; row.append(title);
+ if(meta){const m=document.createElement('div');m.className='start-week-meta';m.textContent=meta;row.append(m);}
+ if(handler){const b=document.createElement('button');b.type='button';b.className='start-week-add'+(added?' added':'');b.textContent=added?'✓ In This Day’s Plan':'+ Add to This Day';b.disabled=added;b.onclick=handler;row.append(b);}
+ parent.append(row);return row;
+}
+function empty(parent,msg){const p=document.createElement('p');p.className='planner-empty';p.textContent=msg;parent.append(p);}
+function add(text,title='',purpose='',area='',priority='should'){
+ if(!text.trim()||hasDayAction(text))return;
+ const action={text:text.trim(),completed:false,priority:priority||'should',time:'',endTime:'',duration:'30',focus:0};
+ const blank=dayData.actions.findIndex(a=>!a.text.trim()); if(blank>=0)dayData.actions[blank]=action;else dayData.actions.push(action);
+ if(!dayData.outcome&&title)dayData.outcome=title;if(!dayData.purpose&&purpose)dayData.purpose=purpose;
+ saveDay();renderDay();$('startDayMessage').textContent='✓ Action added to this day.';
+}
+function renderStartDay(){
+ if(panel.hidden)return;
+ $('startDayDate').textContent='Planning for '+formatDate(selectedDateKey);
+ const y=$('startDayYesterday'),w=$('startDayWeek'),l=$('startDayLife'),a=$('startDayActions');[y,w,l,a].forEach(x=>x.replaceChildren());
+ const prev=previousDay(selectedDateKey), prior=normalizeDay(dailyHistory[prev],prev);
+ const previousActions=prior.actions.filter(x=>x.text.trim());
+ if(!previousActions.length)empty(y,'No actions saved for yesterday.');
+ previousActions.forEach(x=>addItem(y,x.text,(x.completed?'Completed':'Unfinished')+(x.focus?' · Focus #'+x.focus:''),x.completed?null:()=>add(x.text,'','','',x.priority),hasDayAction(x.text)));
+ const review=objectStore('lifeManagementDailyReviewsV115')?.[prev];
+ if(review){[['Wins',review.wins],['Unfinished',review.unfinished],['Lessons',review.lessons],['Improve',review.improve]].forEach(([label,value])=>{if(value&&value.trim())addItem(y,label,value);});}
+ const wk=mondayKey(fromKey(selectedDateKey));const week=normalizeWeek(weeklyHistory[wk],wk);
+ const weekly=week.actions.filter(x=>x.text.trim()&&!x.completed);
+ if(!weekly.length)empty(w,'No unfinished weekly actions for '+weekRange(wk)+'.');
+ weekly.forEach(x=>addItem(w,x.text,[x.sourceOutcome,x.focus?'Weekly Focus #'+x.focus:''].filter(Boolean).join(' · '),()=>add(x.text,x.sourceOutcome,'',x.sourceArea),hasDayAction(x.text)));
+ const active=lifeOutcomes.filter(o=>(o.status||'active')==='active');
+ if(!active.length)empty(l,'No active Life Outcomes.');
+ active.forEach(o=>{const group=addItem(l,o.title||'Untitled Life Outcome',[o.area,o.purpose].filter(Boolean).join(' · '));(o.actions||[]).filter(t=>t.trim()).forEach(t=>addItem(group,t,'',()=>add(t,o.title,o.purpose,o.area),hasDayAction(t)));});
+ const actions=dayData.actions.filter(x=>x.text.trim());if(!actions.length)empty(a,'Add actions above or create a new one below.');
+ actions.forEach(x=>{const row=addItem(a,x.text,(x.completed?'Completed':'Not completed')+' · '+x.priority.toUpperCase());const select=document.createElement('select');select.setAttribute('aria-label','Focus for '+x.text);select.style.marginTop='8px';[0,1,2,3].forEach(n=>{const opt=document.createElement('option');opt.value=n;opt.textContent=n?'Focus #'+n:'No Top 3 focus';select.append(opt);});select.value=x.focus||0;select.onchange=()=>{const rank=+select.value;if(rank)dayData.actions.forEach(other=>{if(other.focus===rank)other.focus=0;});x.focus=rank;saveDay();renderDay();};row.append(select);});
+}
+$('startDayToggle').onclick=()=>{panel.hidden=!panel.hidden;$('startDayToggle').textContent=panel.hidden?"Build This Day's Plan":"Hide Start My Day";renderStartDay();};
+$('startDayAdd').onclick=()=>{const input=$('startDayNew');const text=input.value.trim();if(!text)return;if(hasDayAction(text)){$('startDayMessage').textContent='That action is already in this day’s plan.';return;}add(text);input.value='';};
+$('startDayFinish').onclick=()=>{saveDay();renderDay();$('startDayMessage').textContent='✓ Daily plan saved.';$('scheduleList').closest('section').scrollIntoView({behavior:'smooth'});};
+const originalRenderDay=renderDay;renderDay=function(){originalRenderDay.apply(this,arguments);renderStartDay();};
+const originalRenderActions=renderActions;renderActions=function(){originalRenderActions.apply(this,arguments);renderStartDay();};
+document.querySelector('.version').textContent='Version 1.16';
+})();
+</script>
+<!-- END VERSION 1.16 UPGRADE -->
 </body>
 </html>
