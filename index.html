@@ -5423,5 +5423,50 @@ document.querySelector('.version').textContent='Version 1.16';
 })();
 </script>
 <!-- END VERSION 1.16 UPGRADE -->
+<!-- VERSION 1.17 - MANAGEMENT COMMAND CENTER -->
+<style>
+.nav{grid-template-columns:repeat(4,minmax(0,1fr))}.nav button{padding:10px 4px;font-size:13px}
+#homePage .home-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:18px}
+#homePage .home-metric{background:#fff;border-radius:14px;padding:16px;box-shadow:0 3px 12px #0000000d;min-width:0}
+#homePage .home-number{font-size:30px;font-weight:800;color:#1d4ed8;margin:6px 0}
+#homePage .home-meta{font-size:13px;color:#64748b;line-height:1.5;overflow-wrap:anywhere}
+#homePage .home-row{padding:12px 0;border-bottom:1px solid #e5e7eb;overflow-wrap:anywhere;line-height:1.5}
+#homePage .home-row:last-child{border-bottom:0}
+#homePage .home-bar{height:8px;background:#e5e7eb;border-radius:8px;overflow:hidden;margin-top:10px}
+#homePage .home-fill{height:100%;background:#2563eb;border-radius:8px}
+#homePage .home-link{border:0;background:#dbeafe;color:#1d4ed8;border-radius:9px;padding:10px 14px;font-weight:700;cursor:pointer;margin-top:12px;width:100%}
+#homePage .home-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media(max-width:600px){#homePage .home-columns{grid-template-columns:1fr}#homePage .home-metric{padding:12px}#homePage .home-number{font-size:25px}}
+</style>
+<script>
+(function(){
+const nav=document.createElement('button');nav.id='homeNav';nav.type='button';nav.textContent='🏠 HOME';$('lifeNav').before(nav);$('lifeNav').textContent='🧭 LIFE';
+const page=document.createElement('section');page.id='homePage';page.className='page';$('lifePage').before(page);
+page.innerHTML=`<div class="card"><h2>Management Command Center</h2><p class="section-description">Your life outcomes, weekly priorities and daily actions in one place.</p><div id="homeDate" class="history-status"></div><p class="home-meta">This overview uses the current calendar day and its Monday–Sunday week, not the last date you viewed.</p></div>
+<div class="home-grid"><div class="home-metric"><div class="home-meta">ACTIVE LIFE OUTCOMES</div><div class="home-number" id="homeActive"></div><div class="home-meta" id="homeLifeCount"></div></div><div class="home-metric"><div class="home-meta">TODAY'S PROGRESS</div><div class="home-number" id="homeDailyPct"></div><div class="home-meta" id="homeDailyCount"></div><div class="home-bar"><div class="home-fill" id="homeDailyBar"></div></div></div><div class="home-metric"><div class="home-meta">WEEKLY PROGRESS</div><div class="home-number" id="homeWeeklyPct"></div><div class="home-meta" id="homeWeeklyCount"></div><div class="home-bar"><div class="home-fill" id="homeWeeklyBar"></div></div><div class="home-metric"><div class="home-meta">TODAY'S TOP 3</div><div class="home-number" id="homeFocusCount"></div><div class="home-meta">Priorities selected out of 3</div></div></div>
+<div class="home-columns"><div class="card"><h2>☀️ Today's Top 3</h2><div id="homeDayFocus"></div><button class="home-link" id="homeOpenDay">Open Today's Plan</button></div><div class="card"><h2>📆 This Week's Top 3</h2><div id="homeWeekFocus"></div><button class="home-link" id="homeOpenWeek">Open This Week's Plan</button></div></div>
+<div class="card"><h2>🕒 Today's Schedule</h2><div id="homeSchedule"></div><button class="home-link" id="homeOpenSchedule">Open Time Blocking</button></div>
+<div class="card"><h2>🎯 Active Life Outcomes</h2><div id="homeOutcomes"></div><button class="home-link" id="homeOpenLife">Open Life Outcomes</button></div>
+<div class="card"><h2>📅 Upcoming Target Dates</h2><p class="home-meta">Active outcomes due within 30 days, including overdue outcomes.</p><div id="homeDeadlines"></div></div>
+<div class="card"><h2>🧭 Areas Needing Attention</h2><p class="home-meta">Largest positive gaps between your current and desired life assessment scores.</p><div id="homeGaps"></div><button class="home-link" id="homeOpenAssessment">Open Life Assessment</button></div>`;
+function row(parent,title,meta){const r=document.createElement('div');r.className='home-row';const t=document.createElement('strong');t.textContent=title;r.append(t);if(meta){const m=document.createElement('div');m.className='home-meta';m.textContent=meta;r.append(m);}parent.append(r);}
+function list(id,items,empty){const p=$(id);p.replaceChildren();if(!items.length){row(p,empty);return;}items.forEach(([t,m])=>row(p,t,m));}
+function actions(data){return data.actions.filter(a=>a.text.trim());}
+function progress(prefix,a){const done=a.filter(x=>x.completed).length;const pct=a.length?Math.round(done/a.length*100):0;$(prefix+'Pct').textContent=pct+'%';$(prefix+'Count').textContent=done+' of '+a.length+' actions completed';$(prefix+'Bar').style.width=pct+'%';}
+function focus(a){return a.filter(x=>x.focus).sort((a,b)=>a.focus-b.focus).map(x=>['#'+x.focus+' · '+x.text,x.completed?'✓ Completed':'Not completed']);}
+function time(t){const [h,m]=t.split(':').map(Number);return (h%12||12)+':'+String(m).padStart(2,'0')+(h>=12?' PM':' AM');}
+function renderHome(){const k=dateKey(),wk=mondayKey(fromKey(k));const d=normalizeDay(k===selectedDateKey?dayData:dailyHistory[k],k),w=normalizeWeek(wk===selectedWeekKey?weekData:weeklyHistory[wk],wk);const da=actions(d),wa=actions(w);const active=lifeOutcomes.filter(o=>(o.status||'active')==='active');$('homeDate').textContent=formatDate(k)+' · Week '+weekRange(wk);$('homeActive').textContent=active.length;$('homeLifeCount').textContent=lifeOutcomes.filter(o=>o.status==='completed').length+' completed outcomes';progress('homeDaily',da);progress('homeWeekly',wa);$('homeFocusCount').textContent=da.filter(x=>x.focus).length+'/3';list('homeDayFocus',focus(da),'No priorities selected for today.');list('homeWeekFocus',focus(wa),'No priorities selected for this week.');
+const schedule=[...d.commitments.filter(x=>x.text.trim()&&x.start&&x.end).map(x=>({text:x.text,start:x.start,end:x.end,meta:'Fixed commitment'})),...da.filter(x=>x.time&&x.endTime).map(x=>({text:x.text,start:x.time,end:x.endTime,meta:[x.focus?'Focus #'+x.focus:'',x.completed?'Completed':'Not completed'].filter(Boolean).join(' · ')}))].sort((a,b)=>a.start.localeCompare(b.start));list('homeSchedule',schedule.map(x=>[time(x.start)+' – '+time(x.end)+' · '+x.text,x.meta]),'Nothing scheduled for today.');
+list('homeOutcomes',active.map(o=>[o.title||'Untitled Life Outcome',[o.area,o.targetDate&&validKey(o.targetDate)?'Target: '+formatDate(o.targetDate):'No target date',(o.actions||[]).filter(t=>t.trim()).length+' planned actions'].filter(Boolean).join(' · ')]),'No active Life Outcomes.');
+const limit=fromKey(k);limit.setDate(limit.getDate()+30);list('homeDeadlines',active.filter(o=>validKey(o.targetDate)&&o.targetDate<=dateKey(limit)).sort((a,b)=>a.targetDate.localeCompare(b.targetDate)).map(o=>[o.title||'Untitled Life Outcome',(o.targetDate<k?'Overdue · ':o.targetDate===k?'Due today · ':'Due · ')+formatDate(o.targetDate)]),'No active target dates due within 30 days.');
+list('homeGaps',lifeAreas.map(a=>({...a,gap:Number(a.desired)-Number(a.current)})).filter(a=>a.gap>0).sort((a,b)=>b.gap-a.gap).slice(0,5).map(a=>[a.name,'Current '+a.current+' / 10 · Desired '+a.desired+' / 10 · Gap '+a.gap]),'No positive assessment gaps.');}
+const originalShow=showPage;showPage=function(name){if(name==='home'){['life','week','today'].forEach(n=>{$(n+'Page').classList.remove('active');$(n+'Nav').classList.remove('active');});page.classList.add('active');nav.classList.add('active');renderHome();window.scrollTo({top:0,behavior:'smooth'});}else{page.classList.remove('active');nav.classList.remove('active');originalShow(name);}};
+nav.onclick=()=>showPage('home');function openDay(){const k=dateKey();if(selectedDateKey!==k){saveDay();selectedDateKey=k;dayData=normalizeDay(dailyHistory[k],k);localStorage.setItem(LAST_VIEWED_DATE_STORAGE_KEY,k);}showPage('today');}
+$('homeOpenDay').onclick=openDay;$('homeOpenSchedule').onclick=()=>{openDay();$('scheduleList').closest('section').scrollIntoView({behavior:'smooth'});};$('homeOpenWeek').onclick=()=>{const k=mondayKey();if(selectedWeekKey!==k)loadWeek(k);showPage('week');};$('homeOpenLife').onclick=()=>{showPage('life');$('lifeOutcomeList').scrollIntoView({behavior:'smooth'});};$('homeOpenAssessment').onclick=()=>showPage('life');
+window.addEventListener('focus',()=>{if(page.classList.contains('active'))renderHome();});document.querySelector('.version').textContent='Version 1.17';showPage('home');
+})();
+</script>
+<!-- END VERSION 1.17 UPGRADE -->
+
 </body>
 </html>
