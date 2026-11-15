@@ -4537,5 +4537,839 @@ renderWeek();
 
 </script>
 
+<!-- VERSION 1.15 - END MY DAY -->
+<style>
+.end-day-card {
+  border: 2px solid #c4b5fd;
+  background: #faf8ff;
+}
+.end-day-card h2 {
+  color: #5b21b6;
+}
+.end-day-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 16px 0;
+}
+.end-day-stat {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 14px 6px;
+  text-align: center;
+}
+.end-day-stat strong {
+  display: block;
+  font-size: 24px;
+  color: #5b21b6;
+}
+.end-day-stat span {
+  font-size: 11px;
+  color: #6b7280;
+}
+.end-day-field {
+  margin: 16px 0;
+}
+.end-day-field label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.end-day-field textarea {
+  width: 100%;
+  min-height: 85px;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 9px;
+  font: inherit;
+  background: white;
+  resize: vertical;
+}
+.end-day-action {
+  padding: 12px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+.end-day-action-name {
+  font-weight: 600;
+  margin-bottom: 8px;
+  overflow-wrap: anywhere;
+}
+.end-day-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.end-day-button {
+  border: none;
+  border-radius: 8px;
+  background: #ede9fe;
+  color: #5b21b6;
+  font-weight: 700;
+  padding: 9px 12px;
+  cursor: pointer;
+}
+.end-day-button:disabled {
+  background: #e5e7eb;
+  color: #6b7280;
+  cursor: default;
+}
+.end-day-primary {
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  background: #7c3aed;
+  color: white;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 14px;
+}
+.end-day-message {
+  margin-top: 10px;
+  color: #166534;
+  font-size: 13px;
+}
+.end-day-subheading {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 22px 0 10px;
+  color: #5b21b6;
+}
+.end-day-empty {
+  padding: 12px;
+  color: #6b7280;
+  font-size: 13px;
+  text-align: center;
+}
+.end-day-focus-select {
+  padding: 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: white;
+  font: inherit;
+}
+</style>
+
+<script>
+(function(){
+
+"use strict";
+
+const REVIEW_KEY =
+  "lifeManagementDailyReviewsV115";
+
+let reviews = {};
+
+try {
+  reviews = JSON.parse(
+    localStorage.getItem(REVIEW_KEY) || "{}"
+  ) || {};
+} catch(error) {
+  reviews = {};
+}
+
+const progressSection =
+  document.getElementById("progressPercent")
+  .closest("section");
+
+const reviewCard =
+  document.createElement("section");
+
+reviewCard.className =
+  "card end-day-card";
+
+reviewCard.id = "endMyDayCard";
+
+reviewCard.innerHTML = `
+<h2>🌙 End My Day</h2>
+
+<p class="section-description">
+Review your progress, celebrate your wins,
+learn from today, and prepare for tomorrow.
+</p>
+
+<div id="endDayDate"
+     style="font-weight:700;margin-top:12px">
+</div>
+
+<div class="end-day-summary">
+
+  <div class="end-day-stat">
+    <strong id="endDayTotal">0</strong>
+    <span>TOTAL ACTIONS</span>
+  </div>
+
+  <div class="end-day-stat">
+    <strong id="endDayDone">0</strong>
+    <span>COMPLETED</span>
+  </div>
+
+  <div class="end-day-stat">
+    <strong id="endDayPercent">0%</strong>
+    <span>COMPLETION</span>
+  </div>
+
+</div>
+
+<div class="end-day-field">
+  <label for="endDayWins">
+    🏆 What were my wins?
+  </label>
+  <textarea id="endDayWins"
+    placeholder="What did I accomplish today?">
+  </textarea>
+</div>
+
+<div class="end-day-field">
+  <label for="endDayUnfinished">
+    📋 What didn't I get done?
+  </label>
+  <textarea id="endDayUnfinished"
+    placeholder="What remained unfinished, and why?">
+  </textarea>
+</div>
+
+<div class="end-day-field">
+  <label for="endDayLessons">
+    💡 What did I learn?
+  </label>
+  <textarea id="endDayLessons"
+    placeholder="What worked? What could I do differently?">
+  </textarea>
+</div>
+
+<div class="end-day-field">
+  <label for="endDayImprove">
+    🎯 How can I improve tomorrow?
+  </label>
+  <textarea id="endDayImprove"
+    placeholder="What will I change or focus on tomorrow?">
+  </textarea>
+</div>
+
+<div class="end-day-subheading">
+  📋 Unfinished Actions
+</div>
+
+<p class="section-description">
+Choose which unfinished actions deserve
+a place in tomorrow's plan.
+</p>
+
+<div id="endDayCarryList"></div>
+
+<div class="end-day-subheading">
+  🥇 Tomorrow's Daily Top 3
+</div>
+
+<p class="section-description">
+Choose tomorrow's three most important
+actions. Changes are saved to tomorrow's plan.
+</p>
+
+<div id="endDayTomorrowFocus"></div>
+
+<button type="button"
+        class="end-day-primary"
+        id="endDaySaveButton">
+  ✓ Save Daily Review
+</button>
+
+<div class="end-day-message"
+     id="endDayMessage"
+     aria-live="polite">
+</div>
+
+<button type="button"
+        class="end-day-primary"
+        id="endDayTomorrowButton"
+        style="background:#2563eb">
+  → Open Tomorrow's Plan
+</button>
+`;
+
+progressSection.after(reviewCard);
+
+const get = id =>
+  document.getElementById(id);
+
+const fields = {
+  wins: "endDayWins",
+  unfinished: "endDayUnfinished",
+  lessons: "endDayLessons",
+  improve: "endDayImprove"
+};
+
+function nextDate(key){
+
+  const parts = key.split("-").map(Number);
+
+  const date = new Date(
+    parts[0],
+    parts[1] - 1,
+    parts[2]
+  );
+
+  date.setDate(date.getDate() + 1);
+
+  return dateKey(date);
+}
+
+function getReview(key){
+
+  if(!reviews[key]){
+
+    reviews[key] = {
+      wins: "",
+      unfinished: "",
+      lessons: "",
+      improve: ""
+    };
+  }
+
+  return reviews[key];
+}
+
+function saveReview(){
+
+  const review = getReview(selectedDateKey);
+
+  Object.keys(fields).forEach(key => {
+
+    review[key] =
+      get(fields[key]).value;
+
+  });
+
+  try {
+
+    localStorage.setItem(
+      REVIEW_KEY,
+      JSON.stringify(reviews)
+    );
+
+    return true;
+
+  } catch(error) {
+
+    get("endDayMessage").textContent =
+      "Unable to save the review. Check browser storage.";
+
+    return false;
+  }
+}
+
+function showMessage(message){
+
+  get("endDayMessage").textContent =
+    message;
+}
+
+function cleanText(text){
+
+  return String(text || "")
+    .trim()
+    .toLowerCase();
+}
+
+function getTomorrow(){
+
+  const key = nextDate(selectedDateKey);
+
+  return {
+    key: key,
+    data: normalizeDay(
+      dailyHistory[key],
+      key
+    )
+  };
+}
+
+function saveTomorrow(key,data){
+
+  data.date = key;
+
+  dailyHistory[key] =
+    clone(data);
+
+  localStorage.setItem(
+    DAILY_HISTORY_STORAGE_KEY,
+    JSON.stringify(dailyHistory)
+  );
+}
+
+function updateSummary(){
+
+  const actions =
+    dayData.actions.filter(
+      action => cleanText(action.text)
+    );
+
+  const completed =
+    actions.filter(
+      action => action.completed
+    ).length;
+
+  const percent =
+    actions.length
+      ? Math.round(
+          completed / actions.length * 100
+        )
+      : 0;
+
+  get("endDayTotal").textContent =
+    actions.length;
+
+  get("endDayDone").textContent =
+    completed;
+
+  get("endDayPercent").textContent =
+    percent + "%";
+}
+
+function makeEmpty(message){
+
+  const div =
+    document.createElement("div");
+
+  div.className = "end-day-empty";
+
+  div.textContent = message;
+
+  return div;
+}
+
+function renderCarryList(){
+
+  const container =
+    get("endDayCarryList");
+
+  container.innerHTML = "";
+
+  const unfinished =
+    dayData.actions.filter(
+      action =>
+        cleanText(action.text) &&
+        !action.completed
+    );
+
+  const tomorrow = getTomorrow();
+
+  if(!unfinished.length){
+
+    container.append(
+      makeEmpty(
+        "No unfinished actions to carry forward."
+      )
+    );
+
+    return;
+  }
+
+  unfinished.forEach(action => {
+
+    const row =
+      document.createElement("div");
+
+    row.className = "end-day-action";
+
+    const title =
+      document.createElement("div");
+
+    title.className =
+      "end-day-action-name";
+
+    title.textContent = action.text;
+
+    const controls =
+      document.createElement("div");
+
+    controls.className =
+      "end-day-controls";
+
+    const button =
+      document.createElement("button");
+
+    button.type = "button";
+
+    button.className =
+      "end-day-button";
+
+    const exists =
+      tomorrow.data.actions.some(
+        item =>
+          cleanText(item.text) ===
+          cleanText(action.text)
+      );
+
+    button.textContent = exists
+      ? "✓ In Tomorrow's Plan"
+      : "→ Carry to Tomorrow";
+
+    button.disabled = exists;
+
+    button.onclick = function(){
+
+      const target = getTomorrow();
+
+      const duplicate =
+        target.data.actions.some(
+          item =>
+            cleanText(item.text) ===
+            cleanText(action.text)
+        );
+
+      if(duplicate){
+
+        renderCarryList();
+        return;
+      }
+
+      const newAction = {
+        text: action.text,
+        completed: false,
+        priority: action.priority || "should",
+        time: "",
+        endTime: "",
+        duration: "30",
+        focus: 0
+      };
+
+      const blankIndex =
+        target.data.actions.findIndex(
+          item => !cleanText(item.text)
+        );
+
+      if(blankIndex >= 0){
+
+        target.data.actions[blankIndex] =
+          newAction;
+
+      } else {
+
+        target.data.actions.push(
+          newAction
+        );
+      }
+
+      try {
+
+        saveTomorrow(
+          target.key,
+          target.data
+        );
+
+        renderCarryList();
+        renderTomorrowFocus();
+
+        showMessage(
+          "✓ " + action.text +
+          " added to tomorrow's plan."
+        );
+
+      } catch(error) {
+
+        showMessage(
+          "Unable to save tomorrow's action."
+        );
+      }
+    };
+
+    controls.append(button);
+
+    row.append(title,controls);
+
+    container.append(row);
+
+  });
+}
+
+function renderTomorrowFocus(){
+
+  const container =
+    get("endDayTomorrowFocus");
+
+  container.innerHTML = "";
+
+  const tomorrow = getTomorrow();
+
+  const actions =
+    tomorrow.data.actions;
+
+  const hasActions =
+    actions.some(
+      action => cleanText(action.text)
+    );
+
+  if(!hasActions){
+
+    container.append(
+      makeEmpty(
+        "Tomorrow has no actions yet. " +
+        "Carry an unfinished action forward " +
+        "or add actions to tomorrow's plan."
+      )
+    );
+
+    return;
+  }
+
+  for(let rank = 1; rank <= 3; rank++){
+
+    const row =
+      document.createElement("div");
+
+    row.className = "end-day-action";
+
+    const label =
+      document.createElement("div");
+
+    label.className =
+      "end-day-action-name";
+
+    label.textContent =
+      ["🥇","🥈","🥉"][rank - 1] +
+      " Focus #" + rank;
+
+    const select =
+      document.createElement("select");
+
+    select.className =
+      "end-day-focus-select";
+
+    select.style.width = "100%";
+
+    select.setAttribute(
+      "aria-label",
+      "Tomorrow focus " + rank
+    );
+
+    const empty =
+      document.createElement("option");
+
+    empty.value = "";
+
+    empty.textContent =
+      "Choose an action";
+
+    select.append(empty);
+
+    actions.forEach((action,index) => {
+
+      if(!cleanText(action.text)){
+        return;
+      }
+
+      const option =
+        document.createElement("option");
+
+      option.value = String(index);
+
+      option.textContent = action.text;
+
+      select.append(option);
+
+      if(Number(action.focus) === rank){
+
+        select.value = String(index);
+      }
+
+    });
+
+    select.onchange = function(){
+
+      const target = getTomorrow();
+
+      target.data.actions.forEach(action => {
+
+        if(Number(action.focus) === rank){
+
+          action.focus = 0;
+        }
+
+      });
+
+      if(select.value !== ""){
+
+        const chosen =
+          target.data.actions[
+            Number(select.value)
+          ];
+
+        if(chosen){
+
+          chosen.focus = rank;
+        }
+      }
+
+      try {
+
+        saveTomorrow(
+          target.key,
+          target.data
+        );
+
+        renderTomorrowFocus();
+
+        showMessage(
+          "✓ Tomorrow's Top 3 updated."
+        );
+
+      } catch(error) {
+
+        showMessage(
+          "Unable to save tomorrow's focus."
+        );
+      }
+    };
+
+    row.append(label,select);
+
+    container.append(row);
+
+  }
+}
+
+function renderReview(){
+
+  const review =
+    getReview(selectedDateKey);
+
+  get("endDayDate").textContent =
+    formatDate(selectedDateKey);
+
+  Object.keys(fields).forEach(key => {
+
+    get(fields[key]).value =
+      review[key] || "";
+
+  });
+
+  get("endDayMessage").textContent = "";
+
+  updateSummary();
+
+  renderCarryList();
+
+  renderTomorrowFocus();
+
+  get("endDayTomorrowButton").textContent =
+    "→ Open Tomorrow's Plan (" +
+    formatDate(nextDate(selectedDateKey)) +
+    ")";
+}
+
+Object.keys(fields).forEach(key => {
+
+  get(fields[key]).addEventListener(
+    "input",
+    saveReview
+  );
+
+});
+
+get("endDaySaveButton").onclick =
+  function(){
+
+    if(saveReview()){
+
+      showMessage(
+        "✓ Daily review saved for " +
+        formatDate(selectedDateKey) +
+        "."
+      );
+    }
+  };
+
+get("endDayTomorrowButton").onclick =
+  function(){
+
+    if(!saveReview()){
+      return;
+    }
+
+    saveDay();
+
+    selectedDateKey =
+      nextDate(selectedDateKey);
+
+    dayData = normalizeDay(
+      dailyHistory[selectedDateKey],
+      selectedDateKey
+    );
+
+    localStorage.setItem(
+      LAST_VIEWED_DATE_STORAGE_KEY,
+      selectedDateKey
+    );
+
+    renderDay();
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  };
+
+const originalRenderDay = renderDay;
+
+renderDay = function(){
+
+  originalRenderDay.apply(
+    this,
+    arguments
+  );
+
+  renderReview();
+};
+
+const originalUpdateProgress =
+  updateProgress;
+
+updateProgress = function(){
+
+  originalUpdateProgress.apply(
+    this,
+    arguments
+  );
+
+  updateSummary();
+
+  renderCarryList();
+};
+
+const originalBuildSchedule =
+  buildSchedule;
+
+buildSchedule = function(){
+
+  originalBuildSchedule.apply(
+    this,
+    arguments
+  );
+
+  updateSummary();
+
+  renderCarryList();
+};
+
+const versionBadge =
+  document.querySelector(".version");
+
+if(versionBadge){
+
+  versionBadge.textContent =
+    "Version 1.15";
+}
+
+renderReview();
+
+})();
+</script>
+<!-- END VERSION 1.15 UPGRADE -->
+
 </body>
 </html>
