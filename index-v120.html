@@ -1,0 +1,5643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Life Management System</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+--blue:#2563eb;
+--blue-light:#eff6ff;
+--dark:#1f2937;
+--gray:#6b7280;
+--border:#e5e7eb;
+--background:#f4f7fb;
+--green:#16a34a;
+--yellow:#f59e0b;
+--red:#dc2626;
+--purple:#7c3aed
+}
+
+body{
+font-family:Arial,Helvetica,sans-serif;
+background:var(--background);
+color:var(--dark);
+padding-bottom:80px
+}
+
+.container{
+width:94%;
+max-width:850px;
+margin:auto;
+padding:20px 0
+}
+
+header{margin-bottom:18px}
+
+.date{
+color:var(--gray);
+font-size:14px;
+margin-bottom:5px
+}
+
+h1{
+font-size:28px;
+margin-bottom:6px
+}
+
+.subtitle{
+color:var(--gray);
+line-height:1.5
+}
+
+.version{
+display:inline-block;
+margin-top:10px;
+padding:5px 9px;
+background:#dbeafe;
+color:#1d4ed8;
+border-radius:20px;
+font-size:12px;
+font-weight:bold
+}
+
+.nav{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:8px;
+background:white;
+padding:8px;
+border-radius:14px;
+margin-bottom:20px;
+box-shadow:0 4px 15px rgba(0,0,0,.05)
+}
+
+.nav button{
+border:none;
+border-radius:10px;
+padding:12px;
+font-weight:bold;
+font-size:15px;
+cursor:pointer;
+background:#f3f4f6;
+color:#4b5563
+}
+
+.nav button.active{
+background:var(--blue);
+color:white
+}
+
+.page{display:none}
+.page.active{display:block}
+
+.card{
+background:white;
+border-radius:16px;
+padding:20px;
+margin-bottom:18px;
+box-shadow:0 4px 15px rgba(0,0,0,.06)
+}
+
+.card h2{
+font-size:19px;
+margin-bottom:14px
+}
+
+.section-description{
+color:var(--gray);
+font-size:14px;
+line-height:1.55;
+margin:-5px 0 15px
+}
+
+label{
+display:block;
+font-weight:bold;
+margin:15px 0 7px
+}
+
+textarea,
+input[type=text],
+input[type=time],
+input[type=number],
+input[type=date],
+select{
+width:100%;
+padding:12px;
+border:1px solid #d1d5db;
+border-radius:10px;
+font-size:16px;
+font-family:inherit;
+background:white
+}
+
+textarea{
+min-height:90px;
+resize:vertical
+}
+
+textarea:focus,
+input:focus,
+select:focus{
+outline:2px solid #bfdbfe;
+border-color:var(--blue)
+}
+
+button{font-family:inherit}
+
+.life-summary{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:10px;
+margin-bottom:18px
+}
+
+.summary-box{
+background:white;
+padding:16px 10px;
+border-radius:14px;
+text-align:center;
+box-shadow:0 4px 15px rgba(0,0,0,.05)
+}
+
+.summary-number{
+font-size:25px;
+font-weight:bold;
+color:var(--blue)
+}
+
+.summary-label{
+color:var(--gray);
+font-size:12px;
+margin-top:5px
+}
+
+.life-area,
+.outcome-life-card,
+.action-card,
+.commitment-card,
+.week-action-card,
+.week-outcome-card{
+border:1px solid var(--border);
+border-radius:14px;
+padding:14px;
+margin-bottom:13px;
+background:#fafafa
+}
+
+.outcome-life-card,
+.week-action-card,
+.week-outcome-card{
+border-left:5px solid var(--purple)
+}
+
+.life-area-top,
+.outcome-life-top,
+.action-main,
+.commitment-main,
+.week-action-main{
+display:grid;
+grid-template-columns:1fr 38px;
+gap:9px;
+align-items:center
+}
+
+.action-main,
+.week-action-main{
+grid-template-columns:28px 1fr 38px
+}
+
+.area-name{
+font-weight:bold;
+font-size:17px
+}
+
+.delete-button{
+width:38px;
+height:38px;
+border:none;
+border-radius:9px;
+background:#fee2e2;
+color:#b91c1c;
+font-size:20px;
+cursor:pointer
+}
+
+.area-scores{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:9px;
+margin-top:13px
+}
+
+.score-label,
+.field-label{
+color:var(--gray);
+text-transform:uppercase;
+font-size:11px;
+font-weight:bold;
+margin-bottom:5px
+}
+
+.gap-box{
+min-height:47px;
+border-radius:10px;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:18px;
+font-weight:bold
+}
+
+.gap-low{background:#dcfce7;color:#166534}
+.gap-medium{background:#fef3c7;color:#92400e}
+.gap-high{background:#fee2e2;color:#b91c1c}
+
+.area-bar-background,
+.progress-background{
+height:12px;
+background:#e5e7eb;
+border-radius:20px;
+overflow:hidden;
+margin-top:12px
+}
+
+.area-bar,
+.progress-bar{
+height:100%;
+background:var(--blue);
+border-radius:20px
+}
+
+.area-status{
+margin-top:8px;
+color:var(--gray);
+font-size:13px
+}
+
+.add-button,
+.save-button,
+.commitment-add-button{
+width:100%;
+border:none;
+border-radius:10px;
+padding:14px;
+font-size:16px;
+font-weight:bold;
+cursor:pointer
+}
+
+.add-button{
+background:#e5e7eb;
+color:var(--dark)
+}
+
+.save-button{
+background:var(--blue);
+color:white
+}
+
+.commitment-add-button{
+background:#e0e7ff;
+color:#3730a3
+}
+
+.life-save{margin-top:4px}
+
+.outcome-life-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:9px;
+margin-top:11px
+}
+
+.outcome-life-actions{
+margin-top:12px;
+padding-top:12px;
+border-top:1px solid var(--border)
+}
+
+.life-action-row{
+display:grid;
+grid-template-columns:1fr auto auto 38px;
+gap:8px;
+margin-top:8px;
+align-items:center
+}
+
+.send-today-button,
+.week-pick-button,
+.week-send-button{
+border:none;
+border-radius:9px;
+padding:10px;
+background:#dbeafe;
+color:#1d4ed8;
+font-size:12px;
+font-weight:bold;
+cursor:pointer
+}
+
+.send-today-button.added,
+.week-pick-button.added{
+background:#dcfce7;
+color:#166534
+}
+
+.life-outcome-empty,
+.week-empty,
+.planner-empty{
+color:var(--gray);
+text-align:center;
+padding:14px 5px;
+line-height:1.5
+}
+
+.week-history-card{
+border:2px solid #c4b5fd;
+background:#faf8ff
+}
+
+.week-selector-row{
+display:grid;
+grid-template-columns:auto 1fr auto;
+gap:10px;
+align-items:center
+}
+
+.week-label{
+text-align:center;
+font-weight:bold;
+font-size:18px;
+color:#5b21b6;
+padding:12px;
+background:white;
+border:1px solid #ddd6fe;
+border-radius:10px
+}
+
+.week-current-button{
+width:100%;
+margin-top:10px
+}
+
+/* V1.13 START MY WEEK */
+
+.start-week-card{
+border:2px solid #bfdbfe;
+background:#f8fbff
+}
+
+.start-week-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:12px
+}
+
+.start-week-button{
+border:none;
+border-radius:10px;
+padding:12px 16px;
+background:var(--blue);
+color:white;
+font-weight:bold;
+font-size:14px;
+cursor:pointer
+}
+
+.start-week-panel{
+display:none;
+margin-top:16px
+}
+
+.start-week-panel.open{
+display:block
+}
+
+.start-week-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:14px
+}
+
+.start-week-section{
+border:1px solid #dbeafe;
+border-radius:12px;
+padding:14px;
+background:white
+}
+
+.start-week-section h3{
+font-size:16px;
+margin-bottom:10px
+}
+
+.start-week-item{
+border:1px solid var(--border);
+border-radius:10px;
+padding:10px;
+margin-top:8px;
+background:#fafafa
+}
+
+.start-week-item-title{
+font-weight:bold;
+line-height:1.4
+}
+
+.start-week-meta{
+font-size:12px;
+color:var(--gray);
+margin-top:5px;
+line-height:1.4
+}
+
+.start-week-add{
+width:100%;
+margin-top:8px;
+border:none;
+border-radius:8px;
+padding:9px;
+background:#dbeafe;
+color:#1d4ed8;
+font-size:12px;
+font-weight:bold;
+cursor:pointer
+}
+
+.start-week-add.added{
+background:#dcfce7;
+color:#166534
+}
+
+.start-week-review{
+margin-top:10px;
+padding:10px;
+border-radius:10px;
+background:#f9fafb;
+border:1px solid var(--border);
+font-size:13px;
+line-height:1.5
+}
+
+.start-week-review strong{
+display:block;
+margin-bottom:3px
+}
+
+.start-week-new-action{
+display:grid;
+grid-template-columns:1fr auto;
+gap:8px;
+margin-top:10px
+}
+
+.start-week-new-action button{
+border:none;
+border-radius:9px;
+padding:10px 14px;
+background:var(--purple);
+color:white;
+font-weight:bold;
+cursor:pointer
+}
+
+.week-outcome-header{
+display:grid;
+grid-template-columns:28px 1fr;
+gap:9px;
+align-items:start
+}
+
+.week-outcome-check,
+.week-action-check,
+.action-checkbox{
+width:21px;
+height:21px;
+cursor:pointer
+}
+
+.week-outcome-check{accent-color:var(--purple)}
+.week-action-check{accent-color:var(--green)}
+
+.week-outcome-title{font-weight:bold}
+
+.week-outcome-area{
+font-size:12px;
+color:var(--purple);
+font-weight:bold;
+margin-top:4px
+}
+
+.week-outcome-actions{
+display:grid;
+gap:7px;
+margin-top:10px
+}
+
+.week-pick-row{
+display:grid;
+grid-template-columns:1fr auto;
+gap:8px;
+align-items:center;
+background:white;
+border:1px solid var(--border);
+border-radius:10px;
+padding:9px
+}
+
+.week-action-options{
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+gap:9px;
+margin-top:10px
+}
+
+.week-focus-select{
+background:#fef3c7;
+color:#92400e;
+font-weight:bold
+}
+
+.week-carry-button{
+border:none;
+border-radius:9px;
+padding:10px;
+background:#ede9fe;
+color:#5b21b6;
+font-size:12px;
+font-weight:bold;
+cursor:pointer
+}
+
+.week-carry-button.added{
+background:#dcfce7;
+color:#166534
+}
+
+.week-carry-button:disabled{
+cursor:default;
+opacity:.75
+}
+
+.review-card{
+border:2px solid #bbf7d0;
+background:#f7fff9
+}
+
+.review-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:14px
+}
+
+.review-field{
+background:white;
+border:1px solid #dcfce7;
+border-radius:12px;
+padding:13px
+}
+
+.review-field label{
+margin:0 0 7px
+}
+
+.review-field textarea{
+min-height:120px
+}
+
+.review-save{
+margin-top:15px;
+background:var(--green)
+}
+
+.daily-history-card{
+border:2px solid #bfdbfe;
+background:#f8fbff
+}
+
+.daily-date-row{
+display:grid;
+grid-template-columns:1fr auto;
+gap:10px;
+align-items:end
+}
+
+.today-button,
+.history-button{
+border:none;
+border-radius:10px;
+padding:12px 15px;
+font-weight:bold;
+cursor:pointer
+}
+
+.today-button{
+background:#dbeafe;
+color:#1d4ed8
+}
+
+.history-button{
+background:#e5e7eb;
+color:#374151
+}
+
+.history-button.primary{
+background:var(--blue);
+color:white
+}
+
+.history-status{
+margin-top:12px;
+padding:10px 12px;
+border-radius:10px;
+background:white;
+border:1px solid #dbeafe;
+font-size:13px;
+color:#1e40af;
+font-weight:bold
+}
+
+.history-actions{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:9px;
+margin-top:12px
+}
+
+.planner-summary{
+display:flex;
+justify-content:space-between;
+padding:10px 12px;
+background:#eff6ff;
+border-radius:10px;
+margin-bottom:14px;
+font-size:13px;
+color:#1e40af;
+font-weight:bold
+}
+
+.planner-card{
+border:1px solid #bfdbfe;
+border-left:5px solid var(--blue);
+border-radius:14px;
+padding:15px;
+margin-bottom:14px;
+background:#f8fbff
+}
+
+.planner-top{
+display:flex;
+justify-content:space-between;
+gap:10px
+}
+
+.planner-title{font-weight:bold}
+
+.planner-area{
+font-size:12px;
+font-weight:bold;
+color:var(--purple);
+background:#ede9fe;
+padding:5px 8px;
+border-radius:20px
+}
+
+.planner-purpose{
+font-size:13px;
+color:var(--gray);
+margin:8px 0
+}
+
+.planner-actions{
+display:grid;
+gap:8px
+}
+
+.planner-action{
+display:grid;
+grid-template-columns:1fr auto;
+gap:8px;
+align-items:center;
+border:1px solid var(--border);
+border-radius:10px;
+padding:10px;
+background:white
+}
+
+.planner-add{
+border:none;
+border-radius:8px;
+padding:9px;
+background:#dbeafe;
+color:#1d4ed8;
+font-size:12px;
+font-weight:bold;
+cursor:pointer
+}
+
+.planner-add.in-today{
+background:#dcfce7;
+color:#166534
+}
+
+.top3-card{
+border:2px solid #fde68a;
+background:#fffbeb
+}
+
+.top3-header,
+.progress-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px
+}
+
+.top3-count{
+font-size:12px;
+font-weight:bold;
+padding:6px 9px;
+border-radius:20px;
+background:#fef3c7;
+color:#92400e
+}
+
+.top3-list{
+display:grid;
+gap:10px;
+margin-top:14px
+}
+
+.top3-slot{
+display:grid;
+grid-template-columns:52px 1fr auto;
+gap:10px;
+align-items:center;
+padding:12px;
+background:white;
+border:1px solid #fde68a;
+border-radius:12px
+}
+
+.top3-rank{
+font-size:25px;
+text-align:center
+}
+
+.top3-text{font-weight:bold}
+
+.top3-empty-text{
+color:#9ca3af;
+font-weight:normal
+}
+
+.top3-remove{
+border:none;
+border-radius:8px;
+background:#fee2e2;
+color:#b91c1c;
+padding:8px 10px;
+font-weight:bold;
+cursor:pointer
+}
+
+.top3-empty{
+padding:18px;
+text-align:center;
+color:var(--gray);
+background:white;
+border:1px dashed #fbbf24;
+border-radius:12px
+}
+
+.focus-select{
+background:#fef3c7;
+color:#92400e;
+font-weight:bold
+}
+
+.focus-select.focused{
+background:#f59e0b;
+color:white
+}
+
+.today-transfer-message{
+display:none;
+background:#ecfdf5;
+border:1px solid #86efac;
+border-left:5px solid #16a34a;
+border-radius:12px;
+padding:14px;
+margin-bottom:18px;
+color:#166534;
+font-weight:bold
+}
+
+.action-text.completed,
+.week-action-text.completed{
+text-decoration:line-through;
+color:#9ca3af
+}
+
+.action-options{
+display:grid;
+grid-template-columns:1.2fr 1fr 1fr 1.2fr;
+gap:9px;
+margin-top:11px
+}
+
+.priority-must{border-left:5px solid var(--red)}
+.priority-should{border-left:5px solid var(--yellow)}
+.priority-could{border-left:5px solid var(--green)}
+
+.commitment-card{
+border-color:#c7d2fe;
+border-left:5px solid #6366f1;
+background:#f5f7ff
+}
+
+.commitment-options{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:9px;
+margin-top:11px
+}
+
+.conflict-box{
+display:none;
+background:#fff7ed;
+border:1px solid #fdba74;
+border-left:5px solid #ea580c;
+border-radius:12px;
+padding:14px;
+margin-bottom:18px
+}
+
+.conflict-box h3{color:#c2410c}
+
+.conflict-item{
+color:#7c2d12;
+font-size:14px;
+margin-top:7px
+}
+
+.schedule-empty{
+text-align:center;
+color:var(--gray);
+padding:20px
+}
+
+.schedule-item{
+display:grid;
+grid-template-columns:115px 1fr;
+gap:12px;
+padding:14px 0;
+border-bottom:1px solid var(--border)
+}
+
+.schedule-item.conflicted{
+background:#fff7ed;
+border-radius:10px;
+padding:12px
+}
+
+.schedule-time{
+font-weight:bold;
+color:#1d4ed8
+}
+
+.schedule-title{font-weight:bold}
+
+.schedule-meta{
+font-size:13px;
+color:var(--gray)
+}
+
+.priority-badge,
+.commitment-badge,
+.conflict-badge,
+.focus-badge{
+display:inline-block;
+padding:4px 7px;
+border-radius:20px;
+font-size:11px;
+font-weight:bold;
+margin-right:5px
+}
+
+.badge-must{background:#fee2e2;color:#b91c1c}
+.badge-should{background:#fef3c7;color:#92400e}
+.badge-could{background:#dcfce7;color:#166534}
+.commitment-badge{background:#e0e7ff;color:#3730a3}
+.conflict-badge{background:#ffedd5;color:#c2410c}
+.focus-badge{background:#fef3c7;color:#92400e}
+
+.progress-percent{
+font-size:25px;
+font-weight:bold;
+color:var(--blue)
+}
+
+.progress-text{
+margin-top:9px;
+color:var(--gray);
+font-size:14px
+}
+
+.completion-message{
+display:none;
+margin-top:14px;
+padding:12px;
+background:#ecfdf5;
+border-radius:10px;
+color:#047857;
+font-weight:bold;
+text-align:center
+}
+
+.tip{
+background:var(--blue-light);
+border-left:4px solid var(--blue)
+}
+
+.tip p{line-height:1.6}
+
+.saved-message{
+display:none;
+text-align:center;
+color:#047857;
+font-weight:bold;
+margin-top:12px
+}
+
+.footer-note{
+text-align:center;
+color:#9ca3af;
+font-size:12px;
+margin-top:20px
+}
+
+/* V1.14 DAILY TIME BLOCKING */
+.time-block-card{border:2px solid #bfdbfe;background:#f8fbff}
+.time-block-section{margin-top:16px}
+.time-block-heading{font-size:14px;font-weight:bold;color:#1e40af;margin-bottom:8px;text-transform:uppercase}
+.schedule-action-button{border:none;border-radius:9px;padding:10px;background:#dbeafe;color:#1d4ed8;font-size:12px;font-weight:bold;cursor:pointer}
+.schedule-action-button.remove{background:#fee2e2;color:#b91c1c}
+.schedule-controls{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end;margin-top:10px;padding:10px;background:white;border:1px solid #dbeafe;border-radius:10px}
+.schedule-item.completed .schedule-title{text-decoration:line-through;color:#9ca3af}
+.schedule-item-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
+.unscheduled-item{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid var(--border)}
+.unscheduled-title{font-weight:bold}
+.unscheduled-meta{font-size:12px;color:var(--gray);margin-top:3px}
+.all-scheduled{padding:14px;border-radius:10px;background:#ecfdf5;color:#047857;font-weight:bold;text-align:center}
+@media(max-width:700px){
+h1{font-size:24px}
+.card{padding:16px}
+
+.area-scores,
+.action-options,
+.commitment-options,
+.outcome-life-grid,
+.week-action-options,
+.week-selector-row,
+.review-grid,
+.start-week-grid{
+grid-template-columns:1fr
+}
+
+.start-week-header{
+display:block
+}
+
+.start-week-button{
+width:100%;
+margin-top:10px
+}
+
+.start-week-new-action{
+grid-template-columns:1fr
+}
+
+.start-week-new-action button{
+width:100%
+}
+
+.life-action-row{
+grid-template-columns:1fr 38px
+}
+
+.life-action-row .delete-button{
+grid-column:2;
+grid-row:1
+}
+
+.life-action-row .send-today-button{
+grid-column:1/-1;
+width:100%
+}
+
+.planner-top{display:block}
+
+.planner-area{
+display:inline-block;
+margin-top:7px
+}
+
+.planner-action,
+.week-pick-row{
+grid-template-columns:1fr
+}
+
+.planner-add,
+.week-pick-button,
+.today-button{
+width:100%
+}
+
+.top3-slot{
+grid-template-columns:42px 1fr
+}
+
+.top3-remove{
+grid-column:1/-1;
+width:100%
+}
+
+.daily-date-row,
+.history-actions,
+.schedule-item,
+.schedule-controls,
+.unscheduled-item{
+grid-template-columns:1fr
+}
+}
+</style>
+</head>
+
+<body>
+
+<main class="container">
+
+<header>
+<div class="date" id="todayDate"></div>
+<h1>Life Management System</h1>
+<p class="subtitle">
+Manage the areas of your life that matter, decide what outcomes you want, and turn those outcomes into focused weekly and daily action.
+</p>
+<span class="version">Version 1.14</span>
+</header>
+
+<nav class="nav">
+<button id="lifeNav" class="active">🏠 LIFE</button>
+<button id="weekNav">📆 WEEK</button>
+<button id="todayNav">☀️ TODAY</button>
+</nav>
+
+<section id="lifePage" class="page active">
+
+<div class="card">
+<h2>🧭 Life Assessment</h2>
+<p class="section-description">
+Rate where you believe you are today and where you want to be. The gap helps you see which areas may deserve more attention.
+</p>
+</div>
+
+<div class="life-summary">
+<div class="summary-box">
+<div class="summary-number" id="averageCurrent">0</div>
+<div class="summary-label">CURRENT AVG.</div>
+</div>
+
+<div class="summary-box">
+<div class="summary-number" id="averageDesired">0</div>
+<div class="summary-label">DESIRED AVG.</div>
+</div>
+
+<div class="summary-box">
+<div class="summary-number" id="largestGap">0</div>
+<div class="summary-label">LARGEST GAP</div>
+</div>
+</div>
+
+<div class="card">
+<h2>🌱 Areas of Life</h2>
+<div id="lifeAreaList"></div>
+<button class="add-button" id="addLifeAreaButton">+ Add Your Own Life Area</button>
+</div>
+
+<div class="card">
+<h2>🎯 Life Outcomes</h2>
+<p class="section-description">
+Turn an important area of your life into a clear result. Define the outcome, why it matters, and the actions that move it forward.
+</p>
+<div id="lifeOutcomeList"></div>
+<button class="add-button" id="addLifeOutcomeButton">+ Add Life Outcome</button>
+</div>
+
+<button class="save-button life-save" id="saveLifeButton">
+Save Life Assessment & Outcomes
+</button>
+
+<div class="saved-message" id="lifeSavedMessage">
+✓ Your life assessment and outcomes have been saved.
+</div>
+
+</section>
+
+<section id="weekPage" class="page">
+
+<div class="today-transfer-message" id="weekMessage"></div>
+
+<section class="card week-history-card">
+<h2>📆 Weekly Planning</h2>
+<p class="section-description">
+Plan the results and actions that matter most this week. Each week is saved separately.
+</p>
+
+<div class="week-selector-row">
+<button class="history-button" id="previousWeekButton">← Previous Week</button>
+<div class="week-label" id="weekLabel"></div>
+<button class="history-button" id="nextWeekButton">Next Week →</button>
+</div>
+
+<button class="today-button week-current-button" id="currentWeekButton">
+Go to Current Week
+</button>
+
+<div class="history-status" id="weekHistoryStatus"></div>
+</section>
+
+<!-- V1.13 START MY WEEK -->
+
+<section class="card start-week-card">
+<div class="start-week-header">
+<div>
+<h2>📋 Start My Week</h2>
+<p class="section-description" style="margin-bottom:0">
+Review where you left off, then deliberately choose what deserves your attention this week.
+</p>
+</div>
+
+<button class="start-week-button" id="buildWeekButton">
+Build This Week's Plan
+</button>
+</div>
+
+<div class="start-week-panel" id="startWeekPanel">
+
+<div class="start-week-grid">
+
+<div class="start-week-section">
+<h3>← Last Week</h3>
+<div id="lastWeekPlanner"></div>
+</div>
+
+<div class="start-week-section">
+<h3>→ This Week</h3>
+<div id="thisWeekPlanner"></div>
+
+<div class="start-week-new-action">
+<input
+type="text"
+id="startWeekNewAction"
+placeholder="Add a brand-new weekly action"
+>
+<button id="startWeekAddAction">
++ Add
+</button>
+</div>
+</div>
+
+</div>
+</div>
+</section>
+
+<section class="card">
+<h2>🎯 Weekly Focus Outcomes</h2>
+<p class="section-description">
+Choose which active Life Outcomes deserve attention this week, then choose actions from them.
+</p>
+
+<div class="planner-summary">
+<span>Selected Weekly Outcomes</span>
+<span id="weeklyOutcomeCount">0</span>
+</div>
+
+<div id="weeklyOutcomePlanner"></div>
+</section>
+
+<section class="card top3-card">
+<div class="top3-header">
+<h2>⭐ Weekly Top 3</h2>
+<div class="top3-count" id="weeklyTop3Count">0 of 3 selected</div>
+</div>
+
+<p class="section-description">
+These are the three most important results or actions you want accomplished by the end of the week.
+</p>
+
+<div id="weeklyTop3List"></div>
+</section>
+
+<section class="card">
+<h2>✅ This Week's Key Actions</h2>
+<p class="section-description">
+Use actions from your Life Outcomes or add a weekly action of your own. Send any weekly action to the selected day when you are ready.
+</p>
+
+<div id="weeklyActionList"></div>
+
+<button class="add-button" id="addWeeklyActionButton">
++ Add Weekly Action
+</button>
+</section>
+
+<section class="card">
+<div class="progress-header">
+<h2>📈 Weekly Progress</h2>
+<div class="progress-percent" id="weeklyProgressPercent">0%</div>
+</div>
+
+<div class="progress-background">
+<div class="progress-bar" id="weeklyProgressBar"></div>
+</div>
+
+<div class="progress-text" id="weeklyProgressText">
+0 of 0 weekly actions completed
+</div>
+
+<div class="completion-message" id="weeklyCompletionMessage">
+🎉 Weekly action plan completed!
+</div>
+</section>
+
+<section class="card review-card">
+<h2>📝 Weekly Review</h2>
+
+<p class="section-description">
+Close out the week by recognizing your progress, learning from what happened, and deciding what deserves attention next.
+</p>
+
+<div class="review-grid">
+
+<div class="review-field">
+<label for="reviewWins">🏆 Wins & Accomplishments</label>
+<textarea id="reviewWins" placeholder="What went well? What did you accomplish or make progress on?"></textarea>
+</div>
+
+<div class="review-field">
+<label for="reviewIncomplete">⏳ What Didn't Get Done?</label>
+<textarea id="reviewIncomplete" placeholder="What did you intend to do but did not complete?"></textarea>
+</div>
+
+<div class="review-field">
+<label for="reviewLessons">💡 Lessons Learned</label>
+<textarea id="reviewLessons" placeholder="What did this week teach you? What worked or did not work?"></textarea>
+</div>
+
+<div class="review-field">
+<label for="reviewCarryForward">➡️ Carry Forward / Improve Next Week</label>
+<textarea id="reviewCarryForward" placeholder="What should continue, change, or receive attention next week?"></textarea>
+</div>
+
+</div>
+
+<button class="save-button review-save" id="saveReviewButton">
+Save Weekly Review
+</button>
+
+<div class="saved-message" id="reviewSavedMessage">
+✓ This week's review has been saved.
+</div>
+</section>
+
+<button class="save-button" id="saveWeekButton">
+Save This Week
+</button>
+
+<div class="saved-message" id="weekSavedMessage">
+✓ This week's plan has been saved.
+</div>
+
+</section> <section id="todayPage" class="page">
+
+<div class="today-transfer-message" id="todayTransferMessage"></div>
+
+<section class="card daily-history-card">
+<h2>📅 Daily History</h2>
+
+<p class="section-description">
+Each date has its own daily plan. Choose a date to review a previous day or plan ahead without erasing another day's information.
+</p>
+
+<div class="daily-date-row">
+<div>
+<label>Viewing Daily Plan For</label>
+<input type="date" id="dailyDateSelector">
+</div>
+
+<button class="today-button" id="jumpToTodayButton">
+Go to Today
+</button>
+</div>
+
+<div class="history-status" id="historyStatus"></div>
+
+<div class="history-actions">
+<button class="history-button primary" id="newDayButton">
+Start This Day Fresh
+</button>
+
+<button class="history-button" id="copyPreviousButton">
+Copy Previous Day
+</button>
+</div>
+</section>
+
+<section class="card">
+<h2>📋 Daily Planning</h2>
+
+<p class="section-description">
+Review your active Life Outcomes and deliberately choose the actions that deserve your attention on this day.
+</p>
+
+<div class="planner-summary">
+<span>Active Life Outcomes</span>
+<span id="activeOutcomeCount">0</span>
+</div>
+
+<div id="dailyPlannerList"></div>
+</section>
+
+<section class="card top3-card">
+<div class="top3-header">
+<h2>⭐ Today's Top 3 Focus</h2>
+<div class="top3-count" id="top3Count">0 of 3 selected</div>
+</div>
+
+<p class="section-description">
+Choose up to three actions that deserve your strongest focus for the selected day.
+</p>
+
+<div id="top3List"></div>
+</section>
+
+<section class="card">
+<h2>🎯 Today's Most Important Outcome</h2>
+
+<label>What result do I want?</label>
+<textarea id="outcome" placeholder="Example: Finish the first version of my website."></textarea>
+
+<label>Why does this matter?</label>
+<textarea id="purpose" placeholder="Write the reason this outcome is important to you."></textarea>
+</section>
+
+<section class="card">
+<h2>📅 Fixed Commitments</h2>
+
+<p class="section-description">
+Add appointments, meetings, work shifts, pickups, classes, or anything else that already has a fixed time.
+</p>
+
+<div id="commitmentList"></div>
+
+<button class="commitment-add-button" id="addCommitmentButton">
++ Add Fixed Commitment
+</button>
+</section>
+
+<section class="card">
+<h2>⚡ Action Plan</h2>
+
+<p class="section-description">
+Choose the actions that move your most important outcome forward. Use the Focus selector for your Daily Top 3.
+</p>
+
+<div id="actionList"></div>
+
+<button class="add-button" id="addActionButton">
++ Add Another Action
+</button>
+</section>
+
+<section class="conflict-box" id="conflictBox">
+<h3>⚠️ Schedule Conflict Detected</h3>
+<div id="conflictList"></div>
+</section>
+
+<section class="card time-block-card">
+<h2>⏰ Plan My Day</h2>
+<p class="section-description">Give today's actions a start and end time. Fixed commitments appear alongside them, and overlaps will warn you without blocking your plan.</p>
+<div class="time-block-section">
+<div class="time-block-heading">⏰ Scheduled Today</div>
+<div id="scheduleList"></div>
+</div>
+<div class="time-block-section">
+<div class="time-block-heading">📋 Still Unscheduled</div>
+<div id="unscheduledList"></div>
+</div>
+</section>
+
+<section class="card">
+<div class="progress-header">
+<h2>📈 Today's Progress</h2>
+<div class="progress-percent" id="progressPercent">0%</div>
+</div>
+
+<div class="progress-background">
+<div class="progress-bar" id="progressBar"></div>
+</div>
+
+<div class="progress-text" id="progressText">
+0 of 0 actions completed
+</div>
+
+<div class="completion-message" id="completionMessage">
+🎉 Outcome action plan completed!
+</div>
+</section>
+
+<section class="card tip">
+<h2>💡 Focus Reminder</h2>
+<p>
+Your calendar should reflect your priorities. Protect your commitments, identify your Top 3, then give important actions a specific place in your day.
+</p>
+</section>
+
+<button class="save-button" id="saveTodayButton">
+Save This Day
+</button>
+
+<div class="saved-message" id="todaySavedMessage">
+✓ This day's plan has been saved.
+</div>
+
+</section>
+
+<div class="footer-note">Life Management System</div>
+
+</main>
+
+<script>
+
+const LIFE_STORAGE_KEY="lifeManagementAreasV19",
+OLD_LIFE_STORAGE_KEY="lifeManagementAreasV18",
+OLDER_LIFE_STORAGE_KEY="lifeManagementAreasV17",
+LIFE_OUTCOMES_STORAGE_KEY="lifeManagementOutcomesV19",
+OLD_LIFE_OUTCOMES_STORAGE_KEY="lifeManagementOutcomesV18",
+OLDER_LIFE_OUTCOMES_STORAGE_KEY="lifeManagementOutcomesV17",
+OLDEST_LIFE_OUTCOMES_STORAGE_KEY="lifeManagementOutcomesV16",
+LEGACY_LIFE_OUTCOMES_STORAGE_KEY="lifeManagementOutcomesV15",
+DAILY_HISTORY_STORAGE_KEY="lifeManagementDailyHistoryV19",
+LAST_VIEWED_DATE_STORAGE_KEY="lifeManagementLastViewedDateV19",
+OLD_TODAY_STORAGE_KEY="outcomeFocusDashboardV18",
+OLDER_TODAY_STORAGE_KEY="outcomeFocusDashboardV17",
+OLDEST_TODAY_STORAGE_KEY="outcomeFocusDashboardV16",
+WEEKLY_HISTORY_STORAGE_KEY="lifeManagementWeeklyHistoryV110",
+LAST_VIEWED_WEEK_STORAGE_KEY="lifeManagementLastViewedWeekV110";
+
+const $=id=>document.getElementById(id);
+const clone=x=>JSON.parse(JSON.stringify(x));
+
+function dateKey(d=new Date()){
+return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`
+}
+
+function fromKey(k){
+let p=k.split("-").map(Number);
+return new Date(p[0],p[1]-1,p[2])
+}
+
+function validKey(k){
+return /^\d{4}-\d{2}-\d{2}$/.test(k||"")
+}
+
+function formatDate(k){
+return fromKey(k).toLocaleDateString(
+"en-US",
+{weekday:"long",month:"long",day:"numeric",year:"numeric"}
+)
+}
+
+function previousDay(k){
+let d=fromKey(k);
+d.setDate(d.getDate()-1);
+return dateKey(d)
+}
+
+function mondayKey(d=new Date()){
+d=new Date(d.getFullYear(),d.getMonth(),d.getDate());
+let n=d.getDay();
+d.setDate(d.getDate()+(n===0?-6:1-n));
+return dateKey(d)
+}
+
+function shiftWeek(k,n){
+let d=fromKey(k);
+d.setDate(d.getDate()+n*7);
+return dateKey(d)
+}
+
+function weekRange(k){
+let a=fromKey(k),b=new Date(a);
+b.setDate(b.getDate()+6);
+
+return `${a.toLocaleDateString(
+"en-US",
+{month:"short",day:"numeric"}
+)} – ${b.toLocaleDateString(
+"en-US",
+{month:"short",day:"numeric",year:"numeric"}
+)}`
+}
+
+function arrayStore(k){
+try{
+let x=JSON.parse(localStorage.getItem(k));
+return Array.isArray(x)?x:null
+}catch{
+return null
+}
+}
+
+function objectStore(k){
+try{
+let x=JSON.parse(localStorage.getItem(k));
+return x&&typeof x==="object"&&!Array.isArray(x)?x:null
+}catch{
+return null
+}
+}
+
+function flash(id,text){
+let x=$(id);
+x.textContent=text;
+x.style.display="block";
+
+setTimeout(
+()=>x.style.display="none",
+2500
+)
+}
+
+const actualTodayKey=dateKey(),
+actualWeekKey=mondayKey();
+
+$("todayDate").textContent=formatDate(actualTodayKey);
+
+let selectedDateKey=
+validKey(localStorage.getItem(LAST_VIEWED_DATE_STORAGE_KEY))
+?localStorage.getItem(LAST_VIEWED_DATE_STORAGE_KEY)
+:actualTodayKey;
+
+let selectedWeekKey=
+validKey(localStorage.getItem(LAST_VIEWED_WEEK_STORAGE_KEY))
+?localStorage.getItem(LAST_VIEWED_WEEK_STORAGE_KEY)
+:actualWeekKey;
+
+const defaultLifeAreas=[
+{name:"💪 Health & Fitness",current:5,desired:8},
+{name:"💰 Finances",current:5,desired:8},
+{name:"💼 Career / Business",current:5,desired:8},
+{name:"❤️ Relationships",current:5,desired:8},
+{name:"👨‍👩‍👧 Family",current:5,desired:8},
+{name:"🙏 Spiritual Life",current:5,desired:8},
+{name:"🧠 Personal Growth",current:5,desired:8},
+{name:"🏠 Home / Environment",current:5,desired:8},
+{name:"🎉 Fun / Recreation",current:5,desired:8},
+{name:"🤝 Contribution / Giving",current:5,desired:8}
+];
+
+let lifeAreas=
+arrayStore(LIFE_STORAGE_KEY)||
+arrayStore(OLD_LIFE_STORAGE_KEY)||
+arrayStore(OLDER_LIFE_STORAGE_KEY)||
+clone(defaultLifeAreas);
+
+let lifeOutcomes=
+arrayStore(LIFE_OUTCOMES_STORAGE_KEY)||
+arrayStore(OLD_LIFE_OUTCOMES_STORAGE_KEY)||
+arrayStore(OLDER_LIFE_OUTCOMES_STORAGE_KEY)||
+arrayStore(OLDEST_LIFE_OUTCOMES_STORAGE_KEY)||
+arrayStore(LEGACY_LIFE_OUTCOMES_STORAGE_KEY)||
+[];
+
+let dailyHistory=
+objectStore(DAILY_HISTORY_STORAGE_KEY)||{};
+
+let weeklyHistory=
+objectStore(WEEKLY_HISTORY_STORAGE_KEY)||{};
+
+function showPage(page){
+
+["life","week","today"].forEach(
+n=>{
+$(n+"Page").classList.remove("active");
+$(n+"Nav").classList.remove("active")
+}
+);
+
+$(page+"Page").classList.add("active");
+$(page+"Nav").classList.add("active");
+
+if(page==="week"){
+renderWeek()
+}
+
+if(page==="today"){
+renderDay();
+renderDailyPlanner()
+}
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+})
+}
+
+$("lifeNav").onclick=()=>showPage("life");
+$("weekNav").onclick=()=>showPage("week");
+$("todayNav").onclick=()=>showPage("today");
+
+function lifeNames(){
+return lifeAreas
+.map(x=>x.name.trim())
+.filter(Boolean)
+}
+
+function saveAreas(){
+localStorage.setItem(
+LIFE_STORAGE_KEY,
+JSON.stringify(lifeAreas)
+)
+}
+
+function saveOutcomes(){
+localStorage.setItem(
+LIFE_OUTCOMES_STORAGE_KEY,
+JSON.stringify(lifeOutcomes)
+)
+}
+
+function scoreOptions(v){
+return Array.from(
+{length:10},
+(_,i)=>
+`<option value="${i+1}" ${i+1==v?"selected":""}>${i+1}</option>`
+).join("")
+}
+
+function escAttr(s=""){
+return s
+.replace(/&/g,"&amp;")
+.replace(/"/g,"&quot;")
+.replace(/</g,"&lt;")
+}
+
+function esc(s=""){
+let d=document.createElement("div");
+d.textContent=s;
+return d.innerHTML
+}
+
+function renderLife(){
+
+$("lifeAreaList").innerHTML="";
+
+lifeAreas.forEach(
+(a,i)=>{
+
+let c=document.createElement("div");
+c.className="life-area";
+
+c.innerHTML=`
+<div class="life-area-top">
+<input class="area-name" value="${escAttr(a.name)}">
+<button class="delete-button">×</button>
+</div>
+
+<div class="area-scores">
+
+<div>
+<div class="score-label">Current 1–10</div>
+<select class="cur">
+${scoreOptions(a.current)}
+</select>
+</div>
+
+<div>
+<div class="score-label">Desired 1–10</div>
+<select class="des">
+${scoreOptions(a.desired)}
+</select>
+</div>
+
+<div class="gap-wrapper">
+<div class="score-label">Improvement Gap</div>
+<div class="gap-box"></div>
+</div>
+
+</div>
+
+<div class="area-bar-background">
+<div class="area-bar"></div>
+</div>
+
+<div class="area-status"></div>
+`;
+
+$("lifeAreaList").append(c);
+
+let refresh=()=>{
+
+a.name=c.querySelector(".area-name").value;
+a.current=+c.querySelector(".cur").value;
+a.desired=+c.querySelector(".des").value;
+
+let g=Math.max(
+a.desired-a.current,
+0
+);
+
+let gb=c.querySelector(".gap-box");
+
+gb.textContent=g;
+
+gb.className=
+"gap-box "+
+(
+g<=2
+?"gap-low"
+:g<=4
+?"gap-medium"
+:"gap-high"
+);
+
+c.querySelector(".area-bar").style.width=
+a.current*10+"%";
+
+c.querySelector(".area-status").textContent=
+a.current>=a.desired
+?"At or above your desired level."
+:g>=5
+?"High opportunity for improvement."
+:g>=3
+?"Meaningful improvement opportunity."
+:"Relatively close to your desired level.";
+
+saveAreas();
+updateLifeSummary()
+};
+
+c.querySelector(".area-name").oninput=refresh;
+c.querySelector(".cur").onchange=refresh;
+c.querySelector(".des").onchange=refresh;
+
+c.querySelector(".delete-button").onclick=()=>{
+lifeAreas.splice(i,1);
+saveAreas();
+renderLife()
+};
+
+refresh()
+}
+);
+
+renderOutcomes();
+updateLifeSummary()
+}
+
+function updateLifeSummary(){
+
+if(!lifeAreas.length){
+
+$("averageCurrent").textContent="0";
+$("averageDesired").textContent="0";
+$("largestGap").textContent="0";
+
+return
+}
+
+$("averageCurrent").textContent=
+(
+lifeAreas.reduce(
+(s,x)=>s+x.current,
+0
+)/lifeAreas.length
+).toFixed(1);
+
+$("averageDesired").textContent=
+(
+lifeAreas.reduce(
+(s,x)=>s+x.desired,
+0
+)/lifeAreas.length
+).toFixed(1);
+
+$("largestGap").textContent=
+Math.max(
+...lifeAreas.map(
+x=>Math.max(
+x.desired-x.current,
+0
+)
+)
+)
+}
+
+function renderOutcomes(){
+
+$("lifeOutcomeList").innerHTML="";
+
+if(!lifeOutcomes.length){
+
+$("lifeOutcomeList").innerHTML=
+'<div class="life-outcome-empty">No life outcomes yet. Add one when you are ready to turn a life area into a specific result.</div>';
+
+return
+}
+
+lifeOutcomes.forEach(
+(o,i)=>{
+
+o.actions=
+Array.isArray(o.actions)
+?o.actions
+:[];
+
+let c=document.createElement("div");
+
+c.className="outcome-life-card";
+
+let opts=
+lifeNames()
+.map(
+n=>`<option ${n===o.area?"selected":""}>${esc(n)}</option>`
+)
+.join("");
+
+c.innerHTML=`
+<div class="outcome-life-top">
+
+<input
+class="otitle"
+placeholder="What result do you want?"
+value="${escAttr(o.title||"")}"
+>
+
+<button class="delete-button">×</button>
+
+</div>
+
+<div class="outcome-life-grid">
+
+<div>
+<div class="field-label">Area of Life</div>
+<select class="oarea">
+${opts}
+</select>
+</div>
+
+<div>
+<div class="field-label">Status</div>
+
+<select class="ostatus">
+<option value="active">Active</option>
+<option value="completed">Completed</option>
+<option value="paused">Paused</option>
+</select>
+</div>
+
+<div>
+<div class="field-label">Target Date</div>
+
+<input
+type="date"
+class="odate"
+value="${o.targetDate||""}"
+>
+</div>
+
+<div>
+<div class="field-label">Purpose / Why</div>
+
+<input
+class="opurpose"
+value="${escAttr(o.purpose||"")}"
+placeholder="Why does this outcome matter?"
+>
+</div>
+
+</div>
+
+<div class="outcome-life-actions">
+
+<div class="field-label">
+Action Plan
+</div>
+
+<div class="oactions"></div>
+
+<button
+class="add-button addOA"
+style="margin-top:10px"
+>
++ Add Outcome Action
+</button>
+
+</div>
+`;
+
+$("lifeOutcomeList").append(c);
+
+c.querySelector(".ostatus").value=
+o.status||"active";
+
+let save=()=>{
+
+o.title=
+c.querySelector(".otitle").value;
+
+o.area=
+c.querySelector(".oarea").value;
+
+o.status=
+c.querySelector(".ostatus").value;
+
+o.targetDate=
+c.querySelector(".odate").value;
+
+o.purpose=
+c.querySelector(".opurpose").value;
+
+saveOutcomes()
+};
+
+[".otitle",".opurpose"].forEach(
+q=>c.querySelector(q).oninput=save
+);
+
+[".oarea",".ostatus",".odate"].forEach(
+q=>c.querySelector(q).onchange=save
+);
+
+c.querySelector(".delete-button").onclick=()=>{
+
+lifeOutcomes.splice(i,1);
+
+saveOutcomes();
+renderOutcomes()
+};
+
+function drawActions(){
+
+let box=c.querySelector(".oactions");
+
+box.innerHTML="";
+
+(
+o.actions.length
+?o.actions
+:[""]
+).forEach(
+(txt,j)=>{
+
+let r=document.createElement("div");
+
+r.className="life-action-row";
+
+r.innerHTML=`
+<input
+value="${escAttr(txt)}"
+placeholder="Action that moves this outcome forward"
+>
+
+<button class="send-today-button">
+→ Add to Selected Day
+</button>
+
+<button class="send-today-button">
++ Choose for This Week
+</button>
+
+<button class="delete-button">
+×
+</button>
+`;
+
+box.append(r);
+
+let inp=r.querySelector("input"),
+btns=r.querySelectorAll(".send-today-button");
+
+inp.oninput=()=>{
+
+if(j<o.actions.length){
+
+o.actions[j]=inp.value
+
+}else if(inp.value){
+
+o.actions.push(inp.value)
+}
+
+saveOutcomes()
+};
+
+btns[0].onclick=()=>
+addToDay(
+inp.value,
+o.title,
+o.purpose,
+o.area,
+true
+);
+
+btns[1].onclick=()=>
+addToWeek(
+inp.value,
+o.title,
+o.area
+);
+
+r.querySelector(".delete-button").onclick=()=>{
+
+if(j<o.actions.length){
+
+o.actions.splice(j,1)
+}
+
+saveOutcomes();
+drawActions()
+}
+}
+)
+}
+
+drawActions();
+
+c.querySelector(".addOA").onclick=()=>{
+
+o.actions.push("");
+
+saveOutcomes();
+drawActions()
+}
+}
+)
+}
+
+$("addLifeAreaButton").onclick=()=>{
+
+lifeAreas.push({
+name:"New Life Area",
+current:5,
+desired:8
+});
+
+saveAreas();
+renderLife()
+};
+
+$("addLifeOutcomeButton").onclick=()=>{
+
+lifeOutcomes.push({
+title:"",
+area:lifeNames()[0]||"",
+purpose:"",
+targetDate:"",
+status:"active",
+actions:[]
+});
+
+saveOutcomes();
+renderOutcomes()
+};
+
+$("saveLifeButton").onclick=()=>{
+
+saveAreas();
+saveOutcomes();
+
+flash(
+"lifeSavedMessage",
+"✓ Your life assessment and outcomes have been saved."
+)
+};
+
+function emptyDay(k){
+
+return{
+date:k,
+outcome:"",
+purpose:"",
+commitments:[
+{
+text:"",
+start:"",
+end:""
+}
+],
+actions:[
+{
+text:"",
+completed:false,
+priority:"must",
+time:"",
+endTime:"",
+duration:"30",
+focus:0
+},
+{
+text:"",
+completed:false,
+priority:"should",
+time:"",
+endTime:"",
+duration:"30",
+focus:0
+},
+{
+text:"",
+completed:false,
+priority:"could",
+time:"",
+endTime:"",
+duration:"30",
+focus:0
+}
+]
+}
+}
+
+function normalizeDay(x,k){
+
+let b=emptyDay(k);
+
+if(!x){
+return b
+}
+
+return{
+date:k,
+outcome:x.outcome||"",
+purpose:x.purpose||"",
+
+commitments:
+Array.isArray(x.commitments)
+?x.commitments.map(
+v=>({
+text:v.text||"",
+start:v.start||"",
+end:v.end||""
+})
+)
+:b.commitments,
+
+actions:
+Array.isArray(x.actions)
+?x.actions.map(
+v=>({
+text:v.text||"",
+completed:!!v.completed,
+priority:v.priority||"should",
+time:v.time||"",
+endTime:v.endTime||"",
+duration:String(v.duration||"30"),
+focus:[1,2,3].includes(+v.focus)
+?+v.focus
+:0
+})
+)
+:b.actions
+}
+}
+
+function useful(x){
+
+return x&&(
+(x.outcome||"").trim()||
+(x.purpose||"").trim()||
+(x.actions||[]).some(
+a=>(a.text||"").trim()
+)||
+(x.commitments||[]).some(
+a=>(a.text||"").trim()
+)
+)
+}
+
+if(!dailyHistory[actualTodayKey]){
+
+let old=
+objectStore(OLD_TODAY_STORAGE_KEY)||
+objectStore(OLDER_TODAY_STORAGE_KEY)||
+objectStore(OLDEST_TODAY_STORAGE_KEY);
+
+if(useful(old)){
+
+dailyHistory[actualTodayKey]=
+normalizeDay(
+old,
+actualTodayKey
+);
+
+localStorage.setItem(
+DAILY_HISTORY_STORAGE_KEY,
+JSON.stringify(dailyHistory)
+)
+}
+}
+
+let dayData=
+normalizeDay(
+dailyHistory[selectedDateKey],
+selectedDateKey
+);
+
+function saveDay(){
+
+dayData.date=selectedDateKey;
+
+dailyHistory[selectedDateKey]=
+clone(dayData);
+
+localStorage.setItem(
+DAILY_HISTORY_STORAGE_KEY,
+JSON.stringify(dailyHistory)
+);
+
+localStorage.setItem(
+LAST_VIEWED_DATE_STORAGE_KEY,
+selectedDateKey
+)
+}
+
+function hasDayAction(t){
+
+t=(t||"")
+.trim()
+.toLowerCase();
+
+if(!t){
+return false
+}
+
+return dayData.actions.some(
+a=>
+(a.text||"")
+.trim()
+.toLowerCase()===t
+)
+}
+
+function addToDay(
+t,
+title="",
+purpose="",
+area="",
+switchPage=false
+){
+
+t=(t||"").trim();
+
+if(!t){
+return
+}
+
+let duplicate=
+hasDayAction(t);
+
+if(!duplicate){
+
+dayData.actions.push({
+text:t,
+completed:false,
+priority:"should",
+time:"",
+endTime:"",
+duration:"30",
+focus:0
+})
+}
+
+if(!dayData.outcome&&title){
+dayData.outcome=title
+}
+
+if(!dayData.purpose&&purpose){
+dayData.purpose=purpose
+}
+
+saveDay();
+renderDay();
+
+flash(
+"todayTransferMessage",
+duplicate
+?"✓ That action is already in this day's plan."
+:"✓ Action added to this day's plan."
+);
+
+if(switchPage){
+showPage("today")
+}
+}
+
+function renderDailyPlanner(){
+
+let active=
+lifeOutcomes.filter(
+o=>(o.status||"active")==="active"
+);
+
+$("activeOutcomeCount").textContent=
+active.length;
+
+$("dailyPlannerList").innerHTML="";
+
+if(!active.length){
+
+$("dailyPlannerList").innerHTML=
+'<div class="planner-empty">You do not have any Active Life Outcomes yet.</div>';
+
+return
+}
+
+active.forEach(
+o=>{
+
+let c=document.createElement("div");
+
+c.className="planner-card";
+
+c.innerHTML=`
+<div class="planner-top">
+
+<div class="planner-title">
+${esc(o.title||"Untitled Life Outcome")}
+</div>
+
+<div class="planner-area">
+${esc(o.area||"Life Outcome")}
+</div>
+
+</div>
+
+${o.purpose
+?`<div class="planner-purpose">Why: ${esc(o.purpose)}</div>`
+:""
+}
+
+<div class="planner-actions"></div>
+`;
+
+let box=c.querySelector(".planner-actions");
+
+(o.actions||[]).forEach(
+t=>{
+
+let r=document.createElement("div");
+
+r.className="planner-action";
+
+let inDay=
+hasDayAction(t);
+
+r.innerHTML=`
+<div>${esc(t)}</div>
+
+<button class="planner-add ${inDay?"in-today":""}">
+${inDay
+?"✓ In Selected Day"
+:"+ Choose for This Day"
+}
+</button>
+`;
+
+r.querySelector("button").onclick=()=>{
+
+if(!hasDayAction(t)){
+
+addToDay(
+t,
+o.title,
+o.purpose,
+o.area
+)
+
+}else{
+
+flash(
+"todayTransferMessage",
+"✓ That action is already in this day's plan."
+)
+}
+
+renderDailyPlanner()
+};
+
+box.append(r)
+}
+);
+
+$("dailyPlannerList").append(c)
+}
+)
+}
+
+function renderDay(){
+
+$("dailyDateSelector").value=
+selectedDateKey;
+
+$("outcome").value=
+dayData.outcome||"";
+
+$("purpose").value=
+dayData.purpose||"";
+
+renderCommitments();
+renderActions();
+renderTop3();
+buildSchedule();
+updateProgress();
+updateDayStatus();
+renderDailyPlanner()
+}
+
+function updateDayStatus(){
+
+let e=
+!!dailyHistory[selectedDateKey];
+
+$("historyStatus").textContent=
+selectedDateKey===actualTodayKey
+?(
+e
+?"Viewing today's saved daily plan."
+:"Viewing today. This day has not been saved yet."
+)
+:(
+e
+?`Viewing saved plan for ${formatDate(selectedDateKey)}.`
+:`No saved plan exists yet for ${formatDate(selectedDateKey)}.`
+)
+
+} function renderCommitments(){
+
+$("commitmentList").innerHTML="";
+
+if(!dayData.commitments.length){
+
+dayData.commitments=[
+{
+text:"",
+start:"",
+end:""
+}
+]
+}
+
+dayData.commitments.forEach(
+(x,i)=>{
+
+let c=document.createElement("div");
+
+c.className="commitment-card";
+
+c.innerHTML=`
+<div class="commitment-main">
+
+<input
+class="ctext"
+value="${escAttr(x.text)}"
+placeholder="Example: Doctor appointment"
+>
+
+<button class="delete-button">
+×
+</button>
+
+</div>
+
+<div class="commitment-options">
+
+<div>
+<div class="field-label">Start Time</div>
+
+<input
+type="time"
+class="cstart"
+value="${x.start}"
+>
+</div>
+
+<div>
+<div class="field-label">End Time</div>
+
+<input
+type="time"
+class="cend"
+value="${x.end}"
+>
+</div>
+
+</div>
+`;
+
+$("commitmentList").append(c);
+
+let save=()=>{
+
+x.text=
+c.querySelector(".ctext").value;
+
+x.start=
+c.querySelector(".cstart").value;
+
+x.end=
+c.querySelector(".cend").value;
+
+saveDay();
+buildSchedule()
+};
+
+c.querySelector(".ctext").oninput=save;
+c.querySelector(".cstart").onchange=save;
+c.querySelector(".cend").onchange=save;
+
+c.querySelector(".delete-button").onclick=()=>{
+
+dayData.commitments.splice(i,1);
+
+saveDay();
+renderCommitments();
+buildSchedule()
+}
+}
+)
+}
+
+function actionEndValue(a){
+if(a.endTime){return a.endTime}
+let s=mins(a.time);
+if(s===null){return ""}
+let e=s+(+a.duration||30);
+return `${String(Math.floor(e/60)%24).padStart(2,"0")}:${String(e%60).padStart(2,"0")}`
+}
+
+function renderActions(){
+$("actionList").innerHTML="";
+dayData.actions.forEach((a,i)=>{
+let c=document.createElement("div");
+c.className=`action-card priority-${a.priority}`;
+let scheduled=!!(a.time&&actionEndValue(a));
+c.innerHTML=`
+<div class="action-main">
+<input type="checkbox" class="action-checkbox" ${a.completed?"checked":""}>
+<input class="action-text ${a.completed?"completed":""}" value="${escAttr(a.text)}" placeholder="Enter an action step">
+<button class="delete-button">×</button>
+</div>
+<div class="action-options">
+<div><div class="field-label">Priority</div><select class="priority-select"><option value="must">Must Do</option><option value="should">Should Do</option><option value="could">Could Do</option></select></div>
+<div><div class="field-label">Top 3 Focus</div><select class="focus-select ${a.focus?"focused":""}"><option value="0">Not Top 3</option><option value="1">🥇 Focus #1</option><option value="2">🥈 Focus #2</option><option value="3">🥉 Focus #3</option></select></div>
+<div style="grid-column:span 2"><div class="field-label">Time Blocking</div><button class="schedule-action-button schedule-toggle">${scheduled?"✏️ Edit Time":"⏰ Schedule"}</button></div>
+</div>
+<div class="schedule-controls" style="display:none">
+<div><div class="field-label">Start Time</div><input type="time" class="time-input" value="${a.time||""}"></div>
+<div><div class="field-label">End Time</div><input type="time" class="end-time-input" value="${actionEndValue(a)}"></div>
+<button class="schedule-action-button apply-time">Add to Schedule</button>
+</div>`;
+$("actionList").append(c);
+c.querySelector(".priority-select").value=a.priority;
+c.querySelector(".focus-select").value=a.focus;
+let baseSave=()=>{a.text=c.querySelector(".action-text").value;a.completed=c.querySelector(".action-checkbox").checked;a.priority=c.querySelector(".priority-select").value;c.querySelector(".action-text").classList.toggle("completed",a.completed);saveDay();updateProgress();buildSchedule();renderTop3()};
+c.querySelector(".action-checkbox").onchange=baseSave;
+c.querySelector(".action-text").oninput=baseSave;
+c.querySelector(".priority-select").onchange=()=>{baseSave();renderActions()};
+c.querySelector(".schedule-toggle").onclick=()=>{let box=c.querySelector(".schedule-controls");box.style.display=box.style.display==="grid"?"none":"grid"};
+c.querySelector(".apply-time").onclick=()=>{let st=c.querySelector(".time-input").value,en=c.querySelector(".end-time-input").value;if(!st||!en){flash("todayTransferMessage","Choose both a start time and an end time.");return}if(mins(en)<=mins(st)){flash("todayTransferMessage","End time must be later than start time.");return}a.time=st;a.endTime=en;a.duration=String(mins(en)-mins(st));saveDay();renderActions();buildSchedule();flash("todayTransferMessage",`✓ ${a.text.trim()||"Action"} added to Plan My Day.`)};
+c.querySelector(".focus-select").onchange=e=>{let r=+e.target.value;if(r){dayData.actions.forEach((x,j)=>{if(j!==i&&x.focus===r)x.focus=0})}a.focus=r;saveDay();renderActions();renderTop3();buildSchedule()};
+c.querySelector(".delete-button").onclick=()=>{dayData.actions.splice(i,1);saveDay();renderDay()};
+})
+}
+
+function rankIcon(r){
+
+return r===1
+?"🥇"
+:r===2
+?"🥈"
+:"🥉"
+}
+
+function renderTop3(){
+
+$("top3List").innerHTML="";
+
+let n=
+dayData.actions.filter(
+a=>[1,2,3].includes(+a.focus)
+).length;
+
+$("top3Count").textContent=
+`${n} of 3 selected`;
+
+if(
+!dayData.actions.some(
+a=>a.text.trim()
+)
+){
+
+$("top3List").innerHTML=
+'<div class="top3-empty">Add or choose actions for this day first.</div>';
+
+return
+}
+
+for(let r=1;r<=3;r++){
+
+let a=
+dayData.actions.find(
+x=>+x.focus===r
+);
+
+let c=
+document.createElement("div");
+
+c.className="top3-slot";
+
+c.innerHTML=`
+<div class="top3-rank">
+${rankIcon(r)}
+</div>
+
+<div class="top3-text ${a?"":"top3-empty-text"}">
+${esc(
+a
+?a.text
+:`Focus #${r} not selected`
+)}
+</div>
+
+${a
+?'<button class="top3-remove">Remove</button>'
+:""
+}
+`;
+
+if(a){
+
+c.querySelector("button").onclick=()=>{
+
+a.focus=0;
+
+saveDay();
+renderActions();
+renderTop3();
+buildSchedule()
+}
+}
+
+$("top3List").append(c)
+}
+}
+
+function updateProgress(){
+
+let a=
+dayData.actions.filter(
+x=>x.text.trim()
+);
+
+let done=
+a.filter(
+x=>x.completed
+).length;
+
+let p=
+a.length
+?Math.round(done/a.length*100)
+:0;
+
+$("progressPercent").textContent=
+p+"%";
+
+$("progressBar").style.width=
+p+"%";
+
+$("progressText").textContent=
+`${done} of ${a.length} actions completed`;
+
+$("completionMessage").style.display=
+a.length&&done===a.length
+?"block"
+:"none"
+}
+
+function mins(t){
+
+if(!t){
+return null
+}
+
+let p=t.split(":").map(Number);
+
+return p[0]*60+p[1]
+}
+
+function clock(n){
+
+n%=1440;
+
+let h=Math.floor(n/60),
+m=n%60,
+ap=h>=12?"PM":"AM";
+
+h=h%12||12;
+
+return `${h}:${String(m).padStart(2,"0")} ${ap}`
+}
+
+function buildSchedule(){
+let items=[];
+dayData.commitments.forEach((x,i)=>{let st=mins(x.start),en=mins(x.end);if(x.text.trim()&&st!==null&&en>st)items.push({title:x.text,start:st,end:en,type:"commitment",conflict:false,index:i})});
+dayData.actions.forEach((a,i)=>{let st=mins(a.time),endValue=actionEndValue(a),en=mins(endValue);if(a.text.trim()&&st!==null&&en!==null&&en>st)items.push({title:a.text,start:st,end:en,type:"action",priority:a.priority,focus:a.focus,completed:a.completed,conflict:false,index:i})});
+items.sort((a,b)=>a.start-b.start);
+let conflicts=[];
+for(let i=0;i<items.length;i++)for(let j=i+1;j<items.length;j++){if(items[i].start<items[j].end&&items[j].start<items[i].end){items[i].conflict=true;items[j].conflict=true;conflicts.push(`${items[i].title} overlaps with ${items[j].title} from ${clock(Math.max(items[i].start,items[j].start))} to ${clock(Math.min(items[i].end,items[j].end))}.`)}}
+$("conflictList").innerHTML=conflicts.map(x=>`<div class="conflict-item">${esc(x)}</div>`).join("");
+$("conflictBox").style.display=conflicts.length?"block":"none";
+$("scheduleList").innerHTML=items.length?"":'<div class="schedule-empty">Nothing is scheduled yet. Use ⏰ Schedule beside an action or add a fixed commitment.</div>';
+items.forEach(x=>{let r=document.createElement("div");r.className="schedule-item"+(x.conflict?" conflicted":"")+(x.completed?" completed":"");let meta=x.type==="commitment"?'<span class="commitment-badge">📌 FIXED COMMITMENT</span>':`${x.focus?`<span class="focus-badge">${rankIcon(x.focus)} FOCUS #${x.focus}</span>`:""}<span class="priority-badge badge-${x.priority}">${x.priority.toUpperCase()}</span>${x.completed?" ✓ Completed":""}`;if(x.conflict)meta+=' <span class="conflict-badge">⚠ CONFLICT</span>';r.innerHTML=`<div class="schedule-time">${clock(x.start)}<br><span style="font-size:12px;color:#6b7280">to ${clock(x.end)}</span></div><div><div class="schedule-title">${esc(x.title)}</div><div class="schedule-meta">${meta}</div>${x.type==="action"?'<div class="schedule-item-actions"><button class="schedule-action-button complete-block"></button><button class="schedule-action-button edit-block">✏️ Edit Time</button><button class="schedule-action-button remove remove-block">Remove from Schedule</button></div>':""}</div>`;
+if(x.type==="action"){let a=dayData.actions[x.index],complete=r.querySelector(".complete-block");complete.textContent=a.completed?"↩ Mark Incomplete":"✓ Mark Complete";complete.onclick=()=>{a.completed=!a.completed;saveDay();renderActions();renderTop3();updateProgress();buildSchedule()};r.querySelector(".edit-block").onclick=()=>{let cards=[...document.querySelectorAll("#actionList .action-card")],card=cards[x.index];if(card){card.querySelector(".schedule-controls").style.display="grid";card.scrollIntoView({behavior:"smooth",block:"center"})}};r.querySelector(".remove-block").onclick=()=>{a.time="";a.endTime="";saveDay();renderActions();buildSchedule();flash("todayTransferMessage",`✓ ${a.text.trim()||"Action"} removed from the schedule.`)}}
+$("scheduleList").append(r)});
+let unscheduled=dayData.actions.map((a,i)=>({a,i})).filter(x=>x.a.text.trim()&&!(x.a.time&&actionEndValue(x.a)));
+$("unscheduledList").innerHTML=unscheduled.length?"":"<div class=\"all-scheduled\">✓ All of today\'s actions have been scheduled.</div>";
+unscheduled.forEach(({a,i})=>{let r=document.createElement("div");r.className="unscheduled-item";r.innerHTML=`<div><div class="unscheduled-title">${a.focus?rankIcon(a.focus)+" ":""}${esc(a.text)}</div><div class="unscheduled-meta">${a.focus?`Focus #${a.focus} • `:""}${esc(a.priority.toUpperCase())}</div></div><button class="schedule-action-button">⏰ Schedule</button>`;r.querySelector("button").onclick=()=>{let cards=[...document.querySelectorAll("#actionList .action-card")],card=cards[i];if(card){card.querySelector(".schedule-controls").style.display="grid";card.scrollIntoView({behavior:"smooth",block:"center"})}};$("unscheduledList").append(r)})
+}
+
+$("addCommitmentButton").onclick=()=>{
+
+dayData.commitments.push({
+text:"",
+start:"",
+end:""
+});
+
+saveDay();
+renderCommitments()
+};
+
+$("addActionButton").onclick=()=>{
+
+dayData.actions.push({
+text:"",
+completed:false,
+priority:"should",
+time:"",
+endTime:"",
+duration:"30",
+focus:0
+});
+
+saveDay();
+renderActions()
+};
+
+$("outcome").oninput=e=>{
+
+dayData.outcome=e.target.value;
+saveDay()
+};
+
+$("purpose").oninput=e=>{
+
+dayData.purpose=e.target.value;
+saveDay()
+};
+
+$("saveTodayButton").onclick=()=>{
+
+saveDay();
+
+flash(
+"todaySavedMessage",
+"✓ This day's plan has been saved."
+)
+};
+
+$("dailyDateSelector").onchange=e=>{
+
+saveDay();
+
+if(e.target.value){
+
+selectedDateKey=
+e.target.value;
+
+localStorage.setItem(
+LAST_VIEWED_DATE_STORAGE_KEY,
+selectedDateKey
+);
+
+dayData=
+normalizeDay(
+dailyHistory[selectedDateKey],
+selectedDateKey
+);
+
+renderDay()
+}
+};
+
+$("jumpToTodayButton").onclick=()=>{
+
+saveDay();
+
+selectedDateKey=
+actualTodayKey;
+
+dayData=
+normalizeDay(
+dailyHistory[selectedDateKey],
+selectedDateKey
+);
+
+localStorage.setItem(
+LAST_VIEWED_DATE_STORAGE_KEY,
+selectedDateKey
+);
+
+renderDay()
+};
+
+$("newDayButton").onclick=()=>{
+
+if(
+confirm(
+`Start ${formatDate(selectedDateKey)} fresh? This will replace the currently loaded plan for this date with a blank daily plan.`
+)
+){
+
+dayData=
+emptyDay(selectedDateKey);
+
+saveDay();
+renderDay();
+
+flash(
+"todayTransferMessage",
+"✓ A fresh daily plan has been created for this date."
+)
+}
+};
+
+$("copyPreviousButton").onclick=()=>{
+
+let k=
+previousDay(selectedDateKey),
+
+p=
+dailyHistory[k];
+
+if(!p){
+
+flash(
+"todayTransferMessage",
+`No saved plan was found for ${formatDate(k)}.`
+);
+
+return
+}
+
+dayData=
+normalizeDay(
+clone(p),
+selectedDateKey
+);
+
+dayData.actions.forEach(
+a=>a.completed=false
+);
+
+saveDay();
+renderDay();
+
+flash(
+"todayTransferMessage",
+`✓ Copied ${formatDate(k)} into this day.`
+)
+};
+
+
+/* WEEK V1.13 */
+
+function emptyWeek(k){
+
+return{
+weekStart:k,
+selectedOutcomes:[],
+actions:[],
+review:{
+wins:"",
+incomplete:"",
+lessons:"",
+carryForward:""
+}
+}
+}
+
+function normalizeWeek(x,k){
+
+return{
+weekStart:k,
+
+selectedOutcomes:
+Array.isArray(x?.selectedOutcomes)
+?x.selectedOutcomes
+:[],
+
+actions:
+Array.isArray(x?.actions)
+?x.actions.map(
+a=>({
+text:a.text||"",
+completed:!!a.completed,
+focus:[1,2,3].includes(+a.focus)
+?+a.focus
+:0,
+sourceOutcome:a.sourceOutcome||"",
+sourceArea:a.sourceArea||""
+})
+)
+:[],
+
+review:{
+wins:x?.review?.wins||"",
+incomplete:x?.review?.incomplete||"",
+lessons:x?.review?.lessons||"",
+carryForward:x?.review?.carryForward||""
+}
+}
+}
+
+let weekData=
+normalizeWeek(
+weeklyHistory[selectedWeekKey],
+selectedWeekKey
+);
+
+function saveWeekData(){
+
+weekData.weekStart=
+selectedWeekKey;
+
+weeklyHistory[selectedWeekKey]=
+clone(weekData);
+
+localStorage.setItem(
+WEEKLY_HISTORY_STORAGE_KEY,
+JSON.stringify(weeklyHistory)
+);
+
+localStorage.setItem(
+LAST_VIEWED_WEEK_STORAGE_KEY,
+selectedWeekKey
+)
+}
+
+function outcomeId(o){
+
+return `${o.title||""}||${o.area||""}||${o.purpose||""}`
+}
+
+function hasWeekAction(t){
+
+t=(t||"")
+.trim()
+.toLowerCase();
+
+if(!t){
+return false
+}
+
+return weekData.actions.some(
+a=>
+(a.text||"")
+.trim()
+.toLowerCase()===t
+)
+}
+
+function weekHasAction(data,t){
+
+t=(t||"")
+.trim()
+.toLowerCase();
+
+if(!t){
+return false
+}
+
+return (data.actions||[]).some(
+a=>
+(a.text||"")
+.trim()
+.toLowerCase()===t
+)
+}
+
+function carryToNextWeek(a){
+
+let t=
+(a.text||"").trim();
+
+if(!t){
+
+flash(
+"weekMessage",
+"Enter a weekly action before carrying it forward."
+);
+
+return
+}
+
+if(a.completed){
+
+flash(
+"weekMessage",
+"Only unfinished weekly actions need to be carried forward."
+);
+
+return
+}
+
+let nextKey=
+shiftWeek(
+selectedWeekKey,
+1
+);
+
+let nextData=
+normalizeWeek(
+weeklyHistory[nextKey],
+nextKey
+);
+
+if(
+weekHasAction(
+nextData,
+t
+)
+){
+
+flash(
+"weekMessage",
+"✓ That action is already in next week's plan."
+);
+
+renderWeeklyActions();
+
+return
+}
+
+nextData.actions.push({
+text:t,
+completed:false,
+focus:0,
+sourceOutcome:a.sourceOutcome||"",
+sourceArea:a.sourceArea||""
+});
+
+weeklyHistory[nextKey]=
+clone(nextData);
+
+localStorage.setItem(
+WEEKLY_HISTORY_STORAGE_KEY,
+JSON.stringify(weeklyHistory)
+);
+
+flash(
+"weekMessage",
+`✓ "${t}" carried forward to ${weekRange(nextKey)}.`
+);
+
+renderWeeklyActions()
+}
+
+function addToWeek(
+t,
+title="",
+area=""
+){
+
+t=(t||"").trim();
+
+if(!t){
+return false
+}
+
+let duplicate=
+hasWeekAction(t);
+
+if(!duplicate){
+
+weekData.actions.push({
+text:t,
+completed:false,
+focus:0,
+sourceOutcome:title,
+sourceArea:area
+})
+}
+
+saveWeekData();
+
+return !duplicate
+}
+
+
+/* V1.13 START MY WEEK */
+
+function plannerActionButton(
+action,
+label="+ Add to This Week"
+){
+
+let t=
+(action.text||"").trim(),
+
+added=
+t!==""&&
+hasWeekAction(t),
+
+button=
+document.createElement("button");
+
+button.className=
+"start-week-add"+
+(added?" added":"");
+
+button.textContent=
+added
+?"✓ In This Week"
+:label;
+
+button.disabled=
+added;
+
+button.onclick=()=>{
+
+if(!t){
+return
+}
+
+if(
+addToWeek(
+t,
+action.sourceOutcome||"",
+action.sourceArea||""
+)
+){
+
+flash(
+"weekMessage",
+`✓ "${t}" added to this week's plan.`
+)
+
+}else{
+
+flash(
+"weekMessage",
+"✓ That action is already in this week's plan."
+)
+}
+
+renderWeek();
+renderStartWeekPlanner()
+};
+
+return button
+}
+
+function renderStartWeekPlanner(){
+
+let panel=
+$("startWeekPanel");
+
+if(
+!panel.classList.contains("open")
+){
+return
+}
+
+let lastKey=
+shiftWeek(
+selectedWeekKey,
+-1
+),
+
+last=
+normalizeWeek(
+weeklyHistory[lastKey],
+lastKey
+),
+
+lastBox=
+$("lastWeekPlanner"),
+
+thisBox=
+$("thisWeekPlanner");
+
+lastBox.innerHTML="";
+thisBox.innerHTML="";
+
+let heading=
+document.createElement("div");
+
+heading.className="start-week-meta";
+
+heading.textContent=
+weekRange(lastKey);
+
+lastBox.append(heading);
+
+
+/* LAST WEEK TOP 3 */
+
+let top3=
+last.actions
+.filter(
+a=>
+[1,2,3].includes(+a.focus)&&
+(a.text||"").trim()
+)
+.sort(
+(a,b)=>a.focus-b.focus
+);
+
+let topTitle=
+document.createElement("div");
+
+topTitle.className="field-label";
+topTitle.style.marginTop="12px";
+topTitle.textContent="Last Week's Top 3";
+
+lastBox.append(topTitle);
+
+if(!top3.length){
+
+let e=
+document.createElement("div");
+
+e.className="start-week-meta";
+e.textContent="No Weekly Top 3 were selected.";
+
+lastBox.append(e)
+
+}else{
+
+top3.forEach(
+a=>{
+
+let item=
+document.createElement("div");
+
+item.className="start-week-item";
+
+item.innerHTML=`
+<div class="start-week-item-title">
+${rankIcon(a.focus)} ${esc(a.text)}
+</div>
+
+<div class="start-week-meta">
+${a.completed
+?"✓ Completed"
+:"Not completed"
+}
+</div>
+`;
+
+lastBox.append(item)
+}
+)
+}
+
+
+/* LAST WEEK UNFINISHED */
+
+let unfinished=
+last.actions.filter(
+a=>
+(a.text||"").trim()&&
+!a.completed
+);
+
+let unfinishedTitle=
+document.createElement("div");
+
+unfinishedTitle.className="field-label";
+unfinishedTitle.style.marginTop="16px";
+unfinishedTitle.textContent="Unfinished Actions";
+
+lastBox.append(unfinishedTitle);
+
+if(!unfinished.length){
+
+let e=
+document.createElement("div");
+
+e.className="start-week-meta";
+e.textContent="No unfinished actions from last week.";
+
+lastBox.append(e)
+
+}else{
+
+unfinished.forEach(
+a=>{
+
+let item=
+document.createElement("div");
+
+item.className="start-week-item";
+
+item.innerHTML=`
+<div class="start-week-item-title">
+${esc(a.text)}
+</div>
+
+${a.sourceOutcome||a.sourceArea
+?`<div class="start-week-meta">${esc(
+[
+a.sourceArea,
+a.sourceOutcome
+]
+.filter(Boolean)
+.join(" • ")
+)}</div>`
+:""
+}
+`;
+
+item.append(
+plannerActionButton(a)
+);
+
+lastBox.append(item)
+}
+)
+}
+
+
+/* LAST WEEK COMPLETED */
+
+let completed=
+last.actions.filter(
+a=>
+(a.text||"").trim()&&
+a.completed
+);
+
+let completedTitle=
+document.createElement("div");
+
+completedTitle.className="field-label";
+completedTitle.style.marginTop="16px";
+completedTitle.textContent="Completed Actions";
+
+lastBox.append(completedTitle);
+
+if(!completed.length){
+
+let e=
+document.createElement("div");
+
+e.className="start-week-meta";
+e.textContent="No completed actions were recorded.";
+
+lastBox.append(e)
+
+}else{
+
+completed.forEach(
+a=>{
+
+let item=
+document.createElement("div");
+
+item.className="start-week-item";
+
+item.innerHTML=`
+<div class="start-week-item-title">
+✓ ${esc(a.text)}
+</div>
+
+<div class="start-week-meta">
+Completed last week — shown for reference.
+</div>
+`;
+
+lastBox.append(item)
+}
+)
+}
+
+
+/* LAST WEEK REVIEW */
+
+let reviewTitle=
+document.createElement("div");
+
+reviewTitle.className="field-label";
+reviewTitle.style.marginTop="16px";
+reviewTitle.textContent="Last Week's Review";
+
+lastBox.append(reviewTitle);
+
+let review=
+document.createElement("div");
+
+review.className="start-week-review";
+
+let reviewHasText=
+[
+last.review.wins,
+last.review.incomplete,
+last.review.lessons,
+last.review.carryForward
+].some(
+x=>(x||"").trim()
+);
+
+if(!reviewHasText){
+
+review.innerHTML=
+'<div class="start-week-meta">No Weekly Review was saved for last week.</div>'
+
+}else{
+
+review.innerHTML=`
+${last.review.wins
+?`<strong>🏆 Wins</strong><div>${esc(last.review.wins)}</div><br>`
+:""
+}
+
+${last.review.incomplete
+?`<strong>⏳ Didn't Get Done</strong><div>${esc(last.review.incomplete)}</div><br>`
+:""
+}
+
+${last.review.lessons
+?`<strong>💡 Lessons Learned</strong><div>${esc(last.review.lessons)}</div><br>`
+:""
+}
+
+${last.review.carryForward
+?`<strong>➡️ Carry Forward / Improve</strong><div>${esc(last.review.carryForward)}</div>`
+:""
+}
+`
+}
+
+lastBox.append(review);
+
+
+/* THIS WEEK */
+
+let thisHeading=
+document.createElement("div");
+
+thisHeading.className="start-week-meta";
+
+thisHeading.textContent=
+weekRange(selectedWeekKey);
+
+thisBox.append(thisHeading);
+
+let existingTitle=
+document.createElement("div");
+
+existingTitle.className="field-label";
+existingTitle.style.marginTop="12px";
+existingTitle.textContent="Actions Already in This Week";
+
+thisBox.append(existingTitle);
+
+let currentActions=
+weekData.actions.filter(
+a=>(a.text||"").trim()
+);
+
+if(!currentActions.length){
+
+let e=
+document.createElement("div");
+
+e.className="start-week-meta";
+
+e.textContent=
+"No weekly actions have been chosen yet.";
+
+thisBox.append(e)
+
+}else{
+
+currentActions.forEach(
+a=>{
+
+let item=
+document.createElement("div");
+
+item.className="start-week-item";
+
+item.innerHTML=`
+<div class="start-week-item-title">
+${a.focus?rankIcon(a.focus)+" ":""}${esc(a.text)}
+</div>
+
+<div class="start-week-meta">
+${a.completed
+?"✓ Completed"
+:"Ready for this week"
+}
+${a.sourceOutcome||a.sourceArea
+?" • "+esc(
+[
+a.sourceArea,
+a.sourceOutcome
+]
+.filter(Boolean)
+.join(" • ")
+)
+:""
+}
+</div>
+`;
+
+thisBox.append(item)
+}
+)
+}
+
+
+/* ACTIVE LIFE OUTCOMES */
+
+let activeTitle=
+document.createElement("div");
+
+activeTitle.className="field-label";
+activeTitle.style.marginTop="16px";
+activeTitle.textContent="Active Life Outcomes";
+
+thisBox.append(activeTitle);
+
+let active=
+lifeOutcomes.filter(
+o=>(o.status||"active")==="active"
+);
+
+if(!active.length){
+
+let e=
+document.createElement("div");
+
+e.className="start-week-meta";
+
+e.textContent=
+"No active Life Outcomes are available.";
+
+thisBox.append(e)
+
+}else{
+
+active.forEach(
+o=>{
+
+let item=
+document.createElement("div");
+
+item.className="start-week-item";
+
+item.innerHTML=`
+<div class="start-week-item-title">
+${esc(o.title||"Untitled Life Outcome")}
+</div>
+
+<div class="start-week-meta">
+${esc(o.area||"Life Outcome")}
+</div>
+`;
+
+let actions=
+(o.actions||[])
+.filter(
+t=>(t||"").trim()
+);
+
+if(actions.length){
+
+actions.forEach(
+t=>{
+
+let row=
+document.createElement("div");
+
+row.style.marginTop="8px";
+
+let action={
+text:t,
+sourceOutcome:o.title||"",
+sourceArea:o.area||""
+};
+
+let txt=
+document.createElement("div");
+
+txt.className="start-week-meta";
+txt.textContent=t;
+
+row.append(txt);
+row.append(
+plannerActionButton(
+action,
+"+ Choose for This Week"
+)
+);
+
+item.append(row)
+}
+)
+
+}else{
+
+let none=
+document.createElement("div");
+
+none.className="start-week-meta";
+none.style.marginTop="7px";
+
+none.textContent=
+"No actions have been added to this outcome yet.";
+
+item.append(none)
+}
+
+thisBox.append(item)
+}
+)
+}
+}
+
+$("buildWeekButton").onclick=()=>{
+
+let panel=
+$("startWeekPanel");
+
+let opening=
+!panel.classList.contains("open");
+
+panel.classList.toggle(
+"open",
+opening
+);
+
+$("buildWeekButton").textContent=
+opening
+?"Close Weekly Planner"
+:"Build This Week's Plan";
+
+if(opening){
+renderStartWeekPlanner()
+}
+};
+
+$("startWeekAddAction").onclick=()=>{
+
+let input=
+$("startWeekNewAction"),
+
+t=
+input.value.trim();
+
+if(!t){
+
+flash(
+"weekMessage",
+"Enter a weekly action first."
+);
+
+return
+}
+
+if(
+addToWeek(
+t,
+"",
+""
+)
+){
+
+input.value="";
+
+flash(
+"weekMessage",
+`✓ "${t}" added to this week's plan.`
+)
+
+}else{
+
+flash(
+"weekMessage",
+"✓ That action is already in this week's plan."
+)
+}
+
+renderWeek();
+renderStartWeekPlanner()
+};
+
+$("startWeekNewAction").onkeydown=e=>{
+
+if(e.key==="Enter"){
+
+e.preventDefault();
+
+$("startWeekAddAction").click()
+}
+}; function renderWeeklyOutcomes(){
+
+let active=
+lifeOutcomes.filter(
+o=>(o.status||"active")==="active"
+);
+
+$("weeklyOutcomePlanner").innerHTML="";
+
+$("weeklyOutcomeCount").textContent=
+weekData.selectedOutcomes.length;
+
+if(!active.length){
+
+$("weeklyOutcomePlanner").innerHTML=
+'<div class="week-empty">No active Life Outcomes are available yet.</div>';
+
+return
+}
+
+active.forEach(
+o=>{
+
+let id=
+outcomeId(o),
+
+chosen=
+weekData.selectedOutcomes.includes(id),
+
+c=
+document.createElement("div");
+
+c.className="week-outcome-card";
+
+c.innerHTML=`
+<div class="week-outcome-header">
+
+<input
+type="checkbox"
+class="week-outcome-check"
+${chosen?"checked":""}
+>
+
+<div>
+
+<div class="week-outcome-title">
+${esc(o.title||"Untitled Life Outcome")}
+</div>
+
+<div class="week-outcome-area">
+${esc(o.area||"Life Outcome")}
+</div>
+
+</div>
+
+</div>
+
+<div class="week-outcome-actions"></div>
+`;
+
+c.querySelector("input").onchange=e=>{
+
+if(
+e.target.checked&&
+!weekData.selectedOutcomes.includes(id)
+){
+
+weekData.selectedOutcomes.push(id)
+}
+
+if(!e.target.checked){
+
+weekData.selectedOutcomes=
+weekData.selectedOutcomes.filter(
+x=>x!==id
+)
+}
+
+saveWeekData();
+renderWeeklyOutcomes();
+
+if(
+$("startWeekPanel").classList.contains("open")
+){
+renderStartWeekPlanner()
+}
+};
+
+if(chosen){
+
+let box=
+c.querySelector(".week-outcome-actions");
+
+if(!(o.actions||[]).length){
+
+box.innerHTML=
+'<div class="week-empty">No actions have been added to this Life Outcome yet.</div>'
+
+}else{
+
+(o.actions||[]).forEach(
+t=>{
+
+let r=
+document.createElement("div");
+
+r.className="week-pick-row";
+
+let added=
+hasWeekAction(t);
+
+r.innerHTML=`
+<div>
+${esc(t)}
+</div>
+
+<button class="week-pick-button ${added?"added":""}">
+${added
+?"✓ In This Week"
+:"+ Choose for This Week"
+}
+</button>
+`;
+
+r.querySelector("button").onclick=()=>{
+
+if(!hasWeekAction(t)){
+
+addToWeek(
+t,
+o.title,
+o.area
+);
+
+renderWeek();
+
+flash(
+"weekMessage",
+"✓ Action added to this week's plan."
+)
+
+}else{
+
+flash(
+"weekMessage",
+"✓ That action is already in this week's plan."
+)
+}
+
+if(
+$("startWeekPanel").classList.contains("open")
+){
+renderStartWeekPlanner()
+}
+};
+
+box.append(r)
+}
+)
+}
+}
+
+$("weeklyOutcomePlanner").append(c)
+}
+);
+
+$("weeklyOutcomeCount").textContent=
+weekData.selectedOutcomes.length
+}
+
+function renderWeeklyActions(){
+
+$("weeklyActionList").innerHTML="";
+
+if(!weekData.actions.length){
+
+$("weeklyActionList").innerHTML=
+'<div class="week-empty">No weekly actions yet. Choose actions from your Life Outcomes above or add one of your own.</div>';
+
+return
+}
+
+weekData.actions.forEach(
+(a,i)=>{
+
+let c=
+document.createElement("div");
+
+c.className="week-action-card";
+
+let text=
+(a.text||"").trim(),
+
+inDay=
+text!==""&&
+hasDayAction(text);
+
+c.innerHTML=`
+<div class="week-action-main">
+
+<input
+type="checkbox"
+class="week-action-check"
+${a.completed?"checked":""}
+>
+
+<input
+class="week-action-text ${a.completed?"completed":""}"
+value="${escAttr(a.text)}"
+placeholder="Weekly action"
+>
+
+<button class="delete-button">
+×
+</button>
+
+</div>
+
+<div class="week-action-options">
+
+<select class="week-focus-select">
+<option value="0">Not Weekly Top 3</option>
+<option value="1">🥇 Weekly Focus #1</option>
+<option value="2">🥈 Weekly Focus #2</option>
+<option value="3">🥉 Weekly Focus #3</option>
+</select>
+
+<button class="week-send-button">
+${inDay
+?"✓ In Selected Day"
+:"→ Add to Selected Day"
+}
+</button>
+
+<button class="week-carry-button"></button>
+
+</div>
+
+${a.sourceOutcome||a.sourceArea
+?`<div class="area-status">${esc(
+[
+a.sourceArea,
+a.sourceOutcome
+]
+.filter(Boolean)
+.join(" • ")
+)}</div>`
+:""
+}
+`;
+
+$("weeklyActionList").append(c);
+
+c.querySelector(".week-focus-select").value=
+a.focus;
+
+let carry=
+c.querySelector(".week-carry-button"),
+
+nextKey=
+shiftWeek(
+selectedWeekKey,
+1
+),
+
+nextData=
+normalizeWeek(
+weeklyHistory[nextKey],
+nextKey
+),
+
+inNext=
+text!==""&&
+weekHasAction(
+nextData,
+text
+);
+
+carry.textContent=
+a.completed
+?"✓ Completed"
+:inNext
+?"✓ In Next Week"
+:"→ Carry to Next Week";
+
+carry.classList.toggle(
+"added",
+inNext
+);
+
+carry.disabled=
+!!a.completed||
+inNext;
+
+c.querySelector(".week-action-check").onchange=e=>{
+
+a.completed=
+e.target.checked;
+
+saveWeekData();
+renderWeeklyActions();
+updateWeeklyProgress();
+
+if(
+$("startWeekPanel").classList.contains("open")
+){
+renderStartWeekPlanner()
+}
+};
+
+c.querySelector(".week-action-text").oninput=e=>{
+
+a.text=
+e.target.value;
+
+saveWeekData();
+renderWeeklyTop3();
+updateWeeklyProgress();
+
+let b=
+c.querySelector(".week-send-button"),
+
+t=
+a.text.trim();
+
+b.textContent=
+t&&hasDayAction(t)
+?"✓ In Selected Day"
+:"→ Add to Selected Day";
+
+let nextWeekKey=
+shiftWeek(
+selectedWeekKey,
+1
+),
+
+next=
+normalizeWeek(
+weeklyHistory[nextWeekKey],
+nextWeekKey
+);
+
+let alreadyNext=
+t&&
+weekHasAction(
+next,
+t
+);
+
+carry.textContent=
+a.completed
+?"✓ Completed"
+:alreadyNext
+?"✓ In Next Week"
+:"→ Carry to Next Week";
+
+carry.classList.toggle(
+"added",
+!!alreadyNext
+);
+
+carry.disabled=
+!!a.completed||
+!!alreadyNext
+};
+
+c.querySelector(".week-focus-select").onchange=e=>{
+
+let r=+e.target.value;
+
+if(r){
+
+weekData.actions.forEach(
+(x,j)=>{
+
+if(j!==i&&x.focus===r){
+
+x.focus=0
+}
+}
+)
+}
+
+a.focus=r;
+
+saveWeekData();
+renderWeeklyActions();
+renderWeeklyTop3();
+
+if(
+$("startWeekPanel").classList.contains("open")
+){
+renderStartWeekPlanner()
+}
+};
+
+c.querySelector(".week-send-button").onclick=()=>{
+
+let t=
+(a.text||"").trim();
+
+if(!t){
+
+flash(
+"weekMessage",
+"Enter a weekly action before adding it to a day."
+);
+
+return
+}
+
+if(hasDayAction(t)){
+
+flash(
+"weekMessage",
+"✓ That weekly action is already in the selected day."
+);
+
+return
+}
+
+addToDay(
+t,
+a.sourceOutcome,
+"",
+a.sourceArea
+);
+
+renderWeeklyActions();
+
+flash(
+"weekMessage",
+"✓ Weekly action added to the selected day."
+)
+};
+
+carry.onclick=()=>{
+
+carryToNextWeek(a)
+};
+
+c.querySelector(".delete-button").onclick=()=>{
+
+weekData.actions.splice(i,1);
+
+saveWeekData();
+renderWeek();
+
+if(
+$("startWeekPanel").classList.contains("open")
+){
+renderStartWeekPlanner()
+}
+}
+}
+)
+}
+
+function renderWeeklyTop3(){
+
+$("weeklyTop3List").innerHTML="";
+
+let n=
+weekData.actions.filter(
+a=>[1,2,3].includes(+a.focus)
+).length;
+
+$("weeklyTop3Count").textContent=
+`${n} of 3 selected`;
+
+if(
+!weekData.actions.some(
+a=>(a.text||"").trim()
+)
+){
+
+$("weeklyTop3List").innerHTML=
+'<div class="top3-empty">Choose or add weekly actions first, then select your Weekly Top 3.</div>';
+
+return
+}
+
+for(let r=1;r<=3;r++){
+
+let a=
+weekData.actions.find(
+x=>
++x.focus===r&&
+(x.text||"").trim()
+),
+
+c=
+document.createElement("div");
+
+c.className="top3-slot";
+
+c.innerHTML=`
+<div class="top3-rank">
+${rankIcon(r)}
+</div>
+
+<div class="top3-text ${a?"":"top3-empty-text"}">
+${esc(
+a
+?a.text
+:`Weekly Focus #${r} not selected`
+)}
+</div>
+
+${a
+?'<button class="top3-remove">Remove</button>'
+:""
+}
+`;
+
+if(a){
+
+c.querySelector("button").onclick=()=>{
+
+a.focus=0;
+
+saveWeekData();
+renderWeeklyActions();
+renderWeeklyTop3();
+
+if(
+$("startWeekPanel").classList.contains("open")
+){
+renderStartWeekPlanner()
+}
+}
+}
+
+$("weeklyTop3List").append(c)
+}
+}
+
+function updateWeeklyProgress(){
+
+let a=
+weekData.actions.filter(
+x=>(x.text||"").trim()
+),
+
+done=
+a.filter(
+x=>x.completed
+).length,
+
+p=
+a.length
+?Math.round(done/a.length*100)
+:0;
+
+$("weeklyProgressPercent").textContent=
+p+"%";
+
+$("weeklyProgressBar").style.width=
+p+"%";
+
+$("weeklyProgressText").textContent=
+`${done} of ${a.length} weekly actions completed`;
+
+$("weeklyCompletionMessage").style.display=
+a.length&&done===a.length
+?"block"
+:"none"
+}
+
+
+/* WEEKLY REVIEW */
+
+function renderWeeklyReview(){
+
+let r=
+weekData.review||
+{
+wins:"",
+incomplete:"",
+lessons:"",
+carryForward:""
+};
+
+$("reviewWins").value=
+r.wins||"";
+
+$("reviewIncomplete").value=
+r.incomplete||"";
+
+$("reviewLessons").value=
+r.lessons||"";
+
+$("reviewCarryForward").value=
+r.carryForward||""
+}
+
+function collectWeeklyReview(){
+
+weekData.review={
+wins:$("reviewWins").value,
+incomplete:$("reviewIncomplete").value,
+lessons:$("reviewLessons").value,
+carryForward:$("reviewCarryForward").value
+}
+}
+
+[
+"reviewWins",
+"reviewIncomplete",
+"reviewLessons",
+"reviewCarryForward"
+].forEach(
+id=>
+$(id).oninput=()=>{
+
+collectWeeklyReview();
+saveWeekData();
+
+if(
+$("startWeekPanel").classList.contains("open")
+){
+renderStartWeekPlanner()
+}
+}
+);
+
+$("saveReviewButton").onclick=()=>{
+
+collectWeeklyReview();
+saveWeekData();
+
+flash(
+"reviewSavedMessage",
+"✓ This week's review has been saved."
+)
+};
+
+function renderWeek(){
+
+$("weekLabel").textContent=
+weekRange(selectedWeekKey);
+
+let exists=
+!!weeklyHistory[selectedWeekKey];
+
+$("weekHistoryStatus").textContent=
+selectedWeekKey===actualWeekKey
+?(
+exists
+?"Viewing the current saved weekly plan."
+:"Viewing the current week. This week has not been saved yet."
+)
+:(
+exists
+?`Viewing saved plan for ${weekRange(selectedWeekKey)}.`
+:`No saved weekly plan exists yet for ${weekRange(selectedWeekKey)}.`
+);
+
+renderWeeklyOutcomes();
+renderWeeklyActions();
+renderWeeklyTop3();
+updateWeeklyProgress();
+renderWeeklyReview();
+
+if(
+$("startWeekPanel").classList.contains("open")
+){
+renderStartWeekPlanner()
+}
+}
+
+function loadWeek(k){
+
+collectWeeklyReview();
+saveWeekData();
+
+selectedWeekKey=k;
+
+localStorage.setItem(
+LAST_VIEWED_WEEK_STORAGE_KEY,
+k
+);
+
+weekData=
+normalizeWeek(
+weeklyHistory[k],
+k
+);
+
+$("startWeekPanel").classList.remove("open");
+
+$("buildWeekButton").textContent=
+"Build This Week's Plan";
+
+$("startWeekNewAction").value="";
+
+renderWeek()
+}
+
+$("previousWeekButton").onclick=()=>{
+
+loadWeek(
+shiftWeek(
+selectedWeekKey,
+-1
+)
+)
+};
+
+$("nextWeekButton").onclick=()=>{
+
+loadWeek(
+shiftWeek(
+selectedWeekKey,
+1
+)
+)
+};
+
+$("currentWeekButton").onclick=()=>{
+
+loadWeek(actualWeekKey)
+};
+
+$("addWeeklyActionButton").onclick=()=>{
+
+weekData.actions.push({
+text:"",
+completed:false,
+focus:0,
+sourceOutcome:"",
+sourceArea:""
+});
+
+saveWeekData();
+renderWeeklyActions();
+
+if(
+$("startWeekPanel").classList.contains("open")
+){
+renderStartWeekPlanner()
+}
+};
+
+$("saveWeekButton").onclick=()=>{
+
+collectWeeklyReview();
+saveWeekData();
+renderWeek();
+
+flash(
+"weekSavedMessage",
+"✓ This week's plan has been saved."
+)
+};
+
+saveAreas();
+saveOutcomes();
+renderLife();
+renderDay();
+renderWeek();
+
+</script>
+
+<!-- VERSION 1.15 - END MY DAY -->
+<style>
+.end-day-card {
+  border: 2px solid #c4b5fd;
+  background: #faf8ff;
+}
+.end-day-card h2 {
+  color: #5b21b6;
+}
+.end-day-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin: 16px 0;
+}
+.end-day-stat {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 14px 6px;
+  text-align: center;
+}
+.end-day-stat strong {
+  display: block;
+  font-size: 24px;
+  color: #5b21b6;
+}
+.end-day-stat span {
+  font-size: 11px;
+  color: #6b7280;
+}
+.end-day-field {
+  margin: 16px 0;
+}
+.end-day-field label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.end-day-field textarea {
+  width: 100%;
+  min-height: 85px;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 9px;
+  font: inherit;
+  background: white;
+  resize: vertical;
+}
+.end-day-action {
+  padding: 12px 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+.end-day-action-name {
+  font-weight: 600;
+  margin-bottom: 8px;
+  overflow-wrap: anywhere;
+}
+.end-day-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.end-day-button {
+  border: none;
+  border-radius: 8px;
+  background: #ede9fe;
+  color: #5b21b6;
+  font-weight: 700;
+  padding: 9px 12px;
+  cursor: pointer;
+}
+.end-day-button:disabled {
+  background: #e5e7eb;
+  color: #6b7280;
+  cursor: default;
+}
+.end-day-primary {
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  background: #7c3aed;
+  color: white;
+  padding: 14px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 14px;
+}
+.end-day-message {
+  margin-top: 10px;
+  color: #166534;
+  font-size: 13px;
+}
+.end-day-subheading {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 22px 0 10px;
+  color: #5b21b6;
+}
+.end-day-empty {
+  padding: 12px;
+  color: #6b7280;
+  font-size: 13px;
+  text-align: center;
+}
+.end-day-focus-select {
+  padding: 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: white;
+  font: inherit;
+}
+</style>
+
+<script>
+(function(){
+
+"use strict";
+
+const REVIEW_KEY =
+  "lifeManagementDailyReviewsV115";
+
+let reviews = {};
+
+try {
+  reviews = JSON.parse(
+    localStorage.getItem(REVIEW_KEY) || "{}"
+  ) || {};
+} catch(error) {
+  reviews = {};
+}
+
+const progressSection =
+  document.getElementById("progressPercent")
+  .closest("section");
+
+const reviewCard =
+  document.createElement("section");
+
+reviewCard.className =
+  "card end-day-card";
+
+reviewCard.id = "endMyDayCard";
+
+reviewCard.innerHTML = `
+<h2>🌙 End My Day</h2>
+
+<p class="section-description">
+Review your progress, celebrate your wins,
+learn from today, and prepare for tomorrow.
+</p>
+
+<div id="endDayDate"
+     style="font-weight:700;margin-top:12px">
+</div>
+
+<div class="end-day-summary">
+
+  <div class="end-day-stat">
+    <strong id="endDayTotal">0</strong>
+    <span>TOTAL ACTIONS</span>
+  </div>
+
+  <div class="end-day-stat">
+    <strong id="endDayDone">0</strong>
+    <span>COMPLETED</span>
+  </div>
+
+  <div class="end-day-stat">
+    <strong id="endDayPercent">0%</strong>
+    <span>COMPLETION</span>
+  </div>
+
+</div>
+
+<div class="end-day-field">
+  <label for="endDayWins">
+    🏆 What were my wins?
+  </label>
+  <textarea id="endDayWins"
+    placeholder="What did I accomplish today?">
+  </textarea>
+</div>
+
+<div class="end-day-field">
+  <label for="endDayUnfinished">
+    📋 What didn't I get done?
+  </label>
+  <textarea id="endDayUnfinished"
+    placeholder="What remained unfinished, and why?">
+  </textarea>
+</div>
+
+<div class="end-day-field">
+  <label for="endDayLessons">
+    💡 What did I learn?
+  </label>
+  <textarea id="endDayLessons"
+    placeholder="What worked? What could I do differently?">
+  </textarea>
+</div>
+
+<div class="end-day-field">
+  <label for="endDayImprove">
+    🎯 How can I improve tomorrow?
+  </label>
+  <textarea id="endDayImprove"
+    placeholder="What will I change or focus on tomorrow?">
+  </textarea>
+</div>
+
+<div class="end-day-subheading">
+  📋 Unfinished Actions
+</div>
+
+<p class="section-description">
+Choose which unfinished actions deserve
+a place in tomorrow's plan.
+</p>
+
+<div id="endDayCarryList"></div>
+
+<div class="end-day-subheading">
+  🥇 Tomorrow's Daily Top 3
+</div>
+
+<p class="section-description">
+Choose tomorrow's three most important
+actions. Changes are saved to tomorrow's plan.
+</p>
+
+<div id="endDayTomorrowFocus"></div>
+
+<button type="button"
+        class="end-day-primary"
+        id="endDaySaveButton">
+  ✓ Save Daily Review
+</button>
+
+<div class="end-day-message"
+     id="endDayMessage"
+     aria-live="polite">
+</div>
+
+<button type="button"
+        class="end-day-primary"
+        id="endDayTomorrowButton"
+        style="background:#2563eb">
+  → Open Tomorrow's Plan
+</button>
+`;
+
+progressSection.after(reviewCard);
+
+const get = id =>
+  document.getElementById(id);
+
+const fields = {
+  wins: "endDayWins",
+  unfinished: "endDayUnfinished",
+  lessons: "endDayLessons",
+  improve: "endDayImprove"
+};
+
+function nextDate(key){
+
+  const parts = key.split("-").map(Number);
+
+  const date = new Date(
+    parts[0],
+    parts[1] - 1,
+    parts[2]
+  );
+
+  date.setDate(date.getDate() + 1);
+
+  return dateKey(date);
+}
+
+function getReview(key){
+
+  if(!reviews[key]){
+
+    reviews[key] = {
+      wins: "",
+      unfinished: "",
+      lessons: "",
+      improve: ""
+    };
+  }
+
+  return reviews[key];
+}
+
+function saveReview(){
+
+  const review = getReview(selectedDateKey);
+
+  Object.keys(fields).forEach(key => {
+
+    review[key] =
+      get(fields[key]).value;
+
+  });
+
+  try {
+
+    localStorage.setItem(
+      REVIEW_KEY,
+      JSON.stringify(reviews)
+    );
+
+    return true;
+
+  } catch(error) {
+
+    get("endDayMessage").textContent =
+      "Unable to save the review. Check browser storage.";
+
+    return false;
+  }
+}
+
+function showMessage(message){
+
+  get("endDayMessage").textContent =
+    message;
+}
+
+function cleanText(text){
+
+  return String(text || "")
+    .trim()
+    .toLowerCase();
+}
+
+function getTomorrow(){
+
+  const key = nextDate(selectedDateKey);
+
+  return {
+    key: key,
+    data: normalizeDay(
+      dailyHistory[key],
+      key
+    )
+  };
+}
+
+function saveTomorrow(key,data){
+
+  data.date = key;
+
+  dailyHistory[key] =
+    clone(data);
+
+  localStorage.setItem(
+    DAILY_HISTORY_STORAGE_KEY,
+    JSON.stringify(dailyHistory)
+  );
+}
+
+function updateSummary(){
+
+  const actions =
+    dayData.actions.filter(
+      action => cleanText(action.text)
+    );
+
+  const completed =
+    actions.filter(
+      action => action.completed
+    ).length;
+
+  const percent =
+    actions.length
+      ? Math.round(
+          completed / actions.length * 100
+        )
+      : 0;
+
+  get("endDayTotal").textContent =
+    actions.length;
+
+  get("endDayDone").textContent =
+    completed;
+
+  get("endDayPercent").textContent =
+    percent + "%";
+}
+
+function makeEmpty(message){
+
+  const div =
+    document.createElement("div");
+
+  div.className = "end-day-empty";
+
+  div.textContent = message;
+
+  return div;
+}
+
+function renderCarryList(){
+
+  const container =
+    get("endDayCarryList");
+
+  container.innerHTML = "";
+
+  const unfinished =
+    dayData.actions.filter(
+      action =>
+        cleanText(action.text) &&
+        !action.completed
+    );
+
+  const tomorrow = getTomorrow();
+
+  if(!unfinished.length){
+
+    container.append(
+      makeEmpty(
+        "No unfinished actions to carry forward."
+      )
+    );
+
+    return;
+  }
+
+  unfinished.forEach(action => {
+
+    const row =
+      document.createElement("div");
+
+    row.className = "end-day-action";
+
+    const title =
+      document.createElement("div");
+
+    title.className =
+      "end-day-action-name";
+
+    title.textContent = action.text;
+
+    const controls =
+      document.createElement("div");
+
+    controls.className =
+      "end-day-controls";
+
+    const button =
+      document.createElement("button");
+
+    button.type = "button";
+
+    button.className =
+      "end-day-button";
+
+    const exists =
+      tomorrow.data.actions.some(
+        item =>
+          cleanText(item.text) ===
+          cleanText(action.text)
+      );
+
+    button.textContent = exists
+      ? "✓ In Tomorrow's Plan"
+      : "→ Carry to Tomorrow";
+
+    button.disabled = exists;
+
+    button.onclick = function(){
+
+      const target = getTomorrow();
+
+      const duplicate =
+        target.data.actions.some(
+          item =>
+            cleanText(item.text) ===
+            cleanText(action.text)
+        );
+
+      if(duplicate){
+
+        renderCarryList();
+        return;
+      }
+
+      const newAction = {
+        text: action.text,
+        completed: false,
+        priority: action.priority || "should",
+        time: "",
+        endTime: "",
+        duration: "30",
+        focus: 0
+      };
+
+      const blankIndex =
+        target.data.actions.findIndex(
+          item => !cleanText(item.text)
+        );
+
+      if(blankIndex >= 0){
+
+        target.data.actions[blankIndex] =
+          newAction;
+
+      } else {
+
+        target.data.actions.push(
+          newAction
+        );
+      }
+
+      try {
+
+        saveTomorrow(
+          target.key,
+          target.data
+        );
+
+        renderCarryList();
+        renderTomorrowFocus();
+
+        showMessage(
+          "✓ " + action.text +
+          " added to tomorrow's plan."
+        );
+
+      } catch(error) {
+
+        showMessage(
+          "Unable to save tomorrow's action."
+        );
+      }
+    };
+
+    controls.append(button);
+
+    row.append(title,controls);
+
+    container.append(row);
+
+  });
+}
+
+function renderTomorrowFocus(){
+
+  const container =
+    get("endDayTomorrowFocus");
+
+  container.innerHTML = "";
+
+  const tomorrow = getTomorrow();
+
+  const actions =
+    tomorrow.data.actions;
+
+  const hasActions =
+    actions.some(
+      action => cleanText(action.text)
+    );
+
+  if(!hasActions){
+
+    container.append(
+      makeEmpty(
+        "Tomorrow has no actions yet. " +
+        "Carry an unfinished action forward " +
+        "or add actions to tomorrow's plan."
+      )
+    );
+
+    return;
+  }
+
+  for(let rank = 1; rank <= 3; rank++){
+
+    const row =
+      document.createElement("div");
+
+    row.className = "end-day-action";
+
+    const label =
+      document.createElement("div");
+
+    label.className =
+      "end-day-action-name";
+
+    label.textContent =
+      ["🥇","🥈","🥉"][rank - 1] +
+      " Focus #" + rank;
+
+    const select =
+      document.createElement("select");
+
+    select.className =
+      "end-day-focus-select";
+
+    select.style.width = "100%";
+
+    select.setAttribute(
+      "aria-label",
+      "Tomorrow focus " + rank
+    );
+
+    const empty =
+      document.createElement("option");
+
+    empty.value = "";
+
+    empty.textContent =
+      "Choose an action";
+
+    select.append(empty);
+
+    actions.forEach((action,index) => {
+
+      if(!cleanText(action.text)){
+        return;
+      }
+
+      const option =
+        document.createElement("option");
+
+      option.value = String(index);
+
+      option.textContent = action.text;
+
+      select.append(option);
+
+      if(Number(action.focus) === rank){
+
+        select.value = String(index);
+      }
+
+    });
+
+    select.onchange = function(){
+
+      const target = getTomorrow();
+
+      target.data.actions.forEach(action => {
+
+        if(Number(action.focus) === rank){
+
+          action.focus = 0;
+        }
+
+      });
+
+      if(select.value !== ""){
+
+        const chosen =
+          target.data.actions[
+            Number(select.value)
+          ];
+
+        if(chosen){
+
+          chosen.focus = rank;
+        }
+      }
+
+      try {
+
+        saveTomorrow(
+          target.key,
+          target.data
+        );
+
+        renderTomorrowFocus();
+
+        showMessage(
+          "✓ Tomorrow's Top 3 updated."
+        );
+
+      } catch(error) {
+
+        showMessage(
+          "Unable to save tomorrow's focus."
+        );
+      }
+    };
+
+    row.append(label,select);
+
+    container.append(row);
+
+  }
+}
+
+function renderReview(){
+
+  const review =
+    getReview(selectedDateKey);
+
+  get("endDayDate").textContent =
+    formatDate(selectedDateKey);
+
+  Object.keys(fields).forEach(key => {
+
+    get(fields[key]).value =
+      review[key] || "";
+
+  });
+
+  get("endDayMessage").textContent = "";
+
+  updateSummary();
+
+  renderCarryList();
+
+  renderTomorrowFocus();
+
+  get("endDayTomorrowButton").textContent =
+    "→ Open Tomorrow's Plan (" +
+    formatDate(nextDate(selectedDateKey)) +
+    ")";
+}
+
+Object.keys(fields).forEach(key => {
+
+  get(fields[key]).addEventListener(
+    "input",
+    saveReview
+  );
+
+});
+
+get("endDaySaveButton").onclick =
+  function(){
+
+    if(saveReview()){
+
+      showMessage(
+        "✓ Daily review saved for " +
+        formatDate(selectedDateKey) +
+        "."
+      );
+    }
+  };
+
+get("endDayTomorrowButton").onclick =
+  function(){
+
+    if(!saveReview()){
+      return;
+    }
+
+    saveDay();
+
+    selectedDateKey =
+      nextDate(selectedDateKey);
+
+    dayData = normalizeDay(
+      dailyHistory[selectedDateKey],
+      selectedDateKey
+    );
+
+    localStorage.setItem(
+      LAST_VIEWED_DATE_STORAGE_KEY,
+      selectedDateKey
+    );
+
+    renderDay();
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  };
+
+const originalRenderDay = renderDay;
+
+renderDay = function(){
+
+  originalRenderDay.apply(
+    this,
+    arguments
+  );
+
+  renderReview();
+};
+
+const originalUpdateProgress =
+  updateProgress;
+
+updateProgress = function(){
+
+  originalUpdateProgress.apply(
+    this,
+    arguments
+  );
+
+  updateSummary();
+
+  renderCarryList();
+};
+
+const originalBuildSchedule =
+  buildSchedule;
+
+buildSchedule = function(){
+
+  originalBuildSchedule.apply(
+    this,
+    arguments
+  );
+
+  updateSummary();
+
+  renderCarryList();
+};
+
+const versionBadge =
+  document.querySelector(".version");
+
+if(versionBadge){
+
+  versionBadge.textContent =
+    "Version 1.15";
+}
+
+renderReview();
+
+})();
+</script>
+<!-- END VERSION 1.15 UPGRADE -->
+
+<!-- VERSION 1.16 - START MY DAY -->
+<script>
+(function(){
+const card=document.createElement('section');
+card.className='card start-week-card'; card.id='startMyDayCard';
+card.innerHTML=`<h2>☀️ Start My Day</h2><p class="section-description">Review yesterday, choose actions from this week's plan, and set your priorities for the selected day.</p><button class="save-button" id="startDayToggle" type="button">Build This Day's Plan</button><div id="startDayPanel" hidden style="margin-top:16px"><div id="startDayDate" class="history-status"></div><div class="start-week-grid" style="margin-top:14px"><div class="start-week-section"><h3>← Yesterday</h3><div id="startDayYesterday"></div></div><div class="start-week-section"><h3>📆 This Week's Actions</h3><div id="startDayWeek"></div></div></div><div class="start-week-section" style="margin-top:14px"><h3>🎯 Active Life Outcomes</h3><div id="startDayLife"></div></div><div class="start-week-section" style="margin-top:14px"><h3>⭐ Today's Plan & Top 3</h3><div id="startDayActions"></div><div class="start-week-new-action"><input type="text" id="startDayNew" placeholder="Add a new daily action"><button type="button" id="startDayAdd">+ Add</button></div><p id="startDayMessage" role="status" style="margin-top:10px;color:#166534"></p><button type="button" class="save-button" id="startDayFinish" style="margin-top:12px">Save Plan & Go to Time Blocking</button></div></div>`;
+$('dailyDateSelector').closest('section').after(card);
+const panel=$('startDayPanel');
+function addItem(parent,text,meta,handler,added=false){
+ const row=document.createElement('div'); row.className='start-week-item';
+ const title=document.createElement('div'); title.className='start-week-item-title'; title.textContent=text; row.append(title);
+ if(meta){const m=document.createElement('div');m.className='start-week-meta';m.textContent=meta;row.append(m);}
+ if(handler){const b=document.createElement('button');b.type='button';b.className='start-week-add'+(added?' added':'');b.textContent=added?'✓ In This Day’s Plan':'+ Add to This Day';b.disabled=added;b.onclick=handler;row.append(b);}
+ parent.append(row);return row;
+}
+function empty(parent,msg){const p=document.createElement('p');p.className='planner-empty';p.textContent=msg;parent.append(p);}
+function add(text,title='',purpose='',area='',priority='should'){
+ if(!text.trim()||hasDayAction(text))return;
+ const action={text:text.trim(),completed:false,priority:priority||'should',time:'',endTime:'',duration:'30',focus:0};
+ const blank=dayData.actions.findIndex(a=>!a.text.trim()); if(blank>=0)dayData.actions[blank]=action;else dayData.actions.push(action);
+ if(!dayData.outcome&&title)dayData.outcome=title;if(!dayData.purpose&&purpose)dayData.purpose=purpose;
+ saveDay();renderDay();$('startDayMessage').textContent='✓ Action added to this day.';
+}
+function renderStartDay(){
+ if(panel.hidden)return;
+ $('startDayDate').textContent='Planning for '+formatDate(selectedDateKey);
+ const y=$('startDayYesterday'),w=$('startDayWeek'),l=$('startDayLife'),a=$('startDayActions');[y,w,l,a].forEach(x=>x.replaceChildren());
+ const prev=previousDay(selectedDateKey), prior=normalizeDay(dailyHistory[prev],prev);
+ const previousActions=prior.actions.filter(x=>x.text.trim());
+ if(!previousActions.length)empty(y,'No actions saved for yesterday.');
+ previousActions.forEach(x=>addItem(y,x.text,(x.completed?'Completed':'Unfinished')+(x.focus?' · Focus #'+x.focus:''),x.completed?null:()=>add(x.text,'','','',x.priority),hasDayAction(x.text)));
+ const review=objectStore('lifeManagementDailyReviewsV115')?.[prev];
+ if(review){[['Wins',review.wins],['Unfinished',review.unfinished],['Lessons',review.lessons],['Improve',review.improve]].forEach(([label,value])=>{if(value&&value.trim())addItem(y,label,value);});}
+ const wk=mondayKey(fromKey(selectedDateKey));const week=normalizeWeek(weeklyHistory[wk],wk);
+ const weekly=week.actions.filter(x=>x.text.trim()&&!x.completed);
+ if(!weekly.length)empty(w,'No unfinished weekly actions for '+weekRange(wk)+'.');
+ weekly.forEach(x=>addItem(w,x.text,[x.sourceOutcome,x.focus?'Weekly Focus #'+x.focus:''].filter(Boolean).join(' · '),()=>add(x.text,x.sourceOutcome,'',x.sourceArea),hasDayAction(x.text)));
+ const active=lifeOutcomes.filter(o=>(o.status||'active')==='active');
+ if(!active.length)empty(l,'No active Life Outcomes.');
+ active.forEach(o=>{const group=addItem(l,o.title||'Untitled Life Outcome',[o.area,o.purpose].filter(Boolean).join(' · '));(o.actions||[]).filter(t=>t.trim()).forEach(t=>addItem(group,t,'',()=>add(t,o.title,o.purpose,o.area),hasDayAction(t)));});
+ const actions=dayData.actions.filter(x=>x.text.trim());if(!actions.length)empty(a,'Add actions above or create a new one below.');
+ actions.forEach(x=>{const row=addItem(a,x.text,(x.completed?'Completed':'Not completed')+' · '+x.priority.toUpperCase());const select=document.createElement('select');select.setAttribute('aria-label','Focus for '+x.text);select.style.marginTop='8px';[0,1,2,3].forEach(n=>{const opt=document.createElement('option');opt.value=n;opt.textContent=n?'Focus #'+n:'No Top 3 focus';select.append(opt);});select.value=x.focus||0;select.onchange=()=>{const rank=+select.value;if(rank)dayData.actions.forEach(other=>{if(other.focus===rank)other.focus=0;});x.focus=rank;saveDay();renderDay();};row.append(select);});
+}
+$('startDayToggle').onclick=()=>{panel.hidden=!panel.hidden;$('startDayToggle').textContent=panel.hidden?"Build This Day's Plan":"Hide Start My Day";renderStartDay();};
+$('startDayAdd').onclick=()=>{const input=$('startDayNew');const text=input.value.trim();if(!text)return;if(hasDayAction(text)){$('startDayMessage').textContent='That action is already in this day’s plan.';return;}add(text);input.value='';};
+$('startDayFinish').onclick=()=>{saveDay();renderDay();$('startDayMessage').textContent='✓ Daily plan saved.';$('scheduleList').closest('section').scrollIntoView({behavior:'smooth'});};
+const originalRenderDay=renderDay;renderDay=function(){originalRenderDay.apply(this,arguments);renderStartDay();};
+const originalRenderActions=renderActions;renderActions=function(){originalRenderActions.apply(this,arguments);renderStartDay();};
+document.querySelector('.version').textContent='Version 1.16';
+})();
+</script>
+<!-- END VERSION 1.16 UPGRADE -->
+<!-- VERSION 1.17 - MANAGEMENT COMMAND CENTER -->
+<style>
+.nav{grid-template-columns:repeat(4,minmax(0,1fr))}.nav button{padding:10px 4px;font-size:13px}
+#homePage .home-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:18px}
+#homePage .home-metric{background:#fff;border-radius:14px;padding:16px;box-shadow:0 3px 12px #0000000d;min-width:0}
+#homePage .home-number{font-size:30px;font-weight:800;color:#1d4ed8;margin:6px 0}
+#homePage .home-meta{font-size:13px;color:#64748b;line-height:1.5;overflow-wrap:anywhere}
+#homePage .home-row{padding:12px 0;border-bottom:1px solid #e5e7eb;overflow-wrap:anywhere;line-height:1.5}
+#homePage .home-row:last-child{border-bottom:0}
+#homePage .home-bar{height:8px;background:#e5e7eb;border-radius:8px;overflow:hidden;margin-top:10px}
+#homePage .home-fill{height:100%;background:#2563eb;border-radius:8px}
+#homePage .home-link{border:0;background:#dbeafe;color:#1d4ed8;border-radius:9px;padding:10px 14px;font-weight:700;cursor:pointer;margin-top:12px;width:100%}
+#homePage .home-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media(max-width:600px){#homePage .home-columns{grid-template-columns:1fr}#homePage .home-metric{padding:12px}#homePage .home-number{font-size:25px}}
+</style>
+<script>
+(function(){
+const nav=document.createElement('button');nav.id='homeNav';nav.type='button';nav.textContent='🏠 HOME';$('lifeNav').before(nav);$('lifeNav').textContent='🧭 LIFE';
+const page=document.createElement('section');page.id='homePage';page.className='page';$('lifePage').before(page);
+page.innerHTML=`<div class="card"><h2>Management Command Center</h2><p class="section-description">Your life outcomes, weekly priorities and daily actions in one place.</p><div id="homeDate" class="history-status"></div><p class="home-meta">This overview uses the current calendar day and its Monday–Sunday week, not the last date you viewed.</p></div>
+<div class="home-grid"><div class="home-metric"><div class="home-meta">ACTIVE LIFE OUTCOMES</div><div class="home-number" id="homeActive"></div><div class="home-meta" id="homeLifeCount"></div></div><div class="home-metric"><div class="home-meta">TODAY'S PROGRESS</div><div class="home-number" id="homeDailyPct"></div><div class="home-meta" id="homeDailyCount"></div><div class="home-bar"><div class="home-fill" id="homeDailyBar"></div></div></div><div class="home-metric"><div class="home-meta">WEEKLY PROGRESS</div><div class="home-number" id="homeWeeklyPct"></div><div class="home-meta" id="homeWeeklyCount"></div><div class="home-bar"><div class="home-fill" id="homeWeeklyBar"></div></div><div class="home-metric"><div class="home-meta">TODAY'S TOP 3</div><div class="home-number" id="homeFocusCount"></div><div class="home-meta">Priorities selected out of 3</div></div></div>
+<div class="home-columns"><div class="card"><h2>☀️ Today's Top 3</h2><div id="homeDayFocus"></div><button class="home-link" id="homeOpenDay">Open Today's Plan</button></div><div class="card"><h2>📆 This Week's Top 3</h2><div id="homeWeekFocus"></div><button class="home-link" id="homeOpenWeek">Open This Week's Plan</button></div></div>
+<div class="card"><h2>🕒 Today's Schedule</h2><div id="homeSchedule"></div><button class="home-link" id="homeOpenSchedule">Open Time Blocking</button></div>
+<div class="card"><h2>🎯 Active Life Outcomes</h2><div id="homeOutcomes"></div><button class="home-link" id="homeOpenLife">Open Life Outcomes</button></div>
+<div class="card"><h2>📅 Upcoming Target Dates</h2><p class="home-meta">Active outcomes due within 30 days, including overdue outcomes.</p><div id="homeDeadlines"></div></div>
+<div class="card"><h2>🧭 Areas Needing Attention</h2><p class="home-meta">Largest positive gaps between your current and desired life assessment scores.</p><div id="homeGaps"></div><button class="home-link" id="homeOpenAssessment">Open Life Assessment</button></div>`;
+function row(parent,title,meta){const r=document.createElement('div');r.className='home-row';const t=document.createElement('strong');t.textContent=title;r.append(t);if(meta){const m=document.createElement('div');m.className='home-meta';m.textContent=meta;r.append(m);}parent.append(r);}
+function list(id,items,empty){const p=$(id);p.replaceChildren();if(!items.length){row(p,empty);return;}items.forEach(([t,m])=>row(p,t,m));}
+function actions(data){return data.actions.filter(a=>a.text.trim());}
+function progress(prefix,a){const done=a.filter(x=>x.completed).length;const pct=a.length?Math.round(done/a.length*100):0;$(prefix+'Pct').textContent=pct+'%';$(prefix+'Count').textContent=done+' of '+a.length+' actions completed';$(prefix+'Bar').style.width=pct+'%';}
+function focus(a){return a.filter(x=>x.focus).sort((a,b)=>a.focus-b.focus).map(x=>['#'+x.focus+' · '+x.text,x.completed?'✓ Completed':'Not completed']);}
+function time(t){const [h,m]=t.split(':').map(Number);return (h%12||12)+':'+String(m).padStart(2,'0')+(h>=12?' PM':' AM');}
+function renderHome(){const k=dateKey(),wk=mondayKey(fromKey(k));const d=normalizeDay(k===selectedDateKey?dayData:dailyHistory[k],k),w=normalizeWeek(wk===selectedWeekKey?weekData:weeklyHistory[wk],wk);const da=actions(d),wa=actions(w);const active=lifeOutcomes.filter(o=>(o.status||'active')==='active');$('homeDate').textContent=formatDate(k)+' · Week '+weekRange(wk);$('homeActive').textContent=active.length;$('homeLifeCount').textContent=lifeOutcomes.filter(o=>o.status==='completed').length+' completed outcomes';progress('homeDaily',da);progress('homeWeekly',wa);$('homeFocusCount').textContent=da.filter(x=>x.focus).length+'/3';list('homeDayFocus',focus(da),'No priorities selected for today.');list('homeWeekFocus',focus(wa),'No priorities selected for this week.');
+const schedule=[...d.commitments.filter(x=>x.text.trim()&&x.start&&x.end).map(x=>({text:x.text,start:x.start,end:x.end,meta:'Fixed commitment'})),...da.filter(x=>x.time&&x.endTime).map(x=>({text:x.text,start:x.time,end:x.endTime,meta:[x.focus?'Focus #'+x.focus:'',x.completed?'Completed':'Not completed'].filter(Boolean).join(' · ')}))].sort((a,b)=>a.start.localeCompare(b.start));list('homeSchedule',schedule.map(x=>[time(x.start)+' – '+time(x.end)+' · '+x.text,x.meta]),'Nothing scheduled for today.');
+list('homeOutcomes',active.map(o=>[o.title||'Untitled Life Outcome',[o.area,o.targetDate&&validKey(o.targetDate)?'Target: '+formatDate(o.targetDate):'No target date',(o.actions||[]).filter(t=>t.trim()).length+' planned actions'].filter(Boolean).join(' · ')]),'No active Life Outcomes.');
+const limit=fromKey(k);limit.setDate(limit.getDate()+30);list('homeDeadlines',active.filter(o=>validKey(o.targetDate)&&o.targetDate<=dateKey(limit)).sort((a,b)=>a.targetDate.localeCompare(b.targetDate)).map(o=>[o.title||'Untitled Life Outcome',(o.targetDate<k?'Overdue · ':o.targetDate===k?'Due today · ':'Due · ')+formatDate(o.targetDate)]),'No active target dates due within 30 days.');
+list('homeGaps',lifeAreas.map(a=>({...a,gap:Number(a.desired)-Number(a.current)})).filter(a=>a.gap>0).sort((a,b)=>b.gap-a.gap).slice(0,5).map(a=>[a.name,'Current '+a.current+' / 10 · Desired '+a.desired+' / 10 · Gap '+a.gap]),'No positive assessment gaps.');}
+const originalShow=showPage;showPage=function(name){if(name==='home'){['life','week','today'].forEach(n=>{$(n+'Page').classList.remove('active');$(n+'Nav').classList.remove('active');});page.classList.add('active');nav.classList.add('active');renderHome();window.scrollTo({top:0,behavior:'smooth'});}else{page.classList.remove('active');nav.classList.remove('active');originalShow(name);}};
+nav.onclick=()=>showPage('home');function openDay(){const k=dateKey();if(selectedDateKey!==k){saveDay();selectedDateKey=k;dayData=normalizeDay(dailyHistory[k],k);localStorage.setItem(LAST_VIEWED_DATE_STORAGE_KEY,k);}showPage('today');}
+$('homeOpenDay').onclick=openDay;$('homeOpenSchedule').onclick=()=>{openDay();$('scheduleList').closest('section').scrollIntoView({behavior:'smooth'});};$('homeOpenWeek').onclick=()=>{const k=mondayKey();if(selectedWeekKey!==k)loadWeek(k);showPage('week');};$('homeOpenLife').onclick=()=>{showPage('life');$('lifeOutcomeList').scrollIntoView({behavior:'smooth'});};$('homeOpenAssessment').onclick=()=>showPage('life');
+window.addEventListener('focus',()=>{if(page.classList.contains('active'))renderHome();});document.querySelector('.version').textContent='Version 1.17';showPage('home');
+})();
+</script>
+<!-- END VERSION 1.17 UPGRADE -->
+
+<style>
+.nav{grid-template-columns:repeat(5,minmax(0,1fr))}.nav button{font-size:12px;padding:10px 2px}#monthPage .month-nav{display:flex;align-items:center;justify-content:space-between;gap:8px}#monthPage .month-nav button{padding:8px;border:0;border-radius:8px;background:#e2e8f0;cursor:pointer}#monthPage label{display:block;margin:10px 0}#monthPage input[type=checkbox]{width:auto;margin-right:8px}#monthPage select,#monthPage textarea{width:100%;margin:8px 0;padding:9px;border:1px solid #cbd5e1;border-radius:8px}#monthPage textarea{min-height:80px;display:block}#monthPage .month-bar{height:10px;background:#e2e8f0;border-radius:8px;overflow:hidden;margin:10px 0}#monthFill{height:100%;background:#2563eb}#monthPage .start-week-item{margin-top:10px}#monthPage .start-week-add{margin-top:8px}#monthMessage{color:#166534;margin-top:12px}
+</style>
+<script>
+(function(){
+const KEY='lifeManagementMonthlyHistoryV118';
+let history=objectStore(KEY)||{}, month=dateKey().slice(0,7), opened=false;
+const nav=document.createElement('button');nav.id='monthNav';nav.type='button';nav.textContent='📅 MONTH';$('weekNav').before(nav);
+const page=document.createElement('section');page.id='monthPage';page.className='page';$('weekPage').before(page);
+page.innerHTML=`<div class="card"><h2>📅 Monthly Planning</h2><p class="section-description">Connect life outcomes to weekly action. Each month is saved separately.</p><div class="month-nav"><button id="monthPrev">← Previous</button><strong id="monthLabel"></strong><button id="monthNext">Next →</button></div><button class="home-link" id="monthCurrent">Go to Current Month</button></div><div class="card"><h2>☀️ Start My Month</h2><button class="save-button" id="monthStart">Build This Month's Plan</button><div id="monthPrior" hidden></div></div><div class="card"><h2>🎯 Monthly Focus Outcomes</h2><div id="monthOutcomes"></div></div><div class="card"><h2>⭐ Monthly Top 3</h2><div id="monthTop"></div></div><div class="card"><h2>✓ Monthly Key Actions</h2><p class="section-description">Choose a target week, then send actions to that week's plan. Completion is tracked separately at each level.</p><label for="monthWeek">Target week</label><select id="monthWeek"></select><div id="monthActions"></div><div class="start-week-new-action"><input id="monthNew" placeholder="Add a monthly action"><button id="monthAdd">+ Add</button></div></div><div class="card"><h2>📊 Monthly Progress</h2><strong id="monthPct"></strong><div class="month-bar"><div id="monthFill"></div></div><p id="monthCount"></p></div><div class="card"><h2>🌙 End My Month</h2><div id="monthReview"></div><button class="save-button" id="monthSave">Save Monthly Review</button><p id="monthMessage" role="status"></p></div>`;
+function get(k){return history[k]||(history[k]={selected:[],actions:[],review:{}})}
+function save(){localStorage.setItem(KEY,JSON.stringify(history));}
+function shift(k,n){const d=fromKey(k+'-01');d.setMonth(d.getMonth()+n);return dateKey(d).slice(0,7)}
+function label(k){return fromKey(k+'-01').toLocaleDateString('en-US',{month:'long',year:'numeric'})}
+function node(tag,text,cls){const e=document.createElement(tag);if(text!==undefined)e.textContent=text;if(cls)e.className=cls;return e}
+function button(text,fn,disabled=false){const b=node('button',text,'start-week-add');b.type='button';b.disabled=disabled;b.onclick=fn;return b}
+function row(parent,text,meta){const r=node('div',undefined,'start-week-item');r.append(node('strong',text));if(meta)r.append(node('p',meta,'start-week-meta'));parent.append(r);return r}
+function exists(p,t){return p.actions.some(a=>a.text.trim().toLowerCase()===t.trim().toLowerCase())}
+function add(t,o={},k=month){t=t.trim();const p=get(k);if(!t||exists(p,t))return false;p.actions.push({text:t,completed:false,focus:0,sourceOutcome:o.sourceOutcome||o.title||'',sourceArea:o.sourceArea||o.area||''});save();return true}
+function refresh(){const p=get(month);$('monthLabel').textContent=label(month);$('monthPrior').hidden=!opened;$('monthStart').textContent=opened?'Close Monthly Planner':"Build This Month's Plan";const prior=$('monthPrior');prior.replaceChildren();if(opened){const k=shift(month,-1),prev=get(k);prior.append(node('h3',label(k)));if(!prev.actions.length)prior.append(node('p','No actions saved last month.'));prev.actions.forEach(a=>{const r=row(prior,a.text,(a.completed?'Completed':'Unfinished')+(a.focus?' · Focus #'+a.focus:''));if(!a.completed)r.append(button(exists(p,a.text)?'✓ In This Month':'+ Carry to This Month',()=>{add(a.text,a);refresh()},exists(p,a.text)))});Object.entries(prev.review).forEach(([k,v])=>{if(v)row(prior,k,v)});}
+const out=$('monthOutcomes');out.replaceChildren();const active=lifeOutcomes.filter(o=>(o.status||'active')==='active');if(!active.length)out.append(node('p','No active Life Outcomes.'));active.forEach(o=>{const id=outcomeId(o),r=row(out,o.title||'Untitled Life Outcome',o.area);const l=node('label');const c=node('input');c.type='checkbox';c.checked=p.selected.includes(id);c.onchange=()=>{p.selected=c.checked?[...p.selected,id]:p.selected.filter(x=>x!==id);save();refresh()};l.append(c,document.createTextNode(' Focus on this outcome this month'));r.append(l);if(c.checked)(o.actions||[]).filter(t=>t.trim()).forEach(t=>{const a=row(r,t);a.append(button(exists(p,t)?'✓ In This Month':'+ Choose for This Month',()=>{add(t,o);refresh()},exists(p,t)))})});
+const top=$('monthTop');top.replaceChildren();for(let n=1;n<=3;n++){const a=p.actions.find(x=>x.focus===n);row(top,'#'+n+' · '+(a?a.text:'Not selected'),a?(a.completed?'Completed':'Not completed'):'')}
+const week=$('monthWeek'),old=week.value;week.replaceChildren();let d=fromKey(mondayKey(fromKey(month+'-01')));while(dateKey(d).slice(0,7)<=month){const k=dateKey(d);const opt=node('option',weekRange(k));opt.value=k;week.append(opt);d.setDate(d.getDate()+7)}if([...week.options].some(o=>o.value===old))week.value=old;else if([...week.options].some(o=>o.value===mondayKey()))week.value=mondayKey();
+const actions=$('monthActions');actions.replaceChildren();if(!p.actions.length)actions.append(node('p','No monthly actions yet.'));p.actions.forEach((a,i)=>{const r=row(actions,a.text,[a.sourceArea,a.sourceOutcome].filter(Boolean).join(' · '));const l=node('label');const c=node('input');c.type='checkbox';c.checked=a.completed;c.onchange=()=>{a.completed=c.checked;save();refresh()};l.append(c,document.createTextNode(' Completed'));r.append(l);const s=node('select');s.setAttribute('aria-label','Monthly focus for '+a.text);for(let n=0;n<=3;n++){const opt=node('option',n?'Monthly Focus #'+n:'No Top 3 focus');opt.value=n;s.append(opt)}s.value=a.focus;s.onchange=()=>{const n=+s.value;if(n)p.actions.forEach(x=>{if(x.focus===n)x.focus=0});a.focus=n;save();refresh()};r.append(s);r.append(button('Send to Selected Week',()=>{const k=week.value;if(k===selectedWeekKey){collectWeeklyReview();saveWeekData()}const w=normalizeWeek(weeklyHistory[k],k);if(w.actions.some(x=>x.text.trim().toLowerCase()===a.text.trim().toLowerCase())){$('monthMessage').textContent='Already in '+weekRange(k);return}w.actions.push({text:a.text,completed:false,focus:0,sourceOutcome:a.sourceOutcome,sourceArea:a.sourceArea});weeklyHistory[k]=clone(w);localStorage.setItem(WEEKLY_HISTORY_STORAGE_KEY,JSON.stringify(weeklyHistory));if(k===selectedWeekKey){weekData=normalizeWeek(w,k);renderWeek()}$('monthMessage').textContent='✓ Sent to '+weekRange(k)}));if(!a.completed)r.append(button('Carry to Next Month',()=>{$('monthMessage').textContent=add(a.text,a,shift(month,1))?'✓ Carried to next month.':'Already in next month.'}));r.append(button('Remove Action',()=>{if(confirm('Remove this monthly action?')){p.actions.splice(i,1);save();refresh()}}))});
+const done=p.actions.filter(a=>a.completed).length,pct=p.actions.length?Math.round(done/p.actions.length*100):0;$('monthPct').textContent=pct+'%';$('monthFill').style.width=pct+'%';$('monthCount').textContent=done+' of '+p.actions.length+' actions completed';const rev=$('monthReview');rev.replaceChildren();['Wins','Unfinished','Lessons','Improve next month'].forEach(k=>{const l=node('label',k);const t=node('textarea');t.value=p.review[k]||'';t.oninput=()=>{p.review[k]=t.value;save()};l.append(t);rev.append(l)});
+}
+function go(k){month=k;opened=false;$('monthMessage').textContent='';refresh()}
+$('monthPrev').onclick=()=>go(shift(month,-1));$('monthNext').onclick=()=>go(shift(month,1));$('monthCurrent').onclick=()=>go(dateKey().slice(0,7));$('monthStart').onclick=()=>{opened=!opened;refresh()};$('monthAdd').onclick=()=>{const t=$('monthNew');if(add(t.value)){t.value='';refresh()}else $('monthMessage').textContent='Enter a new, nonduplicate action.'};$('monthSave').onclick=()=>{save();$('monthMessage').textContent='✓ Monthly review saved.'};
+const original=showPage;showPage=function(n){if(n==='month'){['home','life','week','today'].forEach(x=>{$(x+'Page').classList.remove('active');$(x+'Nav').classList.remove('active')});page.classList.add('active');nav.classList.add('active');refresh();window.scrollTo({top:0,behavior:'smooth'})}else{page.classList.remove('active');nav.classList.remove('active');original(n)}};nav.onclick=()=>showPage('month');document.querySelector('.version').textContent='Version 1.18';
+})();
+</script>
+
+<!-- BEGIN VERSION 1.19: GOAL PROGRESS & MILESTONES -->
+<style>
+#goalTrackerCard{border:2px solid #c7d2fe;background:#fafaff}
+.goal119{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:15px;margin:12px 0}
+.goal119 h3{font-size:17px;margin-bottom:5px;overflow-wrap:anywhere}
+.goal119 .hint{font-size:13px;color:#64748b;line-height:1.5;margin:6px 0 12px}
+.goal119 .fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.goal119 label{font-size:13px;margin:8px 0 5px}
+.goal119 input,.goal119 select{width:100%;min-width:0}
+.goal119 .bar{height:11px;background:#e5e7eb;border-radius:20px;overflow:hidden;margin:12px 0 5px}
+.goal119 .fill{height:100%;background:#2563eb;width:0}
+.goal119 .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.goal119 button{border:0;border-radius:8px;background:#dbeafe;color:#1d4ed8;padding:9px 12px;cursor:pointer;font-weight:bold}
+.goal119 button.primary{background:#2563eb;color:white}
+.goal119 button.remove{background:#fee2e2;color:#991b1b}
+.goal119 .milestone{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid #f1f5f9}
+.goal119 .milestone input[type=checkbox]{width:20px;flex:0 0 20px}
+.goal119 .milestone .name{flex:1;overflow-wrap:anywhere}
+.goal119 .milestone input[type=date]{width:155px;font-size:13px}
+.goal119 .milestone button{padding:7px}
+.goal119 .history{font-size:13px;color:#475569;margin-top:9px;max-height:170px;overflow:auto}
+.goal119 .history div{padding:5px 0;border-bottom:1px solid #f1f5f9}
+#homeGoalTracker .home-row{padding:10px 0}
+@media(max-width:600px){.goal119 .fields{grid-template-columns:1fr}.goal119 .milestone{flex-wrap:wrap}.goal119 .milestone input[type=date]{width:100%}}
+</style>
+<script>
+(function(){
+'use strict';
+const STORE='lifeManagementGoalTrackingV119';
+const read=()=>{try{const x=JSON.parse(localStorage.getItem(STORE));return x&&typeof x==='object'&&!Array.isArray(x)?x:{}}catch{return {}}};
+let records=read();
+const save=()=>localStorage.setItem(STORE,JSON.stringify(records));
+const idFor=o=>{if(!o.goalTrackingId){o.goalTrackingId='goal-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,11);saveOutcomes()}return o.goalTrackingId};
+const record=o=>{const id=idFor(o);return records[id]||(records[id]={mode:'milestones',start:0,current:0,target:1,unit:'',milestones:[],history:[]})};
+const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n};
+const btn=(name,fn,cls='')=>{const b=el('button',name,cls);b.type='button';b.onclick=fn;return b};
+const stamp=()=>new Date().toLocaleString('en-US');
+const log=(r,msg)=>{r.history=Array.isArray(r.history)?r.history:[];r.history.unshift({date:stamp(),message:msg});r.history=r.history.slice(0,100)};
+const number=v=>Number.isFinite(Number(v))?Number(v):0;
+const percent=r=>{if(r.mode==='number'){const a=number(r.start),b=number(r.target),c=number(r.current);if(a===b)return c===b?100:0;return Math.max(0,Math.min(100,Math.round((c-a)/(b-a)*100)))}const m=Array.isArray(r.milestones)?r.milestones:[];return m.length?Math.round(m.filter(x=>x.done).length/m.length*100):0};
+const tracker=el('section',undefined,'card');tracker.id='goalTrackerCard';
+tracker.append(el('h2','📊 Goal Progress & Milestones'),el('p','Track measurable goals or milestone-based goals directly against your existing Life Outcomes. Updates are saved in this browser.','section-description'));
+const listing=el('div');tracker.append(listing);
+const lifeCard=$('lifeOutcomeList').closest('.card');lifeCard.after(tracker);
+const home=el('section',undefined,'card');home.append(el('h2','📊 Goal Progress & Milestones'));const homeRows=el('div');homeRows.id='homeGoalTracker';home.append(homeRows,btn('Manage Goal Progress',()=>{showPage('life');tracker.scrollIntoView({behavior:'smooth'})},'home-link'));
+const homePage=$('homePage');const homeOutcome=$('homeOutcomes').closest('.card');homeOutcome.after(home);
+function field(parent,label,type,value,onchange){const box=el('div'),lab=el('label',label),input=el('input');input.type=type;input.value=value;input.onchange=()=>onchange(input.value);box.append(lab,input);parent.append(box);return input}
+function renderGoals(){listing.replaceChildren();const goals=lifeOutcomes.filter(o=>(o.title||'').trim());if(!goals.length){listing.append(el('p','Add a Life Outcome above to start tracking its progress.','hint'));return}
+goals.forEach(o=>{const r=record(o);if(!Array.isArray(r.milestones))r.milestones=[];if(!Array.isArray(r.history))r.history=[];const card=el('div',undefined,'goal119');card.append(el('h3',o.title),el('div',[o.area||'Life Outcome',o.targetDate?'Target: '+o.targetDate:''].filter(Boolean).join(' · '),'hint'));
+const modeBox=el('div');const modeLabel=el('label','Progress tracking method');const mode=el('select');[['milestones','Milestones / non-numerical goal'],['number','Measurable / numerical goal']].forEach(([v,t])=>{const op=el('option',t);op.value=v;mode.append(op)});mode.value=r.mode==='number'?'number':'milestones';mode.onchange=()=>{r.mode=mode.value;save();renderGoals();renderHomeGoals()};modeBox.append(modeLabel,mode);card.append(modeBox);
+if(r.mode==='number'){
+const fields=el('div',undefined,'fields');const start=field(fields,'Starting value','number',r.start??0,v=>{r.start=number(v);save();renderGoals();renderHomeGoals()});const current=field(fields,'Current value','number',r.current??0,v=>{const n=number(v);if(n!==number(r.current)){r.current=n;log(r,'Progress updated to '+n+(r.unit?' '+r.unit:''));save()}renderGoals();renderHomeGoals()});const target=field(fields,'Target value','number',r.target??1,v=>{r.target=number(v);save();renderGoals();renderHomeGoals()});[start,current,target].forEach(x=>x.step='any');card.append(fields);const units=el('div');field(units,'Unit (optional: pounds, dollars, days, etc.)','text',r.unit||'',v=>{r.unit=v.trim().slice(0,40);save();renderGoals();renderHomeGoals()});card.append(units);
+card.append(el('div','For goals that decrease (such as weight), set the starting value higher than the target.','hint'));
+}else{
+const total=r.milestones.length,done=r.milestones.filter(x=>x.done).length;card.append(el('div',done+' of '+total+' milestones completed','hint'));
+r.milestones.forEach((m,i)=>{const line=el('div',undefined,'milestone'),check=el('input');check.type='checkbox';check.checked=!!m.done;check.setAttribute('aria-label','Complete '+m.title);check.onchange=()=>{m.done=check.checked;log(r,(m.done?'Completed milestone: ':'Reopened milestone: ')+m.title);save();renderGoals();renderHomeGoals()};const title=el('span',m.title,'name');const date=el('input');date.type='date';date.value=m.due||'';date.setAttribute('aria-label','Target date for '+m.title);date.onchange=()=>{m.due=date.value;save();renderGoals()};line.append(check,title,date,btn('Remove',()=>{if(confirm('Remove this milestone?')){r.milestones.splice(i,1);log(r,'Removed milestone: '+m.title);save();renderGoals();renderHomeGoals()}},'remove'));card.append(line)});
+const add=el('div',undefined,'actions'),inp=el('input');inp.type='text';inp.placeholder='New milestone';inp.style.flex='1';inp.style.minWidth='170px';const create=()=>{const t=inp.value.trim();if(!t)return;r.milestones.push({title:t,due:'',done:false});log(r,'Added milestone: '+t);save();renderGoals();renderHomeGoals()};inp.onkeydown=e=>{if(e.key==='Enter')create()};add.append(inp,btn('+ Add Milestone',create,'primary'));card.append(add);
+}
+const pct=percent(r),progress=el('div',undefined,'bar'),fill=el('div',undefined,'fill');fill.style.width=pct+'%';progress.append(fill);card.append(progress,el('div',pct+'% progress','hint'));
+const history=el('details',undefined,'history'),summary=el('summary','Progress History ('+r.history.length+' updates)');history.append(summary);if(!r.history.length)history.append(el('p','No updates recorded yet.'));r.history.forEach(h=>history.append(el('div',(h.date||'')+' — '+(h.message||''))));card.append(history);listing.append(card)})}
+function renderHomeGoals(){homeRows.replaceChildren();const goals=lifeOutcomes.filter(o=>(o.title||'').trim());if(!goals.length){homeRows.append(el('p','No Life Outcomes to track yet.'));return}goals.forEach(o=>{const r=record(o),pct=percent(r),row=el('div',undefined,'home-row');row.append(el('strong',o.title),el('div',pct+'% · '+(r.mode==='number'?'Measurable goal':'Milestone goal'),'home-meta'));const bar=el('div',undefined,'home-bar'),fill=el('div',undefined,'home-fill');fill.style.width=pct+'%';bar.append(fill);row.append(bar);homeRows.append(row)})}
+const oldRenderOutcomes=renderOutcomes;renderOutcomes=function(){oldRenderOutcomes();renderGoals();renderHomeGoals()};
+const oldShow=showPage;showPage=function(n){oldShow(n);if(n==='life')renderGoals();if(n==='home')renderHomeGoals()};
+renderGoals();renderHomeGoals();document.querySelector('.version').textContent='Version 1.19';
+})();
+</script>
+<!-- END VERSION 1.19 -->
+
+
+<!-- BEGIN VERSION 1.20: HABITS & ROUTINES -->
+<style>
+#habit120Page .habit120-item,#habit120Today .habit120-item{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:14px;margin:10px 0}
+.habit120-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.habit120-days{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}
+.habit120-days label{margin:0;display:flex;gap:5px;align-items:center;border:1px solid #dbeafe;background:#eff6ff;border-radius:8px;padding:7px;font-size:13px}
+.habit120-days input{width:auto}
+.habit120-meta{font-size:13px;color:#64748b;margin:7px 0;line-height:1.5}
+.habit120-button{border:0;border-radius:9px;padding:10px 13px;background:#dbeafe;color:#1d4ed8;font-weight:bold;cursor:pointer;margin:5px 6px 5px 0}
+.habit120-button.primary{background:#2563eb;color:#fff}.habit120-button.danger{background:#fee2e2;color:#991b1b}
+.habit120-check{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:bold;margin:0!important}
+.habit120-check input{width:22px;height:22px;flex-shrink:0}
+.habit120-progress{height:10px;background:#e5e7eb;border-radius:20px;overflow:hidden;margin:10px 0}
+.habit120-progress div{height:100%;background:#16a34a}
+.habit120-note{font-size:13px;color:#475569;line-height:1.5}
+#habit120Page input[type=text],#habit120Page select{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:9px}
+#habit120Page .habit120-form label{font-size:13px}
+@media(max-width:650px){.habit120-grid{grid-template-columns:1fr}.nav{grid-template-columns:repeat(3,minmax(0,1fr))}}
+</style>
+<script>
+(function(){
+'use strict';
+const KEY='lifeManagementHabitsV120';
+let habits=[];
+try{const data=JSON.parse(localStorage.getItem(KEY));if(Array.isArray(data))habits=data;}catch(e){}
+const save=()=>localStorage.setItem(KEY,JSON.stringify(habits));
+const el=(tag,text,cls)=>{const x=document.createElement(tag);if(text!==undefined)x.textContent=text;if(cls)x.className=cls;return x};
+const button=(text,fn,cls='')=>{const b=el('button',text,'habit120-button '+cls);b.type='button';b.onclick=fn;return b};
+const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const today=dateKey();
+const habitId=()=>('habit-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,10));
+const isDue=(h,k)=>Array.isArray(h.days)&&h.days.includes(fromKey(k).getDay())&&(!h.created||k>=h.created);
+const completed=(h,k)=>!!(h.checks&&h.checks[k]);
+const scheduled=(h,k)=>isDue(h,k)&&!h.archived;
+const dueHabits=k=>habits.filter(h=>scheduled(h,k));
+const streak=h=>{let k=today,n=0; if(!scheduled(h,k)||!completed(h,k))k=previousDay(k);for(let i=0;i<366;i++){if(!h.created||k<h.created)break;if(scheduled(h,k)){if(!completed(h,k))break;n++;}k=previousDay(k)}return n};
+const sevenDayRate=h=>{let total=0,done=0;for(let i=0;i<7;i++){const d=new Date();d.setDate(d.getDate()-i);const k=dateKey(d);if(scheduled(h,k)){total++;if(completed(h,k))done++}}return {total,done,pct:total?Math.round(done/total*100):0}};
+const toggle=(h,k,v)=>{h.checks=h.checks||{};if(v)h.checks[k]=true;else delete h.checks[k];save();renderAll()};
+const nav=el('button','🔁 HABITS');nav.id='habitsNav';nav.type='button';$('todayNav').after(nav);
+const page=el('section',undefined,'page');page.id='habitsPage';$('todayPage').after(page);
+const intro=el('section',undefined,'card');intro.append(el('h2','🔁 Habits & Routines'),el('p','Build repeatable habits and connect them to your Life Outcomes. Check off each scheduled day, track consistency, and build streaks.','section-description'));
+const form=el('div',undefined,'habit120-form');
+const nameLabel=el('label','Habit or routine name'),name=el('input');name.type='text';name.placeholder='Example: Walk 30 minutes';name.maxLength=140;nameLabel.append(name);
+const grid=el('div',undefined,'habit120-grid');const outcomeLabel=el('label','Linked Life Outcome (optional)'),outcome=el('select');outcomeLabel.append(outcome);
+const freqLabel=el('label','Quick schedule'),freq=el('select');[['daily','Every day'],['weekdays','Monday–Friday'],['weekends','Saturday–Sunday'],['custom','Custom days']].forEach(([v,t])=>{const op=el('option',t);op.value=v;freq.append(op)});freqLabel.append(freq);grid.append(outcomeLabel,freqLabel);
+const dayBox=el('div',undefined,'habit120-days');const dayChecks=days.map((d,i)=>{const l=el('label'),c=el('input');c.type='checkbox';c.checked=true;c.value=i;l.append(c,document.createTextNode(d));dayBox.append(l);return c});
+const setDays=arr=>dayChecks.forEach((c,i)=>c.checked=arr.includes(i));freq.onchange=()=>{if(freq.value==='daily')setDays([0,1,2,3,4,5,6]);if(freq.value==='weekdays')setDays([1,2,3,4,5]);if(freq.value==='weekends')setDays([0,6])};dayChecks.forEach(c=>c.onchange=()=>freq.value='custom');
+const message=el('p',undefined,'habit120-note');
+const create=button('+ Add Habit',()=>{const title=name.value.trim(),selected=dayChecks.filter(x=>x.checked).map(x=>+x.value);if(!title){message.textContent='Enter a habit name first.';return}if(!selected.length){message.textContent='Select at least one day.';return}habits.push({id:habitId(),name:title,goalId:outcome.value||'',days:selected,created:today,checks:{},archived:false});save();name.value='';message.textContent='✓ Habit created.';renderAll()},'primary');
+form.append(nameLabel,grid,el('p','Repeat on these days:','habit120-note'),dayBox,create,message);intro.append(form);page.append(intro);
+const listCard=el('section',undefined,'card');listCard.append(el('h2','My Habits'));const list=el('div');listCard.append(list);page.append(listCard);
+const dailyCard=el('section',undefined,'card');dailyCard.id='habit120Today';dailyCard.append(el('h2','🔁 Daily Habits'));const dailyInfo=el('p',undefined,'section-description'),dailyList=el('div');dailyCard.append(dailyInfo,dailyList);$('todayPage').insertBefore(dailyCard,$('todayPage').firstChild);
+const homeCard=el('section',undefined,'card');homeCard.append(el('h2','🔁 Today’s Habits'));const homeText=el('div');homeCard.append(homeText,button('Manage Habits',()=>showPage('habits')));$('homePage').append(homeCard);
+function options(){const old=outcome.value;outcome.replaceChildren();const none=el('option','No linked outcome');none.value='';outcome.append(none);lifeOutcomes.forEach(o=>{if(!(o.title||'').trim())return;const opt=el('option',o.title);opt.value=o.goalTrackingId||'';if(!opt.value){o.goalTrackingId=habitId();opt.value=o.goalTrackingId;saveOutcomes()}outcome.append(opt)});outcome.value=[...outcome.options].some(x=>x.value===old)?old:''}
+function outcomeName(h){const o=lifeOutcomes.find(o=>o.goalTrackingId===h.goalId);return o?(o.title||'Untitled Life Outcome'):'Independent habit'}
+function renderManage(){options();list.replaceChildren();if(!habits.length){list.append(el('p','No habits yet. Add your first habit above.','habit120-note'));return}habits.forEach(h=>{const box=el('div',undefined,'habit120-item');box.append(el('h3',h.name),el('p',outcomeName(h)+' · '+(h.days||[]).map(i=>days[i]).join(', '),'habit120-meta'));const stats=sevenDayRate(h);box.append(el('p',`Last 7 days: ${stats.done} of ${stats.total} scheduled days · ${stats.pct}% · Current streak: ${streak(h)} scheduled days`,'habit120-meta'));const bar=el('div',undefined,'habit120-progress'),fill=el('div');fill.style.width=stats.pct+'%';bar.append(fill);box.append(bar);box.append(button(h.archived?'Resume Habit':'Pause Habit',()=>{h.archived=!h.archived;save();renderAll()}));box.append(button('Remove',()=>{if(confirm('Remove this habit and its completion history?')){habits=habits.filter(x=>x.id!==h.id);save();renderAll()}},'danger'));list.append(box)})}
+function renderDay(){const k=selectedDateKey,arr=dueHabits(k);dailyInfo.textContent='Scheduled for '+formatDate(k)+'. Habit checkoffs are stored separately from your daily action plan.';dailyList.replaceChildren();if(!arr.length){dailyList.append(el('p','No habits scheduled for this date.','habit120-note'));return}arr.forEach(h=>{const box=el('div',undefined,'habit120-item'),label=el('label',undefined,'habit120-check'),check=el('input');check.type='checkbox';check.checked=completed(h,k);check.onchange=()=>toggle(h,k,check.checked);label.append(check,document.createTextNode(h.name));box.append(label,el('p',outcomeName(h),'habit120-meta'));dailyList.append(box)})}
+function renderHome(){const arr=dueHabits(today),done=arr.filter(h=>completed(h,today)).length;homeText.replaceChildren();homeText.append(el('p',arr.length?`${done} of ${arr.length} scheduled habits completed today`:'No habits scheduled for today.','habit120-meta'));const bar=el('div',undefined,'habit120-progress'),fill=el('div');fill.style.width=(arr.length?Math.round(done/arr.length*100):0)+'%';bar.append(fill);homeText.append(bar);arr.slice(0,6).forEach(h=>{const label=el('label',undefined,'habit120-check'),c=el('input');c.type='checkbox';c.checked=completed(h,today);c.onchange=()=>toggle(h,today,c.checked);label.append(c,document.createTextNode(h.name));const row=el('div',undefined,'habit120-item');row.append(label);homeText.append(row)})}
+function renderAll(){renderManage();renderDay();renderHome()}
+const priorShow=showPage;showPage=function(n){if(n==='habits'){['home','life','month','week','today'].forEach(x=>{const p=$(x+'Page'),b=$(x+'Nav');if(p)p.classList.remove('active');if(b)b.classList.remove('active')});page.classList.add('active');nav.classList.add('active');renderAll();window.scrollTo({top:0,behavior:'smooth'});}else{page.classList.remove('active');nav.classList.remove('active');priorShow(n);if(n==='today')renderDay();if(n==='home')renderHome();if(n==='life')options()}};
+nav.onclick=()=>showPage('habits');
+// Re-render when the selected daily date changes through the existing date selector.
+const dateSelector=$('dailyDateSelector');dateSelector.addEventListener('change',()=>setTimeout(renderDay,0));
+$('jumpToTodayButton').addEventListener('click',()=>setTimeout(renderDay,0));
+const prevRenderDay=renderDay;
+renderAll();document.querySelector('.version').textContent='Version 1.20';
+})();
+</script>
+<!-- END VERSION 1.20 -->
+
+</body>
+</html>
